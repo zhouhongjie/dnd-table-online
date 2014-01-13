@@ -33,11 +33,13 @@ namespace DndTable.Core.Test
             var game = Factory.CreateGame(10, 10);
 
             Assert.IsNull(game.GameBoard.GetEntity(1, 1));
+            Assert.AreEqual(0, game.GetCharacters().Count);
 
             game.AddCharacter(Factory.CreateCharacter(), 1, 1);
             var player = game.GameBoard.GetEntity(1, 1);
             Assert.IsNotNull(player);
             Assert.AreEqual(EntityTypeEnum.Character, player.EntityType);
+            Assert.AreEqual(1, game.GetCharacters().Count);
         }
     }
 }

@@ -11,5 +11,7 @@ namespace DndTable.Core
 
 
         bool AddCharacter(ICharacter character, int x, int y);
+
+        List<ICharacter> GetCharacters();
     }
 }
