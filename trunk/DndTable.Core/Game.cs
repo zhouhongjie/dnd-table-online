@@ -28,5 +28,10 @@ namespace DndTable.Core
             _characters.Add(character);
             return true;
         }
+
+        public List<ICharacter> GetCharacters()
+        {
+            return _characters;
+        }
     }
 }
