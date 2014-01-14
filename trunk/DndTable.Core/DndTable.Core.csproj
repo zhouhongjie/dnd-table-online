@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseEntity.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="Character.cs" />
     <Compile Include="CharacterSheet.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="IEntity.cs" />
     <Compile Include="IGame.cs" />
     <Compile Include="IWeapon.cs" />
+    <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

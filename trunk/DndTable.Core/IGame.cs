@@ -10,10 +10,12 @@ namespace DndTable.Core
         IBoard GameBoard { get; }
 
 
-        bool AddCharacter(ICharacter character, int x, int y);
+        bool AddCharacter(ICharacter character, Position position);
         List<ICharacter> GetCharacters();
 
 
+        // Actions
         void MeleeAttack(ICharacter attacker, ICharacter target);
+        void Move(ICharacter character, Position to);
     }
 }

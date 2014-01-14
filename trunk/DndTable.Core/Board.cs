@@ -10,37 +10,70 @@ namespace DndTable.Core
         public int MaxX { get; private set; }
         public int MaxY { get; private set; }
 
-        private readonly IEntity[,] _cells;
+        private readonly BaseEntity[,] _cells;
 
         public Board(int maxX, int maxY)
         {
             MaxX = maxX;
             MaxY = maxY;
 
-            _cells = new IEntity[MaxX, MaxY];
+            _cells = new BaseEntity[MaxX, MaxY];
         }
 
-        public IEntity GetEntity(int x, int y)
+        private bool CheckBoundaries(Position position)
         {
-            if (x >= MaxX)
-                return null;
-            if (y >= MaxY)
-                return null;
-
-            return _cells[x, y];
+            if (position.X >= MaxX)
+                return false;
+            if (position.Y >= MaxY)
+                return false;
+            return true;
         }
 
-        internal bool AddEntity(IEntity entity, int x, int y)
+        public IEntity GetEntity(Position position)
         {
-            if (x >= MaxX)
+            if (!CheckBoundaries(position))
+                return null;
+
+            return _cells[position.X, position.Y];
+        }
+
+        public bool MoveEntity(Position from, Position to)
+        {
+            if (!CheckBoundaries(from))
                 return false;
-            if (y >= MaxY)
+            if (!CheckBoundaries(to))
                 return false;
 
-            if (_cells[x, y] != null)
+            if (GetEntity(to) != null)
                 return false;
 
-            _cells[x, y] = entity;
+            var entity = _cells[from.X, from.Y];
+            if (entity == null)
+                return false;
+
+            _cells[from.X, from.Y] = null;
+            _cells[to.X, to.Y] = entity;
+
+            entity.Position = to;
+
+            return true;
+        }
+
+        internal bool AddEntity(IEntity entity, Position position)
+        {
+            if (!CheckBoundaries(position))
+                return false;
+
+            if (_cells[position.X, position.Y] != null)
+                return false;
+
+            var baseEntity = entity as BaseEntity;
+            if (baseEntity == null)
+                throw new ArgumentException();
+
+            _cells[position.X, position.Y] = baseEntity;
+            baseEntity.Position = position;
+
             return true;
         }
     }

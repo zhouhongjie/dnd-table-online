@@ -19,12 +19,12 @@ namespace DndTable.Core
             _gameBoard = board;
         }
 
-        public bool AddCharacter(ICharacter character, int x, int y)
+        public bool AddCharacter(ICharacter character, Position position)
         {
             if (_characters.Contains(character))
                 return false;
 
-            if (!_gameBoard.AddEntity(character, x, y))
+            if (!_gameBoard.AddEntity(character, position))
                 return false;
 
             _characters.Add(character);
@@ -53,6 +53,18 @@ namespace DndTable.Core
 
             // Do damage
 
+        }
+
+        public void Move(ICharacter character, Position to)
+        {
+            // Can move
+
+            // Can move to this point
+
+            
+
+            // TEMP
+            _gameBoard.MoveEntity(character.Position, to);
         }
     }
 }

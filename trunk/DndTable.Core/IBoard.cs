@@ -10,6 +10,7 @@ namespace DndTable.Core
         int MaxX { get; }
         int MaxY { get; }
 
-        IEntity GetEntity(int x, int y);
+        IEntity GetEntity(Position position);
+        bool MoveEntity(Position from, Position to);
     }
 }
