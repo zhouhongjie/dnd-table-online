@@ -10,9 +10,11 @@ namespace DndTable.Core
         public IBoard GameBoard { get { return _gameBoard; } }
         private Board _gameBoard;
 
+        private IDiceRoller _diceRoller;
+
         private List<ICharacter> _characters = new List<ICharacter>();
 
-        public Game(Board board)
+        public Game(Board board, IDiceRoller diceRoller)
         {
             _gameBoard = board;
         }
@@ -32,6 +34,25 @@ namespace DndTable.Core
         public List<ICharacter> GetCharacters()
         {
             return _characters;
+        }
+
+        public void MeleeAttack(ICharacter attacker, ICharacter target)
+        {
+            // Can reach
+
+
+            // Check hit
+            var attackRoll = _diceRoller.Roll(20) + attacker.CharacterSheet.MeleeAttackBonus;
+
+            // Check crit failure
+
+            if (attackRoll < target.CharacterSheet.ArmourClass)
+                return;
+
+            // Check crit
+
+            // Do damage
+
         }
     }
 }
