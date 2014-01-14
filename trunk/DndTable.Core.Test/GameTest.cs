@@ -9,10 +9,16 @@ namespace DndTable.Core.Test
     [TestFixture]
     public class GameTest
     {
+        private static Game CreateGame()
+        {
+            var board = new Board(10, 10);
+            return new Game(board, null);
+        }
+
         [Test]
         public void AddPlayers()
         {
-            var game = Factory.CreateGame(10, 10);
+            var game = CreateGame();
 
             var char1 = Factory.CreateCharacter();
             Assert.IsTrue(game.AddCharacter(char1, 1, 1));
@@ -30,7 +36,7 @@ namespace DndTable.Core.Test
         [Test]
         public void GetPlayers()
         {
-            var game = Factory.CreateGame(10, 10);
+            var game = CreateGame();
 
             Assert.IsNull(game.GameBoard.GetEntity(1, 1));
             Assert.AreEqual(0, game.GetCharacters().Count);

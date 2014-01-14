@@ -10,7 +10,8 @@ namespace DndTable.Core
         public static IGame CreateGame(int maxX, int maxY)
         {
             var board = new Board(maxX, maxY);
-            return new Game(board);
+            var diceRoller = new DiceRoller();
+            return new Game(board, diceRoller);
         }
 
         public static ICharacter CreateCharacter()

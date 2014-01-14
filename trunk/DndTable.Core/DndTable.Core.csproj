@@ -42,6 +42,7 @@
     <Compile Include="Board.cs" />
     <Compile Include="Character.cs" />
     <Compile Include="CharacterSheet.cs" />
+    <Compile Include="DiceRoller.cs" />
     <Compile Include="Factory.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="IArmour.cs" />
@@ -49,6 +50,7 @@
     <Compile Include="IBoard.cs" />
     <Compile Include="ICharacter.cs" />
     <Compile Include="ICharacterSheet.cs" />
+    <Compile Include="IDiceRoller.cs" />
     <Compile Include="IEntity.cs" />
     <Compile Include="IGame.cs" />
     <Compile Include="IWeapon.cs" />
@@ -62,13 +64,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  
-<Target Name="AfterBuild">
+  <Target Name="AfterBuild">
     <ItemGroup>
       <_CustomFiles Include="bin\debug\*.dll" />
     </ItemGroup>
     <Copy SourceFiles="@(_CustomFiles)" DestinationFiles="@(_CustomFiles->'..\DndTable.Unity\Assets\Libs\%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
   </Target>
-
-  
 </Project>
