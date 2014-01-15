@@ -32,25 +32,5 @@ namespace DndTable.Core
 
             return new Character(sheet);
         }
-
-        public static IWeapon CreateWeapon()
-        {
-            var weapon = new Weapon();
-
-            // Dagger
-            weapon.DamageD = 4;
-
-            return weapon;
-        }
-
-        public static IArmor CreateArmor()
-        {
-            var armour = new Armor();
-
-            // Leather armour
-            armour.ArmorBonus = 2;
-
-            return armour;
-        }
     }
 }
