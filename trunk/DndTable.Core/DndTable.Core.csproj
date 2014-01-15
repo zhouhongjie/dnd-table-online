@@ -46,7 +46,9 @@
     <Compile Include="CharacterSheet.cs" />
     <Compile Include="DiceRandomizer.cs" />
     <Compile Include="DiceRoller.cs" />
-    <Compile Include="Factory.cs" />
+    <Compile Include="Factories\ArmorFactory.cs" />
+    <Compile Include="Factories\Factory.cs" />
+    <Compile Include="Factories\WeaponFactory.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="IArmor.cs" />
     <Compile Include="IBag.cs" />

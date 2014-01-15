@@ -1,4 +1,5 @@
 ﻿using System;
+using DndTable.Core.Factories;
 using NUnit.Framework;
 
 namespace DndTable.Core.Test.UserTests
@@ -70,10 +71,10 @@ namespace DndTable.Core.Test.UserTests
         {
             var character = Factory.CreateCharacter(name);
 
-            var weapon = Factory.CreateWeapon();
+            var weapon = WeaponFactory.Dagger();
             game.EquipWeapon(character, weapon);
 
-            var armor = Factory.CreateArmor();
+            var armor = ArmorFactory.Leather();
             game.EquipArmor(character, armor);
 
             game.AddCharacter(character, position);
