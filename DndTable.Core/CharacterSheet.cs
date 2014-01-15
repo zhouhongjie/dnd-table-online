@@ -7,8 +7,6 @@ namespace DndTable.Core
 {
     public class CharacterSheet : ICharacterSheet
     {
-        #region ICharacterSheet Members
-
         public string Name { get; internal set; }
 
         public int Strength { get; internal set; }
@@ -30,7 +28,14 @@ namespace DndTable.Core
 
         public int HitPoints { get; internal set; }
 
-        public int ArmourClass { get; internal set; }
+        public int ArmourClass
+        {
+            get
+            {
+                // TODO ... armour, bonusses, touch, flatfooted, ...
+                return 10 + GetAbilityBonus(Dexterity);
+            }
+        }
 
         public int Initiative { get; internal set; }
 
@@ -54,10 +59,13 @@ namespace DndTable.Core
                 // TODO: weapon focus
                 // ...
 
-                return (int)Math.Floor((Strength - 10) / 2.0);
+                return GetAbilityBonus(Strength);
             }
         }
 
-        #endregion
+        private static int GetAbilityBonus(int baseAbiltyScore)
+        {
+            return (int)Math.Floor((baseAbiltyScore - 10) / 2.0);
+        }
     }
 }
