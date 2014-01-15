@@ -69,9 +69,13 @@ namespace DndTable.Core.Test.UserTests
         private static ICharacter PrepareCharacter(IGame game, string name, Position position)
         {
             var character = Factory.CreateCharacter(name);
-            var weapon = Factory.CreateWeapon();
 
+            var weapon = Factory.CreateWeapon();
             game.EquipWeapon(character, weapon);
+
+            var armor = Factory.CreateArmor();
+            game.EquipArmor(character, armor);
+
             game.AddCharacter(character, position);
 
             return character;

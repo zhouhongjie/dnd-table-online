@@ -21,7 +21,7 @@ namespace DndTable.Core
         int Will { get; }
 
         int HitPoints { get; }
-        int ArmourClass { get; }
+        int ArmorClass { get; }
         int Initiative { get; }
 
         int Speed { get; }
@@ -30,7 +30,7 @@ namespace DndTable.Core
         int MeleeAttackBonus { get; }
         int RangedAttackBonus { get; }
 
-        IArmour EquipedArmour { get; }
+        IArmor EquipedArmor { get; }
         IWeapon EquipedWeapon { get; }
 
 

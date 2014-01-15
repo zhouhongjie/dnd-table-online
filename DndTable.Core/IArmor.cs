@@ -5,7 +5,8 @@ using System.Text;
 
 namespace DndTable.Core
 {
-    public interface IArmour
+    public interface IArmor
     {
+        int ArmorBonus { get; }
     }
 }

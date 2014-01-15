@@ -48,7 +48,7 @@ namespace DndTable.Core
 
 
             // Check hit
-            if (!_diceRoller.Check(DiceRollEnum.Attack, 20, attacker.CharacterSheet.MeleeAttackBonus, target.CharacterSheet.ArmourClass))
+            if (!_diceRoller.Check(DiceRollEnum.Attack, 20, attacker.CharacterSheet.MeleeAttackBonus, target.CharacterSheet.ArmorClass))
                 return;
 
             // Check crit failure
@@ -77,6 +77,11 @@ namespace DndTable.Core
         public void EquipWeapon(ICharacter character, IWeapon weapon)
         {
             GetEditableSheet(character).EquipedWeapon = weapon;
+        }
+
+        public void EquipArmor(ICharacter character, IArmor armor)
+        {
+            GetEditableSheet(character).EquipedArmor = armor;
         }
 
         private static CharacterSheet GetEditableSheet(ICharacter character)

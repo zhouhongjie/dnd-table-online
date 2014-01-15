@@ -19,5 +19,6 @@ namespace DndTable.Core
         void MeleeAttack(ICharacter attacker, ICharacter target);
         void Move(ICharacter character, Position to);
         void EquipWeapon(ICharacter character, IWeapon weapon);
+        void EquipArmor(ICharacter character, IArmor armor);
     }
 }

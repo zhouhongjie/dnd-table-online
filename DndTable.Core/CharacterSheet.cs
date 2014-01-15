@@ -28,12 +28,22 @@ namespace DndTable.Core
 
         public int HitPoints { get; internal set; }
 
-        public int ArmourClass
+        public int ArmorClass
         {
             get
             {
                 // TODO ... armour, bonusses, touch, flatfooted, ...
-                return 10 + GetAbilityBonus(Dexterity);
+
+                var result = 10;
+
+                // Add dex (not flat footed, ...)
+                result += GetAbilityBonus(Dexterity);
+
+                // Add armor (not touch, ...)
+                if (EquipedArmor != null)
+                    result += EquipedArmor.ArmorBonus;
+
+                return result;
             }
         }
 
@@ -47,7 +57,7 @@ namespace DndTable.Core
 
         public int RangedAttackBonus { get; internal set; }
 
-        public IArmour EquipedArmour { get; internal set; }
+        public IArmor EquipedArmor { get; internal set; }
 
         public IWeapon EquipedWeapon { get; internal set; }
 
