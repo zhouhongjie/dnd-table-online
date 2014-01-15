@@ -7,6 +7,8 @@ namespace DndTable.Core
 {
     public interface ICharacterSheet
     {
+        string Name { get; }
+
         int Strength { get; }
         int Dexterity { get; }
         int Constitution { get; }

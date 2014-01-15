@@ -43,6 +43,7 @@
     <Compile Include="Board.cs" />
     <Compile Include="Character.cs" />
     <Compile Include="CharacterSheet.cs" />
+    <Compile Include="DiceRandomizer.cs" />
     <Compile Include="DiceRoller.cs" />
     <Compile Include="Factory.cs" />
     <Compile Include="Game.cs" />
@@ -52,7 +53,9 @@
     <Compile Include="ICharacter.cs" />
     <Compile Include="ICharacterSheet.cs" />
     <Compile Include="IDiceMonitor.cs" />
+    <Compile Include="IDiceRandomizer.cs" />
     <Compile Include="IDiceRoll.cs" />
+    <Compile Include="IDiceRollCheck.cs" />
     <Compile Include="IDiceRoller.cs" />
     <Compile Include="IEntity.cs" />
     <Compile Include="IGame.cs" />

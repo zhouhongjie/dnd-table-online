@@ -10,13 +10,15 @@ namespace DndTable.Core
         public static IGame CreateGame(int maxX, int maxY)
         {
             var board = new Board(maxX, maxY);
-            var diceRoller = new DiceRoller();
+            var diceRoller = new DiceRoller(new DiceRandomizer());
             return new Game(board, diceRoller);
         }
 
-        public static ICharacter CreateCharacter()
+        public static ICharacter CreateCharacter(string name)
         {
             var sheet = new CharacterSheet();
+
+            sheet.Name = name;
 
             //var diceRoller = new DiceRoller();
             sheet.Strength = 10;

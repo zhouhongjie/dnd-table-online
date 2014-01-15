@@ -16,7 +16,7 @@ namespace DndTable.Core.Test.UnitTests
         {
             var game = CreateGame();
 
-            var char1 = Factory.CreateCharacter();
+            var char1 = Factory.CreateCharacter("dummy");
             game.AddCharacter(char1, Position.Create(1, 1));
             Assert.AreEqual(char1, game.GameBoard.GetEntity(Position.Create(1, 1)));
 

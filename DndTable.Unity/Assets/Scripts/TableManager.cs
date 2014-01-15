@@ -21,8 +21,8 @@ public class TableManager : MonoBehaviour
         _game = Factory.CreateGame(MaxX, MaxY);
 
         // Temp
-	    _currentPlayer = Factory.CreateCharacter();
-        _game.AddCharacter(_currentPlayer, new Position(10, 10));
+	    _currentPlayer = Factory.CreateCharacter("Regdar");
+        _game.AddCharacter(_currentPlayer, Position.Create(10, 10));
 
 	    CreateBoard();
 	}
@@ -55,7 +55,7 @@ public class TableManager : MonoBehaviour
             x += 1;
         }
 
-        _game.Move(_currentPlayer, new Position(x, y));
+        _game.Move(_currentPlayer, Position.Create(x, y));
     }
 
     void OnGUI()
@@ -76,7 +76,7 @@ public class TableManager : MonoBehaviour
             {
                 CreateTile(i, j);
 
-                var entity = _game.GameBoard.GetEntity(new Position(i, j));
+                var entity = _game.GameBoard.GetEntity(Position.Create(i, j));
                 if (entity != null)
                 {
                     if (entity.EntityType == EntityTypeEnum.Character)
