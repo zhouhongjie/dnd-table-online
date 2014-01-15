@@ -5,8 +5,8 @@ using System.Text;
 
 namespace DndTable.Core
 {
-    public interface IWeapon
+    internal class Weapon : IWeapon
     {
-        int DamageD { get; }
+        public int DamageD { get; internal set; }
     }
 }

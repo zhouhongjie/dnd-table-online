@@ -30,5 +30,8 @@ namespace DndTable.Core
 
         IArmour EquipedArmour { get; }
         IWeapon EquipedWeapon { get; }
+
+
+        int CurrentMeleeDamageBonus { get; }
     }
 }

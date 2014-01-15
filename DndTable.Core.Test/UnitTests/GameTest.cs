@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
-namespace DndTable.Core.Test
+namespace DndTable.Core.Test.UnitTests
 {
     [TestFixture]
     public class GameTest
@@ -21,16 +17,16 @@ namespace DndTable.Core.Test
             var game = CreateGame();
 
             var char1 = Factory.CreateCharacter();
-            Assert.IsTrue(game.AddCharacter(char1, new Position(1, 1)));
-            Assert.IsFalse(game.AddCharacter(char1, new Position(1, 1)), "Cannot add twice");
+            Assert.IsTrue(game.AddCharacter(char1, Position.Create(1, 1)));
+            Assert.IsFalse(game.AddCharacter(char1, Position.Create(1, 1)), "Cannot add twice");
 
             var char2 = Factory.CreateCharacter();
-            Assert.IsFalse(game.AddCharacter(char2, new Position(1, 1)), "Same position");
-            Assert.IsTrue(game.AddCharacter(char2, new Position(2, 1)));
+            Assert.IsFalse(game.AddCharacter(char2, Position.Create(1, 1)), "Same position");
+            Assert.IsTrue(game.AddCharacter(char2, Position.Create(2, 1)));
 
             var char3 = Factory.CreateCharacter();
-            Assert.IsFalse(game.AddCharacter(char3, new Position(10, 1)), "outside X");
-            Assert.IsFalse(game.AddCharacter(char3, new Position(1, 10)), "outside Y");
+            Assert.IsFalse(game.AddCharacter(char3, Position.Create(10, 1)), "outside X");
+            Assert.IsFalse(game.AddCharacter(char3, Position.Create(1, 10)), "outside Y");
         }
 
         [TestCase(1, 1)]
@@ -40,11 +36,11 @@ namespace DndTable.Core.Test
         {
             var game = CreateGame();
 
-            Assert.IsNull(game.GameBoard.GetEntity(new Position(x, y)));
+            Assert.IsNull(game.GameBoard.GetEntity(Position.Create(x, y)));
             Assert.AreEqual(0, game.GetCharacters().Count);
 
-            game.AddCharacter(Factory.CreateCharacter(), new Position(x, y));
-            var player = game.GameBoard.GetEntity(new Position(x, y));
+            game.AddCharacter(Factory.CreateCharacter(), Position.Create(x, y));
+            var player = game.GameBoard.GetEntity(Position.Create(x, y));
             Assert.IsNotNull(player);
             Assert.AreEqual(EntityTypeEnum.Character, player.EntityType);
             Assert.AreEqual(1, game.GetCharacters().Count);

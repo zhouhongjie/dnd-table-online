@@ -7,7 +7,12 @@ namespace DndTable.Core
 {
     public class Position
     {
-        public Position(int x, int y)
+        public static Position Create(int x, int y)
+        {
+            return new Position(x, y);
+        }
+
+        private Position(int x, int y)
         {
             X = x;
             Y = y;
