@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DndTable.Core
 {
-    interface IDiceRoller
+    interface IDiceRoller : IDiceMonitor
     {
         int Roll(int d, int nrOfDice = 1);
     }

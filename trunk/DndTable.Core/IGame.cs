@@ -8,6 +8,7 @@ namespace DndTable.Core
     public interface IGame
     {
         IBoard GameBoard { get; }
+        IDiceMonitor DiceMonitor { get; }
 
 
         bool AddCharacter(ICharacter character, Position position);

@@ -51,6 +51,8 @@
     <Compile Include="IBoard.cs" />
     <Compile Include="ICharacter.cs" />
     <Compile Include="ICharacterSheet.cs" />
+    <Compile Include="IDiceMonitor.cs" />
+    <Compile Include="IDiceRoll.cs" />
     <Compile Include="IDiceRoller.cs" />
     <Compile Include="IEntity.cs" />
     <Compile Include="IGame.cs" />
