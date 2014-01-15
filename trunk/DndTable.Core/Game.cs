@@ -17,6 +17,7 @@ namespace DndTable.Core
         public Game(Board board, IDiceRoller diceRoller)
         {
             _gameBoard = board;
+            _diceRoller = diceRoller;
         }
 
         public bool AddCharacter(ICharacter character, Position position)
@@ -38,6 +39,10 @@ namespace DndTable.Core
 
         public void MeleeAttack(ICharacter attacker, ICharacter target)
         {
+            // Has weapon?
+            if (attacker.CharacterSheet.EquipedWeapon == null)
+                throw new ArgumentException("attacker has no equiped weapon");
+
             // Can reach
 
 
@@ -52,7 +57,10 @@ namespace DndTable.Core
             // Check crit
 
             // Do damage
-
+            var damage = _diceRoller.Roll(attacker.CharacterSheet.EquipedWeapon.DamageD) + attacker.CharacterSheet.CurrentMeleeDamageBonus;
+            if (damage < 1)
+                damage = 1;
+            GetEditableSheet(target).HitPoints -= damage;
         }
 
         public void Move(ICharacter character, Position to)
@@ -65,6 +73,19 @@ namespace DndTable.Core
 
             // TEMP
             _gameBoard.MoveEntity(character.Position, to);
+        }
+
+        public void EquipWeapon(ICharacter character, IWeapon weapon)
+        {
+            GetEditableSheet(character).EquipedWeapon = weapon;
+        }
+
+        private static CharacterSheet GetEditableSheet(ICharacter character)
+        {
+            var sheet = character.CharacterSheet as CharacterSheet;
+            if (sheet == null)
+                throw new ArgumentException();
+            return sheet;
         }
     }
 }

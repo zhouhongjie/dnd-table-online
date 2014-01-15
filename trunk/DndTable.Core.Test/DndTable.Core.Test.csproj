@@ -43,9 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AttackTest.cs" />
-    <Compile Include="GameTest.cs" />
-    <Compile Include="MoveTest.cs" />
+    <Compile Include="UnitTests\AttackTest.cs" />
+    <Compile Include="UserTests\CombatScenarioTest.cs" />
+    <Compile Include="UnitTests\GameTest.cs" />
+    <Compile Include="UnitTests\MoveTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
