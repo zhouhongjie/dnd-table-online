@@ -7,6 +7,7 @@ namespace DndTable.Core
 {
     interface IDiceRoller : IDiceMonitor
     {
-        int Roll(int d, int nrOfDice = 1);
+        int Roll(DiceRollEnum type, int d, int bonus);
+        bool Check(DiceRollEnum type, int d, int bonus, int dc);
     }
 }

@@ -5,46 +5,90 @@ using System.Text;
 
 namespace DndTable.Core
 {
-    internal class DiceRoller : IDiceRoller
+    internal class DiceRoller : IDiceMonitor
     {
         class  DiceRoll : IDiceRoll
         {
-            public DiceRoll(int d, int roll)
+            public static DiceRoll CreateRoll(DiceRollEnum type, int d, int bonus, int roll)
             {
-                D = d;
-                Roll = roll;
+                var diceRoll = new DiceRoll()
+                               {
+                                   Type = type,
+                                   D = d,
+                                   Bonus = bonus,
+                                   Roll = roll,
+                               };
+
+                diceRoll.Result = diceRoll.Roll + diceRoll.Bonus;
+                return diceRoll;
             }
 
+            public static DiceRoll CreateCheck(DiceRollEnum type, int d, int bonus, int roll, int dc)
+            {
+                var diceRoll = CreateRoll(type, d, bonus, roll);
+                diceRoll.Check = new DiceRollCheck(diceRoll, dc);
+                return diceRoll;
+            }
+
+            public DiceRollEnum Type { get; private set; }
             public int D { get; private set; }
+            public int Bonus { get; private set; }
+
+            public bool IsCheck
+            {
+                get { return Check != null; }
+            }
+
+            public IDiceRollCheck Check { get; private set; }
+
             public int Roll { get; private set; }
+            public int Result { get; private set; }
         }
 
-        private static readonly Random _randomizer = new Random(DateTime.Now.Millisecond);
+        class DiceRollCheck : IDiceRollCheck
+        {
+            public DiceRollCheck(IDiceRoll roll, int dc)
+            {
+                DC = dc;
+
+                Success = roll.Result >= DC;
+            }
+
+            public int DC { get; private set; }
+            public bool Success { get; private set; }
+        }
+
 
         private readonly List<DiceRoll> _rolls = new List<DiceRoll>();
+        private readonly IDiceRandomizer _diceRandomizer;
 
-        public int Roll(int d, int nrOfDice = 1)
+        public DiceRoller(IDiceRandomizer diceRandomizer)
         {
-            var total = 0;
-            for (var i=0; i < nrOfDice; i++)
-            {
-                var roll = new DiceRoll(d, _randomizer.Next(d - 1) + 1);
-                _rolls.Insert(0, roll);
-
-                total += roll.Roll;
-            }
-            return total;
+            _diceRandomizer = diceRandomizer;
         }
 
-        public IDiceRoll GetLastRoll()
+        public int Roll(DiceRollEnum type, int d, int bonus)
         {
-            return _rolls.FirstOrDefault();
+            var roll = DiceRoll.CreateRoll(type, d, bonus, _diceRandomizer.Roll(d));
+            _rolls.Add(roll);
+            return roll.Result;
         }
 
-        public List<IDiceRoll> GetLastRolls(int max)
+        public bool Check(DiceRollEnum type, int d, int bonus, int dc)
         {
-            return _rolls.Take(max).Select(roll => roll as IDiceRoll).ToList();
+            var roll = DiceRoll.CreateCheck(type, d, bonus, _diceRandomizer.Roll(d), dc);
+            _rolls.Add(roll);
+            return roll.Check.Success;
+        }
+
+        public List<IDiceRoll> GetAllRolls()
+        {
+            return _rolls.Select(roll => roll as IDiceRoll).ToList();
+        }
+
+        public void Clear()
+        {
+            _rolls.Clear();
         }
     }
-
 }

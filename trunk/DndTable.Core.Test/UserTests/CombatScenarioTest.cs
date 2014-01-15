@@ -10,27 +10,21 @@ namespace DndTable.Core.Test.UserTests
         public void SimpleCombat()
         {
             var game = Factory.CreateGame(10, 10);
-            var tordek = PrepareCharacter(game, Position.Create(1, 1));
-            var regdar = PrepareCharacter(game, Position.Create(1, 2));
+            var tordek = PrepareCharacter(game, "Tordek", Position.Create(1, 1));
+            var regdar = PrepareCharacter(game, "Regdar", Position.Create(1, 2));
 
             var round = 1;
             while (PlayerOk(tordek) && PlayerOk(regdar))
             {
                 Console.WriteLine("Round: " + round);
 
-                if (PlayerOk(tordek))
-                {
-                    game.MeleeAttack(tordek, regdar);
-                    Console.WriteLine("- Tordek attack: 1d" + game.DiceMonitor.GetLastRoll().D + " = " + game.DiceMonitor.GetLastRoll().Roll);
-                }
-                if (PlayerOk(regdar))
-                {
-                    game.MeleeAttack(regdar, tordek);
-                    Console.WriteLine("- Regdar attack: 1d" + game.DiceMonitor.GetLastRoll().D + " = " + game.DiceMonitor.GetLastRoll().Roll);
-                }
+                DoAttack(game, tordek, regdar);
+                Console.WriteLine("- Regdar: ");
+                DoAttack(game, regdar, tordek);
 
-                Console.WriteLine("- Tordek: " + tordek.CharacterSheet.HitPoints);
-                Console.WriteLine("- Regdar: " + regdar.CharacterSheet.HitPoints);
+                Console.WriteLine("- Summary: ");
+                Console.WriteLine("-- Tordek: " + tordek.CharacterSheet.HitPoints + "hp");
+                Console.WriteLine("-- Regdar: " + regdar.CharacterSheet.HitPoints + "hp");
 
                 round++;
             }
@@ -38,9 +32,43 @@ namespace DndTable.Core.Test.UserTests
             Console.WriteLine("Winner: " + (PlayerOk(tordek) ? "Tordek" : "Regdar"));
         }
 
-        private static ICharacter PrepareCharacter(IGame game, Position position)
+        private static void DoAttack(IGame game, ICharacter attacker, ICharacter target)
         {
-            var character = Factory.CreateCharacter();
+            if (!PlayerOk(attacker))
+                return;
+
+            Console.WriteLine(string.Format("- {0} attacks {1}: ", attacker.CharacterSheet.Name, target.CharacterSheet.Name));
+            game.DiceMonitor.Clear();
+            game.MeleeAttack(attacker, target);
+
+            foreach (var roll in game.DiceMonitor.GetAllRolls())
+            {
+                if (roll.IsCheck)
+                    Console.WriteLine(string.Format("-- {1}: {3}(1d{2}) + {4} = {5}; DC = {6} => {7}",
+                                                    attacker.CharacterSheet.Name,
+                                                    roll.Type,
+                                                    roll.D,
+                                                    roll.Roll,
+                                                    roll.Bonus,
+                                                    roll.Result,
+                                                    roll.Check.DC,
+                                                    roll.Check.Success ? "Success" : "fail"
+                                          ));
+                else
+                    Console.WriteLine(string.Format("-- {1}: {3}(1d{2}) + {4} = {5}",
+                                                    attacker.CharacterSheet.Name,
+                                                    roll.Type,
+                                                    roll.D,
+                                                    roll.Roll,
+                                                    roll.Bonus,
+                                                    roll.Result
+                                          ));
+            }
+        }
+
+        private static ICharacter PrepareCharacter(IGame game, string name, Position position)
+        {
+            var character = Factory.CreateCharacter(name);
             var weapon = Factory.CreateWeapon();
 
             game.EquipWeapon(character, weapon);

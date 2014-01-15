@@ -11,11 +11,11 @@ namespace DndTable.Core
         private Board _gameBoard;
 
         public IDiceMonitor DiceMonitor { get { return _diceRoller; } }
-        private IDiceRoller _diceRoller;
+        private DiceRoller _diceRoller;
 
         private List<ICharacter> _characters = new List<ICharacter>();
 
-        public Game(Board board, IDiceRoller diceRoller)
+        public Game(Board board, DiceRoller diceRoller)
         {
             _gameBoard = board;
             _diceRoller = diceRoller;
@@ -48,17 +48,15 @@ namespace DndTable.Core
 
 
             // Check hit
-            var attackRoll = _diceRoller.Roll(20) + attacker.CharacterSheet.MeleeAttackBonus;
+            if (!_diceRoller.Check(DiceRollEnum.Attack, 20, attacker.CharacterSheet.MeleeAttackBonus, target.CharacterSheet.ArmourClass))
+                return;
 
             // Check crit failure
-
-            if (attackRoll < target.CharacterSheet.ArmourClass)
-                return;
 
             // Check crit
 
             // Do damage
-            var damage = _diceRoller.Roll(attacker.CharacterSheet.EquipedWeapon.DamageD) + attacker.CharacterSheet.CurrentMeleeDamageBonus;
+            var damage = _diceRoller.Roll(DiceRollEnum.Damage, attacker.CharacterSheet.EquipedWeapon.DamageD, attacker.CharacterSheet.CurrentMeleeDamageBonus);
             if (damage < 1)
                 damage = 1;
             GetEditableSheet(target).HitPoints -= damage;

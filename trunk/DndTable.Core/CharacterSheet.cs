@@ -9,6 +9,8 @@ namespace DndTable.Core
     {
         #region ICharacterSheet Members
 
+        public string Name { get; internal set; }
+
         public int Strength { get; internal set; }
         public int Dexterity { get; internal set; }
 

@@ -6,7 +6,7 @@ namespace DndTable.Core
 {
     public interface IDiceMonitor
     {
-        IDiceRoll GetLastRoll();
-        List<IDiceRoll> GetLastRolls(int max);
+        List<IDiceRoll> GetAllRolls();
+        void Clear();
     }
 }
