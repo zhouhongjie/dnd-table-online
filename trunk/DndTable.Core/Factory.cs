@@ -29,7 +29,6 @@ namespace DndTable.Core
             sheet.Charisma = 10;
 
             sheet.HitPoints = 10;
-            sheet.ArmourClass = 10;
 
             return new Character(sheet);
         }
