@@ -10,6 +10,7 @@ namespace DndTable.Core
         public IBoard GameBoard { get { return _gameBoard; } }
         private Board _gameBoard;
 
+        public IDiceMonitor DiceMonitor { get { return _diceRoller; } }
         private IDiceRoller _diceRoller;
 
         private List<ICharacter> _characters = new List<ICharacter>();

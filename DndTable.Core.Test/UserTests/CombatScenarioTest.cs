@@ -21,14 +21,18 @@ namespace DndTable.Core.Test.UserTests
                 if (PlayerOk(tordek))
                 {
                     game.MeleeAttack(tordek, regdar);
+                    Console.WriteLine("- Tordek attack: 1d" + game.DiceMonitor.GetLastRoll().D + " = " + game.DiceMonitor.GetLastRoll().Roll);
                 }
                 if (PlayerOk(regdar))
                 {
                     game.MeleeAttack(regdar, tordek);
+                    Console.WriteLine("- Regdar attack: 1d" + game.DiceMonitor.GetLastRoll().D + " = " + game.DiceMonitor.GetLastRoll().Roll);
                 }
 
-                Console.WriteLine("- Regdar: " + regdar.CharacterSheet.HitPoints);
                 Console.WriteLine("- Tordek: " + tordek.CharacterSheet.HitPoints);
+                Console.WriteLine("- Regdar: " + regdar.CharacterSheet.HitPoints);
+
+                round++;
             }
 
             Console.WriteLine("Winner: " + (PlayerOk(tordek) ? "Tordek" : "Regdar"));
