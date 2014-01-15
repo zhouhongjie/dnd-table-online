@@ -42,5 +42,15 @@ namespace DndTable.Core
 
             return weapon;
         }
+
+        public static IArmor CreateArmor()
+        {
+            var armour = new Armor();
+
+            // Leather armour
+            armour.ArmorBonus = 2;
+
+            return armour;
+        }
     }
 }

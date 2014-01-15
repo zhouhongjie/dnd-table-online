@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Armor.cs" />
     <Compile Include="BaseEntity.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="Character.cs" />
@@ -47,7 +48,7 @@
     <Compile Include="DiceRoller.cs" />
     <Compile Include="Factory.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="IArmour.cs" />
+    <Compile Include="IArmor.cs" />
     <Compile Include="IBag.cs" />
     <Compile Include="IBoard.cs" />
     <Compile Include="ICharacter.cs" />
