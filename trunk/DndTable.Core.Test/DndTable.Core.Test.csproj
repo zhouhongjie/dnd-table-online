@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UnitTests\AttackTest.cs" />
+    <Compile Include="UnitTests\CharacterSheetTest.cs" />
     <Compile Include="UserTests\CombatScenarioTest.cs" />
     <Compile Include="UnitTests\GameTest.cs" />
     <Compile Include="UnitTests\MoveTest.cs" />
