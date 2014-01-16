@@ -11,18 +11,18 @@ public class TableManager : MonoBehaviour
     public Transform PlayerTemplate;
 
 
-    private IGame _game;
-    private ICharacter _currentPlayer;
+    public IGame Game;
+    public ICharacter CurrentPlayer;
 
 
 	// Use this for initialization
 	void Start ()
 	{
-        _game = Factory.CreateGame(MaxX, MaxY);
+        Game = Factory.CreateGame(MaxX, MaxY);
 
         // Temp
-	    _currentPlayer = Factory.CreateCharacter("Regdar");
-        _game.AddCharacter(_currentPlayer, Position.Create(10, 10));
+	    CurrentPlayer = Factory.CreateCharacter("Regdar");
+        Game.AddCharacter(CurrentPlayer, Position.Create(10, 10));
 
 	    CreateBoard();
 	}
@@ -37,8 +37,8 @@ public class TableManager : MonoBehaviour
 
     private void ProcessUserInput()
     {
-        var x = _currentPlayer.Position.X;
-        var y =_currentPlayer.Position.Y;
+        var x = CurrentPlayer.Position.X;
+        var y =CurrentPlayer.Position.Y;
 
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.Z))
         {
@@ -55,7 +55,7 @@ public class TableManager : MonoBehaviour
             x += 1;
         }
 
-        _game.Move(_currentPlayer, Position.Create(x, y));
+        Game.Move(CurrentPlayer, Position.Create(x, y));
     }
 
     void OnGUI()
@@ -64,19 +64,19 @@ public class TableManager : MonoBehaviour
             return;
 
         var start = 10;
-        GUI.Label(new Rect(0, start + 0, Screen.width, Screen.height), "x: " + _currentPlayer.Position.X);
-        GUI.Label(new Rect(0, start + 10, Screen.width, Screen.height), "y: " + _currentPlayer.Position.Y);
+        GUI.Label(new Rect(0, start + 0, Screen.width, Screen.height), "x: " + CurrentPlayer.Position.X);
+        GUI.Label(new Rect(0, start + 10, Screen.width, Screen.height), "y: " + CurrentPlayer.Position.Y);
     }
 
     private void CreateBoard()
     {
-        for (int i=0; i < _game.GameBoard.MaxX; i++)
+        for (int i=0; i < Game.GameBoard.MaxX; i++)
         {
-            for (int j=0; j < _game.GameBoard.MaxY; j++)
+            for (int j=0; j < Game.GameBoard.MaxY; j++)
             {
                 CreateTile(i, j);
 
-                var entity = _game.GameBoard.GetEntity(Position.Create(i, j));
+                var entity = Game.GameBoard.GetEntity(Position.Create(i, j));
                 if (entity != null)
                 {
                     if (entity.EntityType == EntityTypeEnum.Character)
