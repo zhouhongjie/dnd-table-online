@@ -1,4 +1,5 @@
 ﻿using System;
+using DndTable.Core.Characters;
 using DndTable.Core.Factories;
 using NUnit.Framework;
 
@@ -20,7 +21,6 @@ namespace DndTable.Core.Test.UserTests
                 Console.WriteLine("Round: " + round);
 
                 DoAttack(game, tordek, regdar);
-                Console.WriteLine("- Regdar: ");
                 DoAttack(game, regdar, tordek);
 
                 Console.WriteLine("- Summary: ");
@@ -40,7 +40,8 @@ namespace DndTable.Core.Test.UserTests
 
             Console.WriteLine(string.Format("- {0} attacks {1}: ", attacker.CharacterSheet.Name, target.CharacterSheet.Name));
             game.DiceMonitor.Clear();
-            game.MeleeAttack(attacker, target);
+
+            game.ActionFactory.MeleeAttack(attacker).Target(target).Do();
 
             foreach (var roll in game.DiceMonitor.GetAllRolls())
             {

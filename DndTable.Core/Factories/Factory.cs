@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using DndTable.Core.Characters;
+using DndTable.Core.Dice;
 
-namespace DndTable.Core
+namespace DndTable.Core.Factories
 {
     public static class Factory
     {

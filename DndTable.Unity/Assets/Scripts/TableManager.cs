@@ -1,5 +1,7 @@
 ﻿using System;
 using DndTable.Core;
+using DndTable.Core.Characters;
+using DndTable.Core.Factories;
 using UnityEngine;
 using System.Collections;
 
@@ -55,7 +57,7 @@ public class TableManager : MonoBehaviour
             x += 1;
         }
 
-        Game.Move(CurrentPlayer, Position.Create(x, y));
+        Game.ActionFactory.Move(CurrentPlayer).Target(Position.Create(x, y)).Do();
     }
 
     void OnGUI()

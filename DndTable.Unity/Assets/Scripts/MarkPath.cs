@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DndTable.Core;
+using DndTable.Core.Characters;
 using UnityEngine;
 using System.Collections;
 
@@ -81,7 +82,7 @@ public class MarkPath : MonoBehaviour
 
         //foreach (var position in _path)
         {
-            game.Move(currentPlayer, _path.Last());   
+            game.ActionFactory.Move(currentPlayer).Target(_path.Last()).Do();   
         }
     }
 
