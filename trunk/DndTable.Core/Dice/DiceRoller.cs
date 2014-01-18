@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace DndTable.Core
+namespace DndTable.Core.Dice
 {
-    internal class DiceRoller : IDiceMonitor
+    internal class DiceRoller : IDiceMonitor,  IDiceRoller
     {
         class  DiceRoll : IDiceRoll
         {

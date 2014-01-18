@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DndTable.Core.Characters;
+using DndTable.Core.Dice;
+using DndTable.Core.Factories;
 
 namespace DndTable.Core
 {
@@ -11,14 +14,18 @@ namespace DndTable.Core
         private Board _gameBoard;
 
         public IDiceMonitor DiceMonitor { get { return _diceRoller; } }
-        private DiceRoller _diceRoller;
+        private IDiceRoller _diceRoller;
+
+        public AbstractActionFactory ActionFactory { get; private set; }
 
         private List<ICharacter> _characters = new List<ICharacter>();
 
-        public Game(Board board, DiceRoller diceRoller)
+        public Game(Board board, IDiceRoller diceRoller)
         {
             _gameBoard = board;
             _diceRoller = diceRoller;
+
+            ActionFactory = new AbstractActionFactory(_gameBoard, _diceRoller);
         }
 
         public bool AddCharacter(ICharacter character, Position position)
@@ -38,41 +45,13 @@ namespace DndTable.Core
             return _characters;
         }
 
-        public void MeleeAttack(ICharacter attacker, ICharacter target)
+        public IEncounter StartEncounter(List<ICharacter> characters)
         {
-            // Has weapon?
-            if (attacker.CharacterSheet.EquipedWeapon == null)
-                throw new ArgumentException("attacker has no equiped weapon");
+            // Check characters 
 
-            // Can reach
-
-
-            // Check hit
-            if (!_diceRoller.Check(DiceRollEnum.Attack, 20, attacker.CharacterSheet.MeleeAttackBonus, target.CharacterSheet.ArmorClass))
-                return;
-
-            // Check crit failure
-
-            // Check crit
-
-            // Do damage
-            var damage = _diceRoller.Roll(DiceRollEnum.Damage, attacker.CharacterSheet.EquipedWeapon.DamageD, attacker.CharacterSheet.CurrentMeleeDamageBonus);
-            if (damage < 1)
-                damage = 1;
-            GetEditableSheet(target).HitPoints -= damage;
+            throw new NotImplementedException();
         }
 
-        public void Move(ICharacter character, Position to)
-        {
-            // Can move
-
-            // Can move to this point
-
-            
-
-            // TEMP
-            _gameBoard.MoveEntity(character.Position, to);
-        }
 
         public void EquipWeapon(ICharacter character, IWeapon weapon)
         {
@@ -84,12 +63,13 @@ namespace DndTable.Core
             GetEditableSheet(character).EquipedArmor = armor;
         }
 
-        private static CharacterSheet GetEditableSheet(ICharacter character)
+        protected static CharacterSheet GetEditableSheet(ICharacter character)
         {
             var sheet = character.CharacterSheet as CharacterSheet;
             if (sheet == null)
                 throw new ArgumentException();
             return sheet;
         }
+
     }
 }
