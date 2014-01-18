@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DndTable.Core.Characters;
 using NUnit.Framework;
 
 namespace DndTable.Core.Test.UnitTests

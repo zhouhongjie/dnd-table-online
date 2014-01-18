@@ -1,4 +1,5 @@
 ﻿using System;
+using DndTable.Core.Characters;
 using NUnit.Framework;
 
 namespace DndTable.Core.Test.UnitTests

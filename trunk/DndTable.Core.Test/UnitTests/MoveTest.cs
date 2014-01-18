@@ -1,26 +1,30 @@
-﻿using NUnit.Framework;
+﻿using DndTable.Core.Actions;
+using DndTable.Core.Factories;
+using NUnit.Framework;
 
 namespace DndTable.Core.Test.UnitTests
 {
     [TestFixture]
     public class MoveTest
     {
-        private static Game CreateGame()
+        private static Game CreateGame(Board board)
         {
-            var board = new Board(10, 10);
             return new Game(board, null);
         }
 
         [Test]
         public void SimpleMove()
         {
-            var game = CreateGame();
+            var board = new Board(10, 10);
+            var game = CreateGame(board);
 
             var char1 = Factory.CreateCharacter("dummy");
             game.AddCharacter(char1, Position.Create(1, 1));
             Assert.AreEqual(char1, game.GameBoard.GetEntity(Position.Create(1, 1)));
 
-            game.Move(char1, Position.Create(1, 2));
+            var moveAction = new MoveAction(board, char1).Target(Position.Create(1, 2));
+            moveAction.Do();
+
             Assert.IsNull(game.GameBoard.GetEntity(Position.Create(1, 1)));
             Assert.AreEqual(char1, game.GameBoard.GetEntity(Position.Create(1, 2)));
             Assert.AreEqual(1, char1.Position.X);
