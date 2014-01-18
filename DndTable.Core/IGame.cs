@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DndTable.Core.Characters;
+using DndTable.Core.Dice;
+using DndTable.Core.Factories;
 
 namespace DndTable.Core
 {
@@ -14,11 +17,13 @@ namespace DndTable.Core
         bool AddCharacter(ICharacter character, Position position);
         List<ICharacter> GetCharacters();
 
+        IEncounter StartEncounter(List<ICharacter> characters);
+
+        AbstractActionFactory ActionFactory { get; }
 
         // Actions
-        void MeleeAttack(ICharacter attacker, ICharacter target);
-        void Move(ICharacter character, Position to);
         void EquipWeapon(ICharacter character, IWeapon weapon);
         void EquipArmor(ICharacter character, IArmor armor);
+
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace DndTable.Core
+﻿namespace DndTable.Core.Dice
 {
     internal interface IDiceRandomizer
     {

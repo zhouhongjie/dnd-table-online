@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DndTable.Core
+namespace DndTable.Core.Dice
 {
     class DiceRandomizer : IDiceRandomizer
     {
