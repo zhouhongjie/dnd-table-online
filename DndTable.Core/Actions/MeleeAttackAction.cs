@@ -7,7 +7,7 @@ using DndTable.Core.Dice;
 
 namespace DndTable.Core.Actions
 {
-    class MeleeAttackAction : BaseAction
+    class MeleeAttackAction : BaseAction, IMeleeAttackAction
     {
         private IDiceRoller _diceRoller;
         private ICharacter _attacker;
