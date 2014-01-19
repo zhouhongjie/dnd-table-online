@@ -2,7 +2,7 @@
 {
     public enum DiceRollEnum
     {
-        Attack, Damage
+        Attack, Damage, InitiativeCheck
     }
 
     public interface IDiceRoll

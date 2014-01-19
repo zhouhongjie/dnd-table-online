@@ -19,13 +19,13 @@ namespace DndTable.Core.Factories
             _diceRoller = diceRoller;
         }
 
-        public IAction MeleeAttack(ICharacter attacker)
+        public IMeleeAttackAction MeleeAttack(ICharacter attacker)
         {
             var action = new MeleeAttackAction(_diceRoller, attacker);
             return action;
         }
 
-        public IAction Move(ICharacter character)
+        public IMoveAction Move(ICharacter character)
         {
             var action = new MoveAction(_board, character);
             return action;

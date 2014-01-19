@@ -49,7 +49,7 @@ namespace DndTable.Core
         {
             // Check characters 
 
-            throw new NotImplementedException();
+            return new Encounter(ActionFactory, _diceRoller, characters);
         }
 
 

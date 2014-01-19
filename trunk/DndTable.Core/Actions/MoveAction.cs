@@ -6,7 +6,7 @@ using DndTable.Core.Characters;
 
 namespace DndTable.Core.Actions
 {
-    class MoveAction : BaseAction
+    class MoveAction : BaseAction, IMoveAction
     {
         private Board _board;
         private ICharacter _character;
