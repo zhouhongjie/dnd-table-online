@@ -36,6 +36,9 @@ namespace DndTable.Core.Characters
                 // Add dex (not flat footed, ...)
                 result += GetAbilityBonus(Dexterity);
 
+                // Add size modifier
+                result += SizeModifier;
+
                 // Add armor (not touch, ...)
                 if (EquipedArmor != null)
                     result += EquipedArmor.ArmorBonus;
@@ -48,11 +51,27 @@ namespace DndTable.Core.Characters
 
         public int Speed { get; internal set; }
 
+        public int SizeModifier { get; internal set; }
+
         public int BaseAttackBonus { get; internal set; }
 
-        public int MeleeAttackBonus { get; internal set; }
+        public int MeleeAttackBonus
+        {
+            get { return BaseAttackBonus + SizeModifier + GetAbilityBonus(Strength); }
+        }
 
-        public int RangedAttackBonus { get; internal set; }
+        public int GetRangedAttackBonus(int range)
+        {
+            if (range >= EquipedWeapon.RangeIncrement)
+            {
+                // TODO: calculate range penalty
+                throw new NotImplementedException();
+            }
+            var rangePenalty = 0;
+
+            return BaseAttackBonus + SizeModifier + GetAbilityBonus(Dexterity) + rangePenalty;
+        }
+
 
         public IArmor EquipedArmor { get; internal set; }
 
@@ -67,6 +86,18 @@ namespace DndTable.Core.Characters
                 // ...
 
                 return GetAbilityBonus(Strength);
+            }
+        }
+
+        public int CurrentRangeDamageBonus
+        {
+            get
+            {
+                // TODO: weapon bonus
+                // TODO: weapon focus
+                // ...
+
+                return 0;
             }
         }
 

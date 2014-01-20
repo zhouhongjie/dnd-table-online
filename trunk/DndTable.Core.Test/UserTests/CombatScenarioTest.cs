@@ -15,8 +15,10 @@ namespace DndTable.Core.Test.UserTests
         public void SimpleCombat()
         {
             var game = Factory.CreateGame(10, 10);
-            var tordek = PrepareCharacter(game, "Tordek", Position.Create(1, 1));
-            var regdar = PrepareCharacter(game, "Regdar", Position.Create(1, 2));
+            var tordek = PrepareCharacter(game, "Tordek", Position.Create(1, 1), WeaponFactory.CrossbowLight());
+            //var regdar = PrepareCharacter(game, "Regdar", Position.Create(1, 5), WeaponFactory.CrossbowLight());
+            //var tordek = PrepareCharacter(game, "Tordek", Position.Create(1, 1), WeaponFactory.Dagger());
+            var regdar = PrepareCharacter(game, "Regdar", Position.Create(1, 2), WeaponFactory.Dagger());
 
             Console.WriteLine("Start encounter");
             game.DiceMonitor.Clear();
@@ -46,15 +48,27 @@ namespace DndTable.Core.Test.UserTests
             Console.WriteLine("Winner: " + (PlayerOk(tordek) ? "Tordek" : "Regdar"));
         }
 
-        private static void AttackOtherWhenPossible(List<IAction> possibleActions, ICharacter current, List<ICharacter> allCharacters)
+        private static void AttackOtherWhenPossible(List<IAction> possibleActions, ICharacter current, List<ICharacter> allCharacters) 
         {
-            var attackAction = possibleActions.FirstOrDefault(a => a is IMeleeAttackAction) as IMeleeAttackAction;
-            if (attackAction != null)
             {
-                var target = GetOtherCharacter(current, allCharacters);
-                Console.WriteLine(string.Format("- {0} attacks {1}: ", current.CharacterSheet.Name, target.CharacterSheet.Name));
+                var attackAction = possibleActions.FirstOrDefault(a => a is IMeleeAttackAction) as IMeleeAttackAction;
+                if (attackAction != null)
+                {
+                    var target = GetOtherCharacter(current, allCharacters);
+                    Console.WriteLine(string.Format("- {0} attacks {1}: ", current.CharacterSheet.Name, target.CharacterSheet.Name));
 
-                attackAction.Target(target).Do();
+                    attackAction.Target(target).Do();
+                }
+            }
+            {
+                var attackAction = possibleActions.FirstOrDefault(a => a is IRangeAttackAction) as IRangeAttackAction;
+                if (attackAction != null)
+                {
+                    var target = GetOtherCharacter(current, allCharacters);
+                    Console.WriteLine(string.Format("- {0} shoots {1}: ", current.CharacterSheet.Name, target.CharacterSheet.Name));
+
+                    attackAction.Target(target).Do();
+                }
             }
         }
 
@@ -100,11 +114,10 @@ namespace DndTable.Core.Test.UserTests
             }
         }
 
-        private static ICharacter PrepareCharacter(IGame game, string name, Position position)
+        private static ICharacter PrepareCharacter(IGame game, string name, Position position, IWeapon weapon)
         {
             var character = Factory.CreateCharacter(name);
 
-            var weapon = WeaponFactory.Dagger();
             game.EquipWeapon(character, weapon);
 
             var armor = ArmorFactory.Leather();

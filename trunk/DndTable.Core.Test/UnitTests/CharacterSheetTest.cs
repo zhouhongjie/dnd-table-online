@@ -40,5 +40,19 @@ namespace DndTable.Core.Test.UnitTests
             armor.ArmorBonus = 5;
             Assert.AreEqual(15, sheet.ArmorClass);
         }
+
+        [Test]
+        public void ArmorClassSizeTest()
+        {
+            var sheet = new CharacterSheet();
+            sheet.Dexterity = 10;
+
+            // Size
+            sheet.SizeModifier = 2;
+            Assert.AreEqual(12, sheet.ArmorClass);
+
+            sheet.SizeModifier = -2;
+            Assert.AreEqual(8, sheet.ArmorClass);
+        }
     }
 }

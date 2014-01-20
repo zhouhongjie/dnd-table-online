@@ -20,15 +20,17 @@
         int Initiative { get; }
 
         int Speed { get; }
+        int SizeModifier { get; }
 
         int BaseAttackBonus { get; }
         int MeleeAttackBonus { get; }
-        int RangedAttackBonus { get; }
+        int GetRangedAttackBonus(int range);
 
         IArmor EquipedArmor { get; }
         IWeapon EquipedWeapon { get; }
 
 
         int CurrentMeleeDamageBonus { get; }
+        int CurrentRangeDamageBonus { get; }
     }
 }
