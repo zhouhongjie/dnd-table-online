@@ -71,7 +71,13 @@ namespace DndTable.Core
             // TODO: check possibilities
 
             var actions = new List<IAction>();
-            actions.Add(_actionFactory.MeleeAttack(GetCurrentCharacter()));
+            if (GetCurrentCharacter().CharacterSheet.EquipedWeapon != null)
+            {
+                if (GetCurrentCharacter().CharacterSheet.EquipedWeapon.IsRanged)
+                    actions.Add(_actionFactory.RangeAttack(GetCurrentCharacter()));
+                else
+                    actions.Add(_actionFactory.MeleeAttack(GetCurrentCharacter()));
+            }
             actions.Add(_actionFactory.Move(GetCurrentCharacter()));
             return actions;
         }

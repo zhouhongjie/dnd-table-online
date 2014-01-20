@@ -25,6 +25,12 @@ namespace DndTable.Core.Factories
             return action;
         }
 
+        public IRangeAttackAction RangeAttack(ICharacter attacker)
+        {
+            var action = new RangeAttackAction(_diceRoller, attacker);
+            return action;
+        }
+
         public IMoveAction Move(ICharacter character)
         {
             var action = new MoveAction(_board, character);

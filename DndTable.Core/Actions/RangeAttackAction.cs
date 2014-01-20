@@ -7,12 +7,12 @@ using DndTable.Core.Dice;
 
 namespace DndTable.Core.Actions
 {
-    class MeleeAttackAction : BaseAction, IMeleeAttackAction
+    class RangeAttackAction : BaseAction, IRangeAttackAction
     {
         private IDiceRoller _diceRoller;
         private ICharacter _attacker;
 
-        internal MeleeAttackAction(IDiceRoller diceRoller, ICharacter attacker)
+        internal RangeAttackAction(IDiceRoller diceRoller, ICharacter attacker)
         {
             _diceRoller = diceRoller;
             _attacker = attacker;
@@ -24,16 +24,13 @@ namespace DndTable.Core.Actions
                 throw new InvalidOperationException("Character target expected");
 
             // Has melee weapon?
-            if ((_attacker.CharacterSheet.EquipedWeapon == null) || _attacker.CharacterSheet.EquipedWeapon.IsRanged)
-                throw new ArgumentException("attacker has no melee equiped weapon");
+            if ((_attacker.CharacterSheet.EquipedWeapon == null) || !_attacker.CharacterSheet.EquipedWeapon.IsRanged)
+                throw new ArgumentException("attacker has no range equiped weapon");
 
-            //var range = GetDistance(_attacker.Position, _targetCharacter.Position);
-
-            // Can reach
-
+            var range = GetDistance(_attacker.Position, _targetCharacter.Position);
 
             // Check hit
-            if (!_diceRoller.Check(DiceRollEnum.Attack, 20, _attacker.CharacterSheet.MeleeAttackBonus, _targetCharacter.CharacterSheet.ArmorClass))
+            if (!_diceRoller.Check(DiceRollEnum.Attack, 20, _attacker.CharacterSheet.GetRangedAttackBonus(range), _targetCharacter.CharacterSheet.ArmorClass))
                 return;
 
             // TODO: Check crit failure
@@ -42,7 +39,7 @@ namespace DndTable.Core.Actions
 
 
             // Do damage
-            var damage = _diceRoller.Roll(DiceRollEnum.Damage, _attacker.CharacterSheet.EquipedWeapon.DamageD, _attacker.CharacterSheet.CurrentMeleeDamageBonus);
+            var damage = _diceRoller.Roll(DiceRollEnum.Damage, _attacker.CharacterSheet.EquipedWeapon.DamageD, _attacker.CharacterSheet.CurrentRangeDamageBonus);
             if (damage < 1)
                 damage = 1;
 

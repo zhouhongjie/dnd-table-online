@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DndTable.Core;
 using DndTable.Core.Characters;
 using DndTable.Core.Factories;
@@ -14,7 +15,7 @@ public class TableManager : MonoBehaviour
 
 
     public IGame Game;
-    public ICharacter CurrentPlayer;
+    public IEncounter CurrentEncounter;
 
 
 	// Use this for initialization
@@ -23,8 +24,14 @@ public class TableManager : MonoBehaviour
         Game = Factory.CreateGame(MaxX, MaxY);
 
         // Temp
-	    CurrentPlayer = Factory.CreateCharacter("Regdar");
-        Game.AddCharacter(CurrentPlayer, Position.Create(10, 10));
+	    var regdar = Factory.CreateCharacter("Regdar");
+	    var tordek = Factory.CreateCharacter("Tordek");
+        Game.EquipWeapon(regdar, WeaponFactory.CrossbowLight());
+        Game.EquipWeapon(tordek, WeaponFactory.Dagger());
+        Game.AddCharacter(regdar, Position.Create(10, 10));
+        Game.AddCharacter(tordek, Position.Create(10, 20));
+
+	    CurrentEncounter = Game.StartEncounter(new List<ICharacter>() {regdar, tordek});
 
 	    CreateBoard();
 	}
@@ -36,11 +43,12 @@ public class TableManager : MonoBehaviour
 
 	}
 
+    public ICharacter CurrentPlayer { get { return CurrentEncounter.GetCurrentCharacter(); } }
 
     private void ProcessUserInput()
     {
         var x = CurrentPlayer.Position.X;
-        var y =CurrentPlayer.Position.Y;
+        var y = CurrentPlayer.Position.Y;
 
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.Z))
         {
@@ -68,6 +76,18 @@ public class TableManager : MonoBehaviour
         var start = 10;
         GUI.Label(new Rect(0, start + 0, Screen.width, Screen.height), "x: " + CurrentPlayer.Position.X);
         GUI.Label(new Rect(0, start + 10, Screen.width, Screen.height), "y: " + CurrentPlayer.Position.Y);
+
+
+        // Show action buttons
+        var offset = 0;
+        foreach (var action in CurrentEncounter.GetPossibleActionsForCurrentCharacter())
+        {
+            if (GUI.Button(new Rect(10, 70 + offset, 300, 30), "Click " + action.GetType()))
+                Debug.Log("Clicked: " + action.GetType());
+            offset += 35;
+        }
+        if (GUI.Button(new Rect(10, 70 + offset, 300, 30), "Click next player"))
+            CurrentEncounter.GetNextCharacter();
     }
 
     private void CreateBoard()

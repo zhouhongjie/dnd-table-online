@@ -42,8 +42,10 @@
     <Compile Include="Actions\BaseAction.cs" />
     <Compile Include="Actions\IMeleeAttackAction.cs" />
     <Compile Include="Actions\IMoveAction.cs" />
+    <Compile Include="Actions\IRangeAttackAction.cs" />
     <Compile Include="Actions\MeleeAttackAction.cs" />
     <Compile Include="Actions\MoveAction.cs" />
+    <Compile Include="Actions\RangeAttackAction.cs" />
     <Compile Include="Armor.cs" />
     <Compile Include="BaseEntity.cs" />
     <Compile Include="Board.cs" />
