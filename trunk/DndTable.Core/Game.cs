@@ -49,9 +49,11 @@ namespace DndTable.Core
         {
             // Check characters 
 
-            return new Encounter(ActionFactory, _diceRoller, characters);
+            CurrentEncounter = new Encounter(ActionFactory, _diceRoller, characters);
+            return CurrentEncounter;
         }
 
+        public IEncounter CurrentEncounter { get; private set; }
 
         public void EquipWeapon(ICharacter character, IWeapon weapon)
         {

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DndTable.Core;
+using DndTable.Core.Actions;
 using DndTable.Core.Characters;
 using DndTable.Core.Factories;
 using UnityEngine;
@@ -17,6 +19,7 @@ public class TableManager : MonoBehaviour
     public IGame Game;
     public IEncounter CurrentEncounter;
 
+    public MoveActionUI _moveActionUI;
 
 	// Use this for initialization
 	void Start ()
@@ -41,6 +44,8 @@ public class TableManager : MonoBehaviour
 
         ProcessUserInput();
 
+        if (_moveActionUI != null && !_moveActionUI.IsDone)
+            _moveActionUI.Update();
 	}
 
     public ICharacter CurrentPlayer { get { return CurrentEncounter.GetCurrentCharacter(); } }
@@ -83,7 +88,15 @@ public class TableManager : MonoBehaviour
         foreach (var action in CurrentEncounter.GetPossibleActionsForCurrentCharacter())
         {
             if (GUI.Button(new Rect(10, 70 + offset, 300, 30), "Click " + action.GetType()))
-                Debug.Log("Clicked: " + action.GetType());
+            {
+                if (action is IMoveAction)
+                    _moveActionUI = new MoveActionUI(CurrentPlayer, action as IMoveAction);
+                else
+                {
+                    throw new NotSupportedException("TODO: UI for " + action);
+                }
+            }
+
             offset += 35;
         }
         if (GUI.Button(new Rect(10, 70 + offset, 300, 30), "Click next player"))
@@ -131,8 +144,161 @@ public class TableManager : MonoBehaviour
             if (entityScript != null)
             {
                 entityScript.Entity = entity;
+                entityScript.Game = Game;
             }
         }
 
+    }
+}
+
+public class MoveActionUI
+{
+    public int MaxLength = 10;
+
+    private bool _started = false;
+    private List<Position> _path;
+    private Dictionary<Transform, Color> _originalColors = new Dictionary<Transform, Color>();
+
+    private ICharacter _currentPlayer;
+    private IMoveAction _moveAction;
+
+    public bool IsDone { get; private set; }
+
+    public MoveActionUI(ICharacter currentPlayer, IMoveAction moveAction)
+    {
+        _currentPlayer = currentPlayer;
+        _moveAction = moveAction;  
+    }
+
+    private ICharacter GetCurrentPlayer()
+    {
+        return _currentPlayer;
+    }
+
+    public void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+            StartPath();
+
+        UpdatePath();
+
+        if (Input.GetMouseButtonUp(0))
+            EndPath();
+    }
+
+    private void StartPath()
+    {
+        if (!IsCorrectStartingPosition())
+            return;
+
+        _started = true;
+        _path = new List<Position>();
+    }
+
+    private bool IsCorrectStartingPosition()
+    {
+        // Should be a tile
+        var currentTile = GetCurrentTile();
+        if (currentTile == null)
+            return false;
+
+        // should be 1 tile away from current player
+        var currentPosition = GetPosition(currentTile);
+        var currentPlayer = GetCurrentPlayer();
+
+        if ((currentPlayer.Position.X == currentPosition.X) && (currentPlayer.Position.Y == currentPosition.Y))
+            return false;
+        if (Math.Abs(currentPlayer.Position.X - currentPosition.X) > 1)
+            return false;
+        if (Math.Abs(currentPlayer.Position.Y - currentPosition.Y) > 1)
+            return false;
+
+        return true;
+    }
+
+    private void EndPath()
+    {
+        if (!_started)
+            return;
+
+        _started = false;
+
+      
+        // TODO step by step move
+
+        //foreach (var position in _path)
+        {
+            _moveAction.Target(_path.Last()).Do();
+        }
+
+        RevertToOriginalColors();
+        IsDone = true;
+    }
+
+    private void UpdatePath()
+    {
+        if (!_started)
+            return;
+
+        if (_path.Count >= MaxLength)
+            return;
+
+        var currentTile = GetCurrentTile();
+        if (currentTile == null)
+            return;
+
+        var currentPosition = GetPosition(currentTile);
+
+        // First
+        if (_path.Count == 0)
+            _path.Add(currentPosition);
+        else
+        {
+            // Check already part of path
+            if (_path.Find(p => (p.X == currentPosition.X) && (p.Y == currentPosition.Y)) != null)
+                return;
+
+            // Check adjacent
+            var lastPosition = _path.Last();
+
+            if (Math.Abs(lastPosition.X - currentPosition.X) > 1)
+                return;
+            if (Math.Abs(lastPosition.Y - currentPosition.Y) > 1)
+                return;
+
+            _path.Add(currentPosition);
+        }
+
+        MarkTarget(currentTile);
+    }
+
+    private Position GetPosition(Transform tile)
+    {
+        return Position.Create((int)tile.position.x, (int)tile.position.z);
+    }
+
+    private Transform GetCurrentTile()
+    {
+        RaycastHit hit; // cast a ray from mouse pointer:
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit) && hit.transform.CompareTag("Tile"))
+            return hit.transform;
+        return null;
+    }
+
+    private void MarkTarget(Transform target)
+    {
+        if (!_originalColors.ContainsKey(target))
+            _originalColors.Add(target, target.renderer.material.color);
+
+        target.renderer.material.color = Color.red;
+    }
+
+    private void RevertToOriginalColors()
+    {
+        foreach (var kvp in _originalColors)
+        {
+            kvp.Key.renderer.material.color = kvp.Value;
+        }
     }
 }
