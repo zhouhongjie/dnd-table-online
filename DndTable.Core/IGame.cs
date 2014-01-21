@@ -18,6 +18,7 @@ namespace DndTable.Core
         List<ICharacter> GetCharacters();
 
         IEncounter StartEncounter(List<ICharacter> characters);
+        IEncounter CurrentEncounter { get; }
 
         AbstractActionFactory ActionFactory { get; }
 

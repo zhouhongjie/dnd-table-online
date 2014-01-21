@@ -6,22 +6,51 @@ using System.Collections;
 public class EntityScript : MonoBehaviour {
 
     public IEntity Entity;
+    public IGame Game;
 
     private LerpInfo _positionLerp;
     private LerpInfo _angleLerp;
+
+    private Color _originalColor;
 
 	// Use this for initialization
 	void Start ()
 	{
         _positionLerp = new LerpInfo(transform.position, 5);
         _angleLerp = new LerpInfo(transform.eulerAngles, 5);
+
+	    _originalColor = this.transform.renderer.material.color;
 	}
 	
 	// Update is called once per frame
-	void Update () {
-        if (Entity == null)
+	void Update ()
+	{
+	    if (Entity == null)
             return;
 
+	    LerpUpdatePosition();
+	    UpdateSelectState();
+	}
+
+    private bool IsSelected()
+    {
+        if (Game == null)
+            throw new NullReferenceException("Game is not set during creation");
+        if (Game.CurrentEncounter == null)
+            return false;
+        return Game.CurrentEncounter.GetCurrentCharacter() == Entity;
+    }
+
+    private void UpdateSelectState()
+    {
+        if (IsSelected())
+            this.transform.renderer.material.color = Color.yellow;
+        else
+            this.transform.renderer.material.color = _originalColor;
+    }
+
+    private void LerpUpdatePosition()
+    {
         var newPosition = new Vector3(Entity.Position.X, 0, Entity.Position.Y);
         var newAngle = new Vector3(0, (float)RadianToDegree(Entity.Angle), 0);
 
