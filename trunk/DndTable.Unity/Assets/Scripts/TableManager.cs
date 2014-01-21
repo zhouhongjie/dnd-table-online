@@ -20,6 +20,7 @@ public class TableManager : MonoBehaviour
     public IEncounter CurrentEncounter;
 
     public MoveActionUI _moveActionUI;
+    public AttackActionUI _attackActionUI;
 
 	// Use this for initialization
 	void Start ()
@@ -46,6 +47,8 @@ public class TableManager : MonoBehaviour
 
         if (_moveActionUI != null && !_moveActionUI.IsDone)
             _moveActionUI.Update();
+        if (_attackActionUI != null && !_attackActionUI.IsDone)
+            _attackActionUI.Update();
 	}
 
     public ICharacter CurrentPlayer { get { return CurrentEncounter.GetCurrentCharacter(); } }
@@ -79,18 +82,25 @@ public class TableManager : MonoBehaviour
             return;
 
         var start = 10;
-        GUI.Label(new Rect(0, start + 0, Screen.width, Screen.height), "x: " + CurrentPlayer.Position.X);
-        GUI.Label(new Rect(0, start + 10, Screen.width, Screen.height), "y: " + CurrentPlayer.Position.Y);
+        foreach (var character in Game.GetCharacters())
+        {
+            GUI.Label(new Rect(0, start, Screen.width, Screen.height), character.CharacterSheet.Name + ": " + character.CharacterSheet.HitPoints + "hp");
+            start += 10;
+        }
 
 
         // Show action buttons
         var offset = 0;
         foreach (var action in CurrentEncounter.GetPossibleActionsForCurrentCharacter())
         {
-            if (GUI.Button(new Rect(10, 70 + offset, 300, 30), "Click " + action.GetType()))
+            if (GUI.Button(new Rect(10, 70 + offset, 300, 30), action.GetType().ToString()))
             {
                 if (action is IMoveAction)
                     _moveActionUI = new MoveActionUI(CurrentPlayer, action as IMoveAction);
+                else if (action is IMeleeAttackAction)
+                    _attackActionUI = new AttackActionUI(Game, action as IMeleeAttackAction);
+                else if (action is IRangeAttackAction)
+                    _attackActionUI = new AttackActionUI(Game, action as IRangeAttackAction);
                 else
                 {
                     throw new NotSupportedException("TODO: UI for " + action);
@@ -153,14 +163,16 @@ public class TableManager : MonoBehaviour
 
 public class MoveActionUI
 {
-    public int MaxLength = 10;
 
     private bool _started = false;
     private List<Position> _path;
-    private Dictionary<Transform, Color> _originalColors = new Dictionary<Transform, Color>();
+    private TileSelectorUI _selector;
 
     private ICharacter _currentPlayer;
     private IMoveAction _moveAction;
+
+    //private int MaxLength { get { return _currentPlayer.CharacterSheet.Speed/5; }}
+    private int MaxLength { get { return 10; }}
 
     public bool IsDone { get; private set; }
 
@@ -168,6 +180,7 @@ public class MoveActionUI
     {
         _currentPlayer = currentPlayer;
         _moveAction = moveAction;  
+        _selector = new TileSelectorUI();
     }
 
     private ICharacter GetCurrentPlayer()
@@ -177,6 +190,8 @@ public class MoveActionUI
 
     public void Update()
     {
+        _selector.Update();
+
         if (Input.GetMouseButtonDown(0))
             StartPath();
 
@@ -192,18 +207,17 @@ public class MoveActionUI
             return;
 
         _started = true;
+        _selector.StartPath();
         _path = new List<Position>();
     }
 
     private bool IsCorrectStartingPosition()
     {
-        // Should be a tile
-        var currentTile = GetCurrentTile();
-        if (currentTile == null)
+        // should be 1 tile away from current player
+        var currentPosition = _selector.GetCurrentPosition();
+        if (currentPosition == null)
             return false;
 
-        // should be 1 tile away from current player
-        var currentPosition = GetPosition(currentTile);
         var currentPlayer = GetCurrentPlayer();
 
         if ((currentPlayer.Position.X == currentPosition.X) && (currentPlayer.Position.Y == currentPosition.Y))
@@ -231,7 +245,8 @@ public class MoveActionUI
             _moveAction.Target(_path.Last()).Do();
         }
 
-        RevertToOriginalColors();
+        _selector.EndPath();
+        _selector.Stop();
         IsDone = true;
     }
 
@@ -243,11 +258,9 @@ public class MoveActionUI
         if (_path.Count >= MaxLength)
             return;
 
-        var currentTile = GetCurrentTile();
-        if (currentTile == null)
+        var currentPosition = _selector.GetCurrentPosition();
+        if (currentPosition == null)
             return;
-
-        var currentPosition = GetPosition(currentTile);
 
         // First
         if (_path.Count == 0)
@@ -269,12 +282,103 @@ public class MoveActionUI
             _path.Add(currentPosition);
         }
 
-        MarkTarget(currentTile);
+        //MarkTarget(_selector.GetCurrentTile());
+    }
+}
+
+public class AttackActionUI
+{
+    private IGame _game;
+    private IMeleeAttackAction _meleeAttackAction;
+    private IRangeAttackAction _rangeAttackAction;
+
+    private Position _selectedPosition;
+    private TileSelectorUI _selector;
+
+    public bool IsDone { get; private set; }
+
+    public AttackActionUI(IGame game, IMeleeAttackAction meleeAttackAction)
+    {
+        _game = game;
+        _meleeAttackAction = meleeAttackAction;
+        _selector = new TileSelectorUI();
     }
 
-    private Position GetPosition(Transform tile)
+    public AttackActionUI(IGame game, IRangeAttackAction rangeAttackAction)
     {
-        return Position.Create((int)tile.position.x, (int)tile.position.z);
+        _game = game;
+        _rangeAttackAction = rangeAttackAction;
+        _selector = new TileSelectorUI();
+    }
+
+    public void Update()
+    {
+        _selector.Update();
+
+        // Mark
+        _selectedPosition = _selector.GetCurrentPosition();
+
+        // Attack
+        if (Input.GetMouseButtonDown(0))
+        {
+            var target = _game.GameBoard.GetEntity(_selectedPosition) as ICharacter;
+            if (target != null)
+            {
+                if (_meleeAttackAction != null)
+                    _meleeAttackAction.Target(target).Do();
+                if (_rangeAttackAction != null)
+                    _rangeAttackAction.Target(target).Do();
+
+                _selector.Stop();
+                IsDone = true;
+            }
+        }
+    }
+}
+
+public class TileSelectorUI
+{
+    private Dictionary<Transform, Color> _originalColors = new Dictionary<Transform, Color>();
+    private Transform _lastTransform;
+    private bool _pathMode;
+
+    public void Update()
+    {
+        Console.WriteLine("ping");
+
+        var currentCharacterTransform = GetCurrentTile();
+        if (currentCharacterTransform != _lastTransform && !_pathMode)
+            RevertToOriginalColors();
+
+        if (currentCharacterTransform != null)
+        {
+            MarkTarget(currentCharacterTransform);
+            _lastTransform = currentCharacterTransform;
+            // _currentTarget = GetCharacter from transform
+        }
+    }
+
+    public Position GetCurrentPosition()
+    {
+        if (_lastTransform == null)
+            return null;
+        return Position.Create((int)_lastTransform.position.x, (int)_lastTransform.position.z);
+    }
+
+    public void Stop()
+    {
+        RevertToOriginalColors();
+        _lastTransform = null;
+    }
+
+    public void StartPath()
+    {
+        _pathMode = true;
+    }
+
+    public void EndPath()
+    {
+        _pathMode = false;
     }
 
     private Transform GetCurrentTile()
@@ -301,4 +405,5 @@ public class MoveActionUI
             kvp.Key.renderer.material.color = kvp.Value;
         }
     }
+    
 }
