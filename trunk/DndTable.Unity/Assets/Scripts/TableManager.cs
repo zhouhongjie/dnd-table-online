@@ -44,7 +44,7 @@ public class TableManager : MonoBehaviour
 	// Update is called once per frame
 	void Update () {
 
-        ProcessUserInput();
+        //ProcessUserInput();
 
         if (_moveActionUI != null && !_moveActionUI.IsDone)
             _moveActionUI.Update();
@@ -54,28 +54,28 @@ public class TableManager : MonoBehaviour
 
     public ICharacter CurrentPlayer { get { return CurrentEncounter.GetCurrentCharacter(); } }
 
-    private void ProcessUserInput()
-    {
-        var x = CurrentPlayer.Position.X;
-        var y = CurrentPlayer.Position.Y;
+    //private void ProcessUserInput()
+    //{
+    //    var x = CurrentPlayer.Position.X;
+    //    var y = CurrentPlayer.Position.Y;
 
-        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.Z))
-        {
-            y += 1;
-        }
-        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
-            y -= 1;
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.Q))
-        {
-            x -= 1;
-        }
-        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
-        {
-            x += 1;
-        }
+    //    if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.Z))
+    //    {
+    //        y += 1;
+    //    }
+    //    if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
+    //        y -= 1;
+    //    if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.Q))
+    //    {
+    //        x -= 1;
+    //    }
+    //    if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+    //    {
+    //        x += 1;
+    //    }
 
-        Game.ActionFactory.Move(CurrentPlayer).Target(Position.Create(x, y)).Do();
-    }
+    //    Game.ActionFactory.Move(CurrentPlayer).Target(Position.Create(x, y)).Do();
+    //}
 
     void OnGUI()
     {

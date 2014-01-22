@@ -20,8 +20,6 @@ namespace DndTable.Core
         IEncounter StartEncounter(List<ICharacter> characters);
         IEncounter CurrentEncounter { get; }
 
-        AbstractActionFactory ActionFactory { get; }
-
         // Actions
         void EquipWeapon(ICharacter character, IWeapon weapon);
         void EquipArmor(ICharacter character, IArmor armor);

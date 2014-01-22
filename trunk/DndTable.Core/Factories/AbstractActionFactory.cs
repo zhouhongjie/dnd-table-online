@@ -10,30 +10,35 @@ namespace DndTable.Core.Factories
 {
     public class AbstractActionFactory
     {
+        private readonly Encounter _encounter;
         private readonly Board _board;
         private readonly IDiceRoller _diceRoller;
 
-        internal AbstractActionFactory(Board board, IDiceRoller diceRoller)
+        internal AbstractActionFactory(Encounter encounter, Board board, IDiceRoller diceRoller)
         {
+            _encounter = encounter;
             _board = board;
             _diceRoller = diceRoller;
         }
 
         public IMeleeAttackAction MeleeAttack(ICharacter attacker)
         {
-            var action = new MeleeAttackAction(_diceRoller, attacker);
+            var action = new MeleeAttackAction(attacker);
+            action.Initialize(_diceRoller, _encounter, _board);
             return action;
         }
 
         public IRangeAttackAction RangeAttack(ICharacter attacker)
         {
-            var action = new RangeAttackAction(_diceRoller, attacker);
+            var action = new RangeAttackAction(attacker);
+            action.Initialize(_diceRoller, _encounter, _board);
             return action;
         }
 
         public IMoveAction Move(ICharacter character)
         {
-            var action = new MoveAction(_board, character);
+            var action = new MoveAction(character);
+            action.Initialize(_diceRoller, _encounter, _board);
             return action;
         }
     }

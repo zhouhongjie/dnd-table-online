@@ -22,8 +22,9 @@ namespace DndTable.Core.Test.UnitTests
             game.AddCharacter(char1, Position.Create(1, 1));
             Assert.AreEqual(char1, game.GameBoard.GetEntity(Position.Create(1, 1)));
 
-            var moveAction = new MoveAction(board, char1).Target(Position.Create(1, 2));
-            moveAction.Do();
+            var moveAction = new MoveAction(char1);
+            moveAction.Initialize(null, null, board);
+            moveAction.Target(Position.Create(1, 2)).Do();
 
             Assert.IsNull(game.GameBoard.GetEntity(Position.Create(1, 1)));
             Assert.AreEqual(char1, game.GameBoard.GetEntity(Position.Create(1, 2)));

@@ -12,16 +12,15 @@ namespace DndTable.Core
     class Encounter : IEncounter
     {
         private AbstractActionFactory _actionFactory;
-        private IDiceRoller _diceRoller;
+        //private IDiceRoller _diceRoller;
 
         private List<ICharacter> _participants;
         private int _currentIndex = 0;
         private int _currentRound = 0;
 
-        internal Encounter(AbstractActionFactory actionFactory, IDiceRoller diceRoller, List<ICharacter> participants)
+        internal Encounter(Board gameBoard, IDiceRoller diceRoller, List<ICharacter> participants)
         {
-            _actionFactory = actionFactory;
-            _diceRoller = diceRoller;
+            _actionFactory = new AbstractActionFactory(this, gameBoard, diceRoller);
 
             _participants = DoInitiaticeChecks(diceRoller, participants);
         }

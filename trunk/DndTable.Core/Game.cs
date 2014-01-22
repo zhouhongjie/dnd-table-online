@@ -16,16 +16,12 @@ namespace DndTable.Core
         public IDiceMonitor DiceMonitor { get { return _diceRoller; } }
         private IDiceRoller _diceRoller;
 
-        public AbstractActionFactory ActionFactory { get; private set; }
-
         private List<ICharacter> _characters = new List<ICharacter>();
 
         public Game(Board board, IDiceRoller diceRoller)
         {
             _gameBoard = board;
             _diceRoller = diceRoller;
-
-            ActionFactory = new AbstractActionFactory(_gameBoard, _diceRoller);
         }
 
         public bool AddCharacter(ICharacter character, Position position)
@@ -49,7 +45,7 @@ namespace DndTable.Core
         {
             // Check characters 
 
-            CurrentEncounter = new Encounter(ActionFactory, _diceRoller, characters);
+            CurrentEncounter = new Encounter(_gameBoard, _diceRoller, characters);
             return CurrentEncounter;
         }
 

@@ -15,10 +15,10 @@ namespace DndTable.Core.Test.UserTests
         public void SimpleCombat()
         {
             var game = Factory.CreateGame(10, 10);
-            var tordek = PrepareCharacter(game, "Tordek", Position.Create(1, 1), WeaponFactory.CrossbowLight());
+            var tordek = PrepareCharacter(game, "Tordek", Position.Create(1, 1), WeaponFactory.CrossbowLight(), ArmorFactory.Leather());
             //var regdar = PrepareCharacter(game, "Regdar", Position.Create(1, 5), WeaponFactory.CrossbowLight());
             //var tordek = PrepareCharacter(game, "Tordek", Position.Create(1, 1), WeaponFactory.Dagger());
-            var regdar = PrepareCharacter(game, "Regdar", Position.Create(1, 2), WeaponFactory.Dagger());
+            var regdar = PrepareCharacter(game, "Regdar", Position.Create(1, 2), WeaponFactory.Dagger(), null);
 
             Console.WriteLine("Start encounter");
             game.DiceMonitor.Clear();
@@ -114,13 +114,11 @@ namespace DndTable.Core.Test.UserTests
             }
         }
 
-        private static ICharacter PrepareCharacter(IGame game, string name, Position position, IWeapon weapon)
+        private static ICharacter PrepareCharacter(IGame game, string name, Position position, IWeapon weapon, IArmor armor)
         {
             var character = Factory.CreateCharacter(name);
 
             game.EquipWeapon(character, weapon);
-
-            var armor = ArmorFactory.Leather();
             game.EquipArmor(character, armor);
 
             game.AddCharacter(character, position);

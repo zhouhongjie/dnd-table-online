@@ -8,13 +8,11 @@ namespace DndTable.Core.Actions
 {
     class MoveAction : BaseAction, IMoveAction
     {
-        private Board _board;
         private ICharacter _character;
 
 
-        internal MoveAction(Board board, ICharacter character)
+        internal MoveAction(ICharacter character)
         {
-            _board = board;
             _character = character;
         }
 
@@ -30,7 +28,7 @@ namespace DndTable.Core.Actions
 
 
             // TEMP
-            _board.MoveEntity(_character.Position, _targetPosition);
+            Board.MoveEntity(_character.Position, _targetPosition);
         }
     }
 }
