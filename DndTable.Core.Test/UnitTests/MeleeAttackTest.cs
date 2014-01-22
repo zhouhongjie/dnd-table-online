@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DndTable.Core.Actions;
+using DndTable.Core.Characters;
 using DndTable.Core.Factories;
 using DndTable.Core.Test.Mocks;
 using NUnit.Framework;
@@ -29,12 +30,19 @@ namespace DndTable.Core.Test.UnitTests
             var char2 = Factory.CreateCharacter("dummy2");
             game.AddCharacter(char2, Position.Create(1, 2));
 
+            var encounter = new Encounter(board, diceRoller, new List<ICharacter>() {char1, char2});
+
             Assert.AreEqual(10, char2.CharacterSheet.HitPoints, "Precondition");
 
-            game.ActionFactory.MeleeAttack(char1).Target(char2).Do();
+
+            var meleeAttack = new MeleeAttackAction(char1);
+            meleeAttack.Initialize(diceRoller, encounter, board);
+
+
+            meleeAttack.Target(char2).Do();
             Assert.AreEqual(5, char2.CharacterSheet.HitPoints);
 
-            game.ActionFactory.MeleeAttack(char1).Target(char2).Do();
+            meleeAttack.Target(char2).Do();
             Assert.AreEqual(0, char2.CharacterSheet.HitPoints);
         }
     }

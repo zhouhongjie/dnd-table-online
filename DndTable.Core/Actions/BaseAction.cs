@@ -25,6 +25,16 @@ namespace DndTable.Core.Actions
             return this;
         }
 
+        protected IDiceRoller DiceRoller { get; private set; }
+        protected Encounter Encounter { get; private set; }
+        protected Board Board { get; private set; }
+
+        internal void Initialize(IDiceRoller diceRoller, Encounter encounter, Board board)
+        {
+            DiceRoller = diceRoller;
+            Encounter = encounter;
+            Board = board;
+        }
 
         protected static CharacterSheet GetEditableSheet(ICharacter character)
         {
