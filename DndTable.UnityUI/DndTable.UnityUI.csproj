@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AF9E6D0F-FD71-4A92-85DD-60ECB89E0159}</ProjectGuid>
+    <ProjectGuid>{804ADDC8-9098-489A-8E87-4B19466BB6B8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DndTable.Core</RootNamespace>
-    <AssemblyName>DndTable.Core</AssemblyName>
+    <RootNamespace>DndTable.UnityUI</RootNamespace>
+    <AssemblyName>DndTable.UnityUI</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -37,45 +37,24 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="UnityEditor">
+      <HintPath>..\Libs\Unity\UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\Libs\Unity\UnityEngine.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actions\BaseAction.cs" />
-    <Compile Include="Actions\IMeleeAttackAction.cs" />
-    <Compile Include="Actions\IMoveAction.cs" />
-    <Compile Include="Actions\IRangeAttackAction.cs" />
-    <Compile Include="Actions\MeleeAttackAction.cs" />
-    <Compile Include="Actions\MoveAction.cs" />
-    <Compile Include="Actions\RangeAttackAction.cs" />
-    <Compile Include="Armor.cs" />
-    <Compile Include="BaseEntity.cs" />
-    <Compile Include="Board.cs" />
-    <Compile Include="Characters\Character.cs" />
-    <Compile Include="Characters\CharacterSheet.cs" />
-    <Compile Include="Dice\DiceRandomizer.cs" />
-    <Compile Include="Dice\DiceRoller.cs" />
-    <Compile Include="Encounter.cs" />
-    <Compile Include="Factories\AbstractActionFactory.cs" />
-    <Compile Include="Factories\ArmorFactory.cs" />
-    <Compile Include="Factories\Factory.cs" />
-    <Compile Include="Factories\WeaponFactory.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="Actions\IAction.cs" />
-    <Compile Include="IArmor.cs" />
-    <Compile Include="IBoard.cs" />
-    <Compile Include="Characters\ICharacter.cs" />
-    <Compile Include="Characters\ICharacterSheet.cs" />
-    <Compile Include="Dice\IDiceMonitor.cs" />
-    <Compile Include="Dice\IDiceRandomizer.cs" />
-    <Compile Include="Dice\IDiceRoll.cs" />
-    <Compile Include="Dice\IDiceRollCheck.cs" />
-    <Compile Include="Dice\IDiceRoller.cs" />
-    <Compile Include="IEncounter.cs" />
-    <Compile Include="IEntity.cs" />
-    <Compile Include="IGame.cs" />
-    <Compile Include="IWeapon.cs" />
-    <Compile Include="Position.cs" />
+    <Compile Include="AttackActionUI.cs" />
+    <Compile Include="MoveActionUI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Weapon.cs" />
+    <Compile Include="TileSelectorUI.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DndTable.Core\DndTable.Core.csproj">
+      <Project>{AF9E6D0F-FD71-4A92-85DD-60ECB89E0159}</Project>
+      <Name>DndTable.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -85,4 +64,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="AfterBuild">
+    <ItemGroup>
+      <_CustomFiles Include="bin\debug\*.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_CustomFiles)" DestinationFiles="@(_CustomFiles->'..\DndTable.Unity\Assets\Libs\%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
 </Project>
