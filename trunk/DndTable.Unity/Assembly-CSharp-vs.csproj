@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\CharacterSheetInfo.cs" />
      <Compile Include="Assets\Scripts\EntityScript.cs" />
      <Compile Include="Assets\Scripts\EntitySelector.cs" />
      <Compile Include="Assets\Scripts\FreeCamera.cs" />
@@ -57,6 +58,9 @@
  </Reference>
  <Reference Include="DndTable.Core">
  <HintPath>Assets\Libs\DndTable.Core.dll</HintPath>
+ </Reference>
+ <Reference Include="DndTable.UnityUI">
+ <HintPath>Assets\Libs\DndTable.UnityUI.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using DndTable.Core;
 using UnityEngine;
 using System.Collections;
@@ -41,12 +42,17 @@ public class EntityScript : MonoBehaviour {
         return Game.CurrentEncounter.GetCurrentCharacter() == Entity;
     }
 
+    private Transform GetIndicator()
+    {
+        var indicator = transform.FindChild("Indicator");
+        if (indicator == null)
+            throw new InvalidOperationException("No Indicator child for the entity");
+        return indicator;
+    }
+
     private void UpdateSelectState()
     {
-        if (IsSelected())
-            this.transform.renderer.material.color = Color.yellow;
-        else
-            this.transform.renderer.material.color = _originalColor;
+        GetIndicator().renderer.enabled = IsSelected();
     }
 
     private void LerpUpdatePosition()
