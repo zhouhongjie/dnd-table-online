@@ -10,6 +10,7 @@ namespace DndTable.Core.Actions
     abstract class BaseAction : IAction
     {
         public abstract void Do();
+        public abstract ActionTypeEnum Type { get; }
 
         protected Position _targetPosition;
         public IAction Target(Position position)
@@ -34,6 +35,14 @@ namespace DndTable.Core.Actions
             DiceRoller = diceRoller;
             Encounter = encounter;
             Board = board;
+        }
+
+        protected void Register()
+        {
+            if (Encounter == null)
+                return;
+
+            Encounter.RegisterAction(Type);
         }
 
         protected static CharacterSheet GetEditableSheet(ICharacter character)

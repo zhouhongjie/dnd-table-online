@@ -22,11 +22,11 @@ public class CharacterSheetInfo : MonoBehaviour {
         topOfAvatar.y += transform.lossyScale.y + offset;
 
         var screenPos = Camera.main.WorldToScreenPoint(topOfAvatar);
-        var labelRect = new Rect(screenPos.x, Screen.height - screenPos.y, Screen.width, Screen.height);
+        var labelRect = new Rect(screenPos.x, Screen.height - screenPos.y, 100, 25);
 
         //var label = string.Format("({0}, {1})", (int)transform.position.x, (int)transform.position.z);
         var label = Character.CharacterSheet.Name + ": " + Character.CharacterSheet.HitPoints + "hp";
         
-        GUI.Label(labelRect, label);
+        GUI.Box(labelRect, label);
     }
 }

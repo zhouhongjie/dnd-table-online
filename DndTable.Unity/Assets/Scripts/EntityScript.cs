@@ -12,15 +12,11 @@ public class EntityScript : MonoBehaviour {
     private LerpInfo _positionLerp;
     private LerpInfo _angleLerp;
 
-    private Color _originalColor;
-
 	// Use this for initialization
 	void Start ()
 	{
         _positionLerp = new LerpInfo(transform.position, 5);
         _angleLerp = new LerpInfo(transform.eulerAngles, 5);
-
-	    _originalColor = this.transform.renderer.material.color;
 	}
 	
 	// Update is called once per frame

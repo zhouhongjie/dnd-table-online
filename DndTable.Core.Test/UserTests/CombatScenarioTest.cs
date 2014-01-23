@@ -94,7 +94,8 @@ namespace DndTable.Core.Test.UserTests
             foreach (var roll in game.DiceMonitor.GetAllRolls())
             {
                 if (roll.IsCheck)
-                    Console.WriteLine(string.Format("-- {0}: {2}(1d{1}) + {3} = {4}; DC = {5} => {6}",
+                    Console.WriteLine(string.Format("-- {0}-{1}: {3}(1d{2}) + {4} = {5}; DC = {6} => {7}",
+                                                    roll.Roller.CharacterSheet.Name,
                                                     roll.Type,
                                                     roll.D,
                                                     roll.Roll,
@@ -104,7 +105,8 @@ namespace DndTable.Core.Test.UserTests
                                                     roll.Check.Success ? "Success" : "fail"
                                           ));
                 else
-                    Console.WriteLine(string.Format("-- {0}: {2}(1d{1}) + {3} = {4}",
+                    Console.WriteLine(string.Format("-- {0}-{1}: {3}(1d{2}) + {4} = {5}",
+                                                    roll.Roller.CharacterSheet.Name,
                                                     roll.Type,
                                                     roll.D,
                                                     roll.Roll,
