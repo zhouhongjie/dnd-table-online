@@ -82,15 +82,13 @@ public class TableManager : MonoBehaviour
         if (!Application.isEditor)  // or check the app debug flag
             return;
 
-        var start = 10;
-        foreach (var character in Game.GetCharacters())
-        {
-            GUI.Label(new Rect(0, start, Screen.width, Screen.height), character.CharacterSheet.Name + ": " + character.CharacterSheet.HitPoints + "hp");
-            start += 10;
-        }
+        UpdateCharacterMonitorUI();
+        UpdateDiceMonitorUI();
+        UpdatePossibleActionsUI();
+    }
 
-
-        // Show action buttons
+    private void UpdatePossibleActionsUI()
+    {
         var offset = 0;
         foreach (var action in CurrentEncounter.GetPossibleActionsForCurrentCharacter())
         {
@@ -112,6 +110,55 @@ public class TableManager : MonoBehaviour
         }
         if (GUI.Button(new Rect(10, 70 + offset, 300, 30), "Click next player"))
             CurrentEncounter.GetNextCharacter();
+    }
+
+    private void UpdateCharacterMonitorUI()
+    {
+        var height = 0;
+        var label = String.Empty;
+        foreach (var character in Game.GetCharacters())
+        {
+            //GUI.Label(new Rect(0, start, Screen.width, Screen.height), character.CharacterSheet.Name + ": " + character.CharacterSheet.HitPoints + "hp");
+            label += character.CharacterSheet.Name + ": " + character.CharacterSheet.HitPoints + "hp" + "\n";
+            height += 20;
+        }
+        GUI.Box(new Rect(0, 0, 200, height), label);
+    }
+
+    private void UpdateDiceMonitorUI()
+    {
+        var height = 0;
+        var label = String.Empty;
+        foreach (var roll in Game.DiceMonitor.GetLastRolls(10))
+        {
+            var currentLine = String.Empty;
+
+            if (roll.IsCheck)
+                currentLine = string.Format("{0}-{1}: {3}(1d{2}) + {4} = {5}; DC = {6} => {7}",
+                                            roll.Roller.CharacterSheet.Name,
+                                            roll.Type,
+                                            roll.D,
+                                            roll.Roll,
+                                            roll.Bonus,
+                                            roll.Result,
+                                            roll.Check.DC,
+                                            roll.Check.Success ? "Success" : "fail");
+            else
+                currentLine = string.Format("{0}-{1}: {3}(1d{2}) + {4} = {5}",
+                                            roll.Roller.CharacterSheet.Name,
+                                            roll.Type,
+                                            roll.D,
+                                            roll.Roll,
+                                            roll.Bonus,
+                                            roll.Result);
+
+            label += currentLine + "\n";
+            height += 18;
+        }
+
+        const int width = 500;
+
+        GUI.Box(new Rect(Screen.width - width, 0, width, height), label);
     }
 
     private void CreateBoard()

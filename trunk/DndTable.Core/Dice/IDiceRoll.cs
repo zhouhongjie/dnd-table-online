@@ -1,4 +1,6 @@
-﻿namespace DndTable.Core.Dice
+﻿using DndTable.Core.Characters;
+
+namespace DndTable.Core.Dice
 {
     public enum DiceRollEnum
     {
@@ -7,6 +9,7 @@
 
     public interface IDiceRoll
     {
+        ICharacter Roller { get;  }
         DiceRollEnum Type { get; }
         int D { get; }
         int Roll { get; }

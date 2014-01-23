@@ -16,6 +16,11 @@ namespace DndTable.Core.Actions
             _attacker = attacker;
         }
 
+        public override ActionTypeEnum Type
+        {
+            get { return ActionTypeEnum.Partial; }
+        }
+
         public override void Do()
         {
             if (_targetCharacter == null)
@@ -25,13 +30,15 @@ namespace DndTable.Core.Actions
             if ((_attacker.CharacterSheet.EquipedWeapon == null) || _attacker.CharacterSheet.EquipedWeapon.IsRanged)
                 throw new ArgumentException("attacker has no melee equiped weapon");
 
+            Register();
+
             //var range = GetDistance(_attacker.Position, _targetCharacter.Position);
 
             // Can reach
 
 
             // Check hit
-            if (!DiceRoller.Check(DiceRollEnum.Attack, 20, _attacker.CharacterSheet.MeleeAttackBonus, _targetCharacter.CharacterSheet.ArmorClass))
+            if (!DiceRoller.Check(_attacker, DiceRollEnum.Attack, 20, _attacker.CharacterSheet.MeleeAttackBonus, _targetCharacter.CharacterSheet.ArmorClass))
                 return;
 
             // TODO: Check crit failure
@@ -40,7 +47,7 @@ namespace DndTable.Core.Actions
 
 
             // Do damage
-            var damage = DiceRoller.Roll(DiceRollEnum.Damage, _attacker.CharacterSheet.EquipedWeapon.DamageD, _attacker.CharacterSheet.CurrentMeleeDamageBonus);
+            var damage = DiceRoller.Roll(_attacker, DiceRollEnum.Damage, _attacker.CharacterSheet.EquipedWeapon.DamageD, _attacker.CharacterSheet.CurrentMeleeDamageBonus);
             if (damage < 1)
                 damage = 1;
 

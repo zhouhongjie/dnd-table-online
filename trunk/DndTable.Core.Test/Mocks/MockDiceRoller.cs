@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 
 namespace DndTable.Core.Test.Mocks
@@ -9,12 +10,12 @@ namespace DndTable.Core.Test.Mocks
     internal class MockDiceRoller : IDiceRoller
     {
         #region IDiceRoller
-        public int Roll(DiceRollEnum type, int d, int bonus)
+        public int Roll(ICharacter roller, DiceRollEnum type, int d, int bonus)
         {
             return MockRoll;
         }
 
-        public bool Check(DiceRollEnum type, int d, int bonus, int dc)
+        public bool Check(ICharacter roller, DiceRollEnum type, int d, int bonus, int dc)
         {
             return MockCheck;
         }
@@ -22,6 +23,11 @@ namespace DndTable.Core.Test.Mocks
 
         #region IDiceMonitor
         public List<IDiceRoll> GetAllRolls()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<IDiceRoll> GetLastRolls(int nrOfRolls)
         {
             throw new NotImplementedException();
         }
