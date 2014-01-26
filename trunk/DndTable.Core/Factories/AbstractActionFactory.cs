@@ -21,14 +21,14 @@ namespace DndTable.Core.Factories
             _diceRoller = diceRoller;
         }
 
-        public IMeleeAttackAction MeleeAttack(ICharacter attacker)
+        public IAttackAction MeleeAttack(ICharacter attacker)
         {
             var action = new MeleeAttackAction(attacker);
             action.Initialize(_diceRoller, _encounter, _board);
             return action;
         }
 
-        public IRangeAttackAction RangeAttack(ICharacter attacker)
+        public IAttackAction RangeAttack(ICharacter attacker)
         {
             var action = new RangeAttackAction(attacker);
             action.Initialize(_diceRoller, _encounter, _board);

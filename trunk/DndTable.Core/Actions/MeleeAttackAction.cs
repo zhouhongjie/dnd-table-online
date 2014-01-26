@@ -7,7 +7,7 @@ using DndTable.Core.Dice;
 
 namespace DndTable.Core.Actions
 {
-    class MeleeAttackAction : BaseAction, IMeleeAttackAction
+    class MeleeAttackAction : BaseAction, IAttackAction
     {
         private ICharacter _attacker;
 
@@ -18,7 +18,7 @@ namespace DndTable.Core.Actions
 
         public override ActionTypeEnum Type
         {
-            get { return ActionTypeEnum.Partial; }
+            get { return ActionTypeEnum.Standard; }
         }
 
         public override void Do()
@@ -30,11 +30,12 @@ namespace DndTable.Core.Actions
             if ((_attacker.CharacterSheet.EquipedWeapon == null) || _attacker.CharacterSheet.EquipedWeapon.IsRanged)
                 throw new ArgumentException("attacker has no melee equiped weapon");
 
+            // Check max range
+            var rangeRounded = Math.Floor(GetDistance(_attacker.Position, _targetCharacter.Position));
+            if (rangeRounded > MaxRange)
+                throw new InvalidOperationException("Out of melee range: should have been checked before calling this method");
+
             Register();
-
-            //var range = GetDistance(_attacker.Position, _targetCharacter.Position);
-
-            // Can reach
 
 
             // Check hit
@@ -54,12 +55,24 @@ namespace DndTable.Core.Actions
             GetEditableSheet(_targetCharacter).HitPoints -= damage;
         }
 
-        private static int GetDistance(Position position1, Position position2)
+        public int MaxRange
         {
-            var dx = position1.X - position2.X;
-            var dy = position1.Y - position2.Y;
+            get 
+            { 
+                // TODO: reach weapons
+                // Implement in weapon stats?
+                return 1;
+            }
+        }
 
-            return (int)Math.Sqrt(dx*dx + dy*dy);
+        public int MinRange
+        {
+            get
+            {
+                // TODO: reach weapons
+                // Implement in weapon stats?
+                return 0;
+            }
         }
     }
 }

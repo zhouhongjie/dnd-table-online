@@ -79,11 +79,11 @@ namespace DndTable.Core
             var actions = new List<IAction>();
 
             // 2 partial actions done
-            if (_actionDoneByCurrentChar.Count(a => (a == ActionTypeEnum.MoveEquivalent) || (a == ActionTypeEnum.Partial)) >= 2)
+            if (_actionDoneByCurrentChar.Count(a => (a == ActionTypeEnum.MoveEquivalent) || (a == ActionTypeEnum.Standard)) >= 2)
                 return actions;
 
             // Check partial actions
-            if (!_actionDoneByCurrentChar.Contains(ActionTypeEnum.Partial))
+            if (!_actionDoneByCurrentChar.Contains(ActionTypeEnum.Standard))
             {
                 if (GetCurrentCharacter().CharacterSheet.EquipedWeapon != null)
                 {

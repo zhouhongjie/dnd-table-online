@@ -4,7 +4,7 @@ namespace DndTable.Core.Actions
 {
     public enum ActionTypeEnum
     {
-        Partial, MoveEquivalent,
+        Standard, MoveEquivalent,
     }
 
     public interface IAction

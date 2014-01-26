@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace DndTable.UnityUI
 {
-    public class MoveActionUI
+    public class MoveActionUI : BaseActionUI
     {
 
         private bool _started = false;
@@ -20,8 +20,6 @@ namespace DndTable.UnityUI
 
         //private int MaxLength { get { return _currentPlayer.CharacterSheet.Speed/5; }}
         private int MaxLength { get { return 10; } }
-
-        public bool IsDone { get; private set; }
 
         public MoveActionUI(ICharacter currentPlayer, IMoveAction moveAction)
         {
@@ -35,7 +33,7 @@ namespace DndTable.UnityUI
             return _currentPlayer;
         }
 
-        public void Update()
+        public override void Update()
         {
             _selector.Update();
 
@@ -46,6 +44,12 @@ namespace DndTable.UnityUI
 
             if (Input.GetMouseButtonUp(0))
                 EndPath();
+        }
+
+        public override void Stop()
+        {
+            _selector.Stop();
+            IsDone = true;
         }
 
         private void StartPath()
@@ -93,8 +97,8 @@ namespace DndTable.UnityUI
             }
 
             _selector.EndPath();
-            _selector.Stop();
-            IsDone = true;
+
+            Stop();
         }
 
         private void UpdatePath()
