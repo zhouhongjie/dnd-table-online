@@ -52,5 +52,13 @@ namespace DndTable.Core.Actions
                 throw new ArgumentException();
             return sheet;
         }
+
+        protected static double GetDistance(Position position1, Position position2)
+        {
+            var dx = position1.X - position2.X;
+            var dy = position1.Y - position2.Y;
+
+            return Math.Sqrt(dx * dx + dy * dy);
+        }
     }
 }

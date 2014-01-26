@@ -5,32 +5,24 @@ using UnityEngine;
 
 namespace DndTable.UnityUI
 {
-    public class AttackActionUI
+    public class AttackActionUI : BaseActionUI
     {
         private IGame _game;
-        private IMeleeAttackAction _meleeAttackAction;
-        private IRangeAttackAction _rangeAttackAction;
+        private IAttackAction _attackAction;
 
         private Position _selectedPosition;
         private TileSelectorUI _selector;
 
-        public bool IsDone { get; private set; }
-
-        public AttackActionUI(IGame game, IMeleeAttackAction meleeAttackAction)
+        public AttackActionUI(IGame game, IAttackAction attackAction, ICharacter attacker)
         {
             _game = game;
-            _meleeAttackAction = meleeAttackAction;
+            _attackAction = attackAction;
             _selector = new TileSelectorUI();
+
+            _selector.InitializeRangeCheck(attacker.Position, attackAction.MaxRange);
         }
 
-        public AttackActionUI(IGame game, IRangeAttackAction rangeAttackAction)
-        {
-            _game = game;
-            _rangeAttackAction = rangeAttackAction;
-            _selector = new TileSelectorUI();
-        }
-
-        public void Update()
+        public override void Update()
         {
             _selector.Update();
 
@@ -43,15 +35,17 @@ namespace DndTable.UnityUI
                 var target = _game.GameBoard.GetEntity(_selectedPosition) as ICharacter;
                 if (target != null)
                 {
-                    if (_meleeAttackAction != null)
-                        _meleeAttackAction.Target(target).Do();
-                    if (_rangeAttackAction != null)
-                        _rangeAttackAction.Target(target).Do();
+                    _attackAction.Target(target).Do();
 
-                    _selector.Stop();
-                    IsDone = true;
+                    Stop();
                 }
             }
+        }
+
+        public override void Stop()
+        {
+            _selector.Stop();
+            IsDone = true;
         }
     }
 }

@@ -12,18 +12,27 @@ namespace DndTable.UnityUI
         private Transform _lastTransform;
         private bool _pathMode;
 
+        private bool _doRangeCheck;
+        private Position _rangeCheckCenter;
+        private int _rangeCheckMaxRange;
+
+        public void InitializeRangeCheck(Position center, int rangeInTiles)
+        {
+            _doRangeCheck = true;
+            _rangeCheckCenter = center;
+            _rangeCheckMaxRange = rangeInTiles;
+        }
+
         public void Update()
         {
-            Console.WriteLine("ping");
-
-            var currentCharacterTransform = GetCurrentTile();
-            if (currentCharacterTransform != _lastTransform && !_pathMode)
+            var currentTransform = GetCurrentTile();
+            if (currentTransform != _lastTransform && !_pathMode)
                 RevertToOriginalColors();
 
-            if (currentCharacterTransform != null)
+            if (currentTransform != null)
             {
-                MarkTarget(currentCharacterTransform);
-                _lastTransform = currentCharacterTransform;
+                MarkTarget(currentTransform);
+                _lastTransform = currentTransform;
                 // _currentTarget = GetCharacter from transform
             }
         }
@@ -65,7 +74,27 @@ namespace DndTable.UnityUI
             if (!_originalColors.ContainsKey(target))
                 _originalColors.Add(target, target.renderer.material.color);
 
-            target.renderer.material.color = Color.red;
+            var markColor = IsRangeValid(target) ? Color.green : Color.red;
+            target.renderer.material.color = markColor;
+        }
+
+        private bool IsRangeValid(Transform target)
+        {
+            if (!_doRangeCheck)
+                return true;
+
+            var distance = GetDistance(_rangeCheckCenter, Position.Create((int)target.position.x, (int)target.position.z));
+            var distanceRounded = (int)Math.Floor(distance);
+
+            return distanceRounded <= _rangeCheckMaxRange;
+        }
+
+        protected static double GetDistance(Position position1, Position position2)
+        {
+            var dx = position1.X - position2.X;
+            var dy = position1.Y - position2.Y;
+
+            return Math.Sqrt(dx * dx + dy * dy);
         }
 
         private void RevertToOriginalColors()

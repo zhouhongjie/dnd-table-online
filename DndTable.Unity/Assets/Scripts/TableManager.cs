@@ -20,8 +20,7 @@ public class TableManager : MonoBehaviour
     public IGame Game;
     public IEncounter CurrentEncounter;
 
-    public MoveActionUI _moveActionUI;
-    public AttackActionUI _attackActionUI;
+    public BaseActionUI  _currentActionUI;
 
 	// Use this for initialization
 	void Start ()
@@ -46,10 +45,8 @@ public class TableManager : MonoBehaviour
 
         //ProcessUserInput();
 
-        if (_moveActionUI != null && !_moveActionUI.IsDone)
-            _moveActionUI.Update();
-        if (_attackActionUI != null && !_attackActionUI.IsDone)
-            _attackActionUI.Update();
+        if (_currentActionUI != null && !_currentActionUI.IsDone)
+            _currentActionUI.Update();
 	}
 
     public ICharacter CurrentPlayer { get { return CurrentEncounter.GetCurrentCharacter(); } }
@@ -95,11 +92,17 @@ public class TableManager : MonoBehaviour
             if (GUI.Button(new Rect(10, 70 + offset, 300, 30), action.GetType().ToString()))
             {
                 if (action is IMoveAction)
-                    _moveActionUI = new MoveActionUI(CurrentPlayer, action as IMoveAction);
-                else if (action is IMeleeAttackAction)
-                    _attackActionUI = new AttackActionUI(Game, action as IMeleeAttackAction);
-                else if (action is IRangeAttackAction)
-                    _attackActionUI = new AttackActionUI(Game, action as IRangeAttackAction);
+                {
+                    if (_currentActionUI != null)
+                        _currentActionUI.Stop();
+                    _currentActionUI = new MoveActionUI(CurrentPlayer, action as IMoveAction);
+                }
+                else if (action is IAttackAction)
+                {
+                    if (_currentActionUI != null)
+                        _currentActionUI.Stop();
+                    _currentActionUI = new AttackActionUI(Game, action as IAttackAction, CurrentPlayer);
+                }
                 else
                 {
                     throw new NotSupportedException("TODO: UI for " + action);

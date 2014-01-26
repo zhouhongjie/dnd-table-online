@@ -51,21 +51,11 @@ namespace DndTable.Core.Test.UserTests
         private static void AttackOtherWhenPossible(List<IAction> possibleActions, ICharacter current, List<ICharacter> allCharacters) 
         {
             {
-                var attackAction = possibleActions.FirstOrDefault(a => a is IMeleeAttackAction) as IMeleeAttackAction;
+                var attackAction = possibleActions.FirstOrDefault(a => a is IAttackAction) as IAttackAction;
                 if (attackAction != null)
                 {
                     var target = GetOtherCharacter(current, allCharacters);
                     Console.WriteLine(string.Format("- {0} attacks {1}: ", current.CharacterSheet.Name, target.CharacterSheet.Name));
-
-                    attackAction.Target(target).Do();
-                }
-            }
-            {
-                var attackAction = possibleActions.FirstOrDefault(a => a is IRangeAttackAction) as IRangeAttackAction;
-                if (attackAction != null)
-                {
-                    var target = GetOtherCharacter(current, allCharacters);
-                    Console.WriteLine(string.Format("- {0} shoots {1}: ", current.CharacterSheet.Name, target.CharacterSheet.Name));
 
                     attackAction.Target(target).Do();
                 }

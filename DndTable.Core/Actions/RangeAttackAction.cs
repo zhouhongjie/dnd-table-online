@@ -7,7 +7,7 @@ using DndTable.Core.Dice;
 
 namespace DndTable.Core.Actions
 {
-    class RangeAttackAction : BaseAction, IRangeAttackAction
+    class RangeAttackAction : BaseAction, IAttackAction
     {
         private ICharacter _attacker;
 
@@ -18,7 +18,7 @@ namespace DndTable.Core.Actions
 
         public override ActionTypeEnum Type
         {
-            get { return ActionTypeEnum.Partial; }
+            get { return ActionTypeEnum.Standard; }
         }
 
         public override void Do()
@@ -58,5 +58,21 @@ namespace DndTable.Core.Actions
 
             return (int)Math.Sqrt(dx*dx + dy*dy);
         }
+
+        public int MaxRange
+        {
+            get
+            {
+                // TODO: implement in weapon stats?
+                // Thrown weapons: range increment x5
+                // Projectile weapons: range increment x10
+
+                // x / 5 (feet to tiles) 
+
+                return (int)Math.Floor(_attacker.CharacterSheet.EquipedWeapon.RangeIncrement*2.0);
+            }
+        }
+
+        public int MinRange { get { return 0; } }
     }
 }
