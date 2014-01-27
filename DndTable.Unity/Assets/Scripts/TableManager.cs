@@ -4,6 +4,7 @@ using System.Linq;
 using DndTable.Core;
 using DndTable.Core.Actions;
 using DndTable.Core.Characters;
+using DndTable.Core.Dice;
 using DndTable.Core.Factories;
 using DndTable.UnityUI;
 using UnityEngine;
@@ -136,7 +137,9 @@ public class TableManager : MonoBehaviour
         {
             var currentLine = String.Empty;
 
-            if (roll.IsCheck)
+            if (roll is IDiceCheck)
+            {
+                var check = roll as IDiceCheck;
                 currentLine = string.Format("{0}-{1}: {3}(1d{2}) + {4} = {5}; DC = {6} => {7}",
                                             roll.Roller.CharacterSheet.Name,
                                             roll.Type,
@@ -144,9 +147,11 @@ public class TableManager : MonoBehaviour
                                             roll.Roll,
                                             roll.Bonus,
                                             roll.Result,
-                                            roll.Check.DC,
-                                            roll.Check.Success ? "Success" : "fail");
+                                            check.DC,
+                                            check.Success ? "Success" : "fail");
+            }
             else
+            {
                 currentLine = string.Format("{0}-{1}: {3}(1d{2}) + {4} = {5}",
                                             roll.Roller.CharacterSheet.Name,
                                             roll.Type,
@@ -154,6 +159,7 @@ public class TableManager : MonoBehaviour
                                             roll.Roll,
                                             roll.Bonus,
                                             roll.Result);
+            }
 
             label += currentLine + "\n";
             height += 18;

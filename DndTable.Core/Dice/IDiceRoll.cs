@@ -4,7 +4,7 @@ namespace DndTable.Core.Dice
 {
     public enum DiceRollEnum
     {
-        Attack, Damage, InitiativeCheck
+        Attack, CriticalAttack, Damage, InitiativeCheck
     }
 
     public interface IDiceRoll
@@ -15,8 +15,5 @@ namespace DndTable.Core.Dice
         int Roll { get; }
         int Bonus { get; }
         int Result { get; }
-
-        bool IsCheck { get; }
-        IDiceRollCheck Check { get; }
     }
 }

@@ -16,15 +16,19 @@ namespace DndTable.Core.Test.UnitTests
         [Test]
         public void SimpleAttack()
         {
-            DoSimpleAttack(Position.Create(1, 1), Position.Create(1, 2), true);
+            DoSimpleAttack(Position.Create(1, 1), Position.Create(1, 2), CreateDiceRoller(5, true));
         }
 
-        private void DoSimpleAttack(Position attackerPosition, Position targetPosition, bool hit)
+        private MockDiceRoller CreateDiceRoller(int roll, bool hit)
         {
             var diceRoller = new MockDiceRoller();
             diceRoller.MockCheck = hit; // = hit
-            diceRoller.MockRoll = 5; // = damage
+            diceRoller.MockRoll = roll; // = damage
+            return diceRoller;
+        }
 
+        private void DoSimpleAttack(Position attackerPosition, Position targetPosition, MockDiceRoller diceRoller)
+        {
             var board = new Board(10, 10);
             var game = new Game(board, diceRoller);
 
@@ -64,7 +68,7 @@ namespace DndTable.Core.Test.UnitTests
             var attackerPosition = Position.Create(2, 2);
             var targetPosition = Position.Create(targetPositionX, targetPositionY);
 
-            DoSimpleAttack(attackerPosition, targetPosition, true);
+            DoSimpleAttack(attackerPosition, targetPosition, CreateDiceRoller(5, true));
         }
 
         [TestCase(0, 0)]
@@ -81,7 +85,7 @@ namespace DndTable.Core.Test.UnitTests
             var attackerPosition = Position.Create(2, 2);
             var targetPosition = Position.Create(targetPositionX, targetPositionY);
 
-            DoSimpleAttack(attackerPosition, targetPosition, true);
+            DoSimpleAttack(attackerPosition, targetPosition, CreateDiceRoller(5, true));
         }
     }
 }
