@@ -6,5 +6,7 @@ namespace DndTable.Core.Dice
     {
         int Roll(ICharacter roller, DiceRollEnum type, int d, int bonus);
         bool Check(ICharacter roller, DiceRollEnum type, int d, int bonus, int dc);
+        DiceCheck RollCheck(ICharacter roller, DiceRollEnum type, int d, int bonus, int dc);
+        AttackRoll RollAttack(ICharacter roller, DiceRollEnum type, int bonus, int dc, int threatRange);
     }
 }

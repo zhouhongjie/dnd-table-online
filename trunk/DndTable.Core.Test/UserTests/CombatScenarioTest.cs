@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DndTable.Core.Actions;
 using DndTable.Core.Characters;
+using DndTable.Core.Dice;
 using DndTable.Core.Factories;
 using NUnit.Framework;
 using System.Linq;
@@ -83,7 +84,9 @@ namespace DndTable.Core.Test.UserTests
         {
             foreach (var roll in game.DiceMonitor.GetAllRolls())
             {
-                if (roll.IsCheck)
+                if (roll is IDiceCheck)
+                {
+                    var check = roll as IDiceCheck;
                     Console.WriteLine(string.Format("-- {0}-{1}: {3}(1d{2}) + {4} = {5}; DC = {6} => {7}",
                                                     roll.Roller.CharacterSheet.Name,
                                                     roll.Type,
@@ -91,18 +94,21 @@ namespace DndTable.Core.Test.UserTests
                                                     roll.Roll,
                                                     roll.Bonus,
                                                     roll.Result,
-                                                    roll.Check.DC,
-                                                    roll.Check.Success ? "Success" : "fail"
+                                                    check.DC,
+                                                    check.Success ? "Success" : "fail"
                                           ));
+                }
                 else
+                {
                     Console.WriteLine(string.Format("-- {0}-{1}: {3}(1d{2}) + {4} = {5}",
-                                                    roll.Roller.CharacterSheet.Name,
-                                                    roll.Type,
-                                                    roll.D,
-                                                    roll.Roll,
-                                                    roll.Bonus,
-                                                    roll.Result
-                                          ));
+                                                        roll.Roller.CharacterSheet.Name,
+                                                        roll.Type,
+                                                        roll.D,
+                                                        roll.Roll,
+                                                        roll.Bonus,
+                                                        roll.Result
+                                              ));
+                }
             }
         }
 

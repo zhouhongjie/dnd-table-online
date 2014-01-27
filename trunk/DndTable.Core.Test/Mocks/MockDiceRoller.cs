@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
+using Moq;
 
 namespace DndTable.Core.Test.Mocks
 {
@@ -19,6 +20,17 @@ namespace DndTable.Core.Test.Mocks
         {
             return MockCheck;
         }
+
+        public DiceCheck RollCheck(ICharacter roller, DiceRollEnum type, int d, int bonus, int dc)
+        {
+            throw new NotImplementedException();
+        }
+
+        public AttackRoll RollAttack(ICharacter roller, DiceRollEnum type, int bonus, int dc, int threatRange)
+        {
+            return MockAttackRoll;
+        }
+
         #endregion
 
         #region IDiceMonitor
@@ -41,5 +53,6 @@ namespace DndTable.Core.Test.Mocks
 
         internal int MockRoll { get; set; }
         internal bool MockCheck { get; set; }
+        internal AttackRoll MockAttackRoll { get; set; }
     }
 }

@@ -35,20 +35,33 @@ namespace DndTable.Core.Actions
             var range = GetDistance(_attacker.Position, _targetCharacter.Position);
 
             // Check hit
-            if (!DiceRoller.Check(_attacker, DiceRollEnum.Attack, 20, _attacker.CharacterSheet.GetRangedAttackBonus(range), _targetCharacter.CharacterSheet.ArmorClass))
+            var check = DiceRoller.RollAttack(
+                _attacker,
+                DiceRollEnum.Attack,
+                _attacker.CharacterSheet.GetRangedAttackBonus(range),
+                _targetCharacter.CharacterSheet.ArmorClass,
+                20 - _targetCharacter.CharacterSheet.EquipedWeapon.CriticalRange);
+
+            if (!check.Success)
                 return;
 
-            // TODO: Check crit failure
-
-            // TODO: Check crit
+            // Critical hit
+            bool isCritical = false;
+            if (check.IsThreat)
+            {
+                isCritical = DiceRoller.Check(_attacker, DiceRollEnum.CriticalAttack, 20, _attacker.CharacterSheet.MeleeAttackBonus, _targetCharacter.CharacterSheet.ArmorClass);
+            }
 
 
             // Do damage
-            var damage = DiceRoller.Roll(_attacker, DiceRollEnum.Damage, _attacker.CharacterSheet.EquipedWeapon.DamageD, _attacker.CharacterSheet.CurrentRangeDamageBonus);
-            if (damage < 1)
-                damage = 1;
-
-            GetEditableSheet(_targetCharacter).HitPoints -= damage;
+            var nrOfDamageRolls = isCritical ? _attacker.CharacterSheet.EquipedWeapon.CriticalMultiplier : 1;
+            for (var i = 0; i < nrOfDamageRolls; i++)
+            {
+                var damage = DiceRoller.Roll(_attacker, DiceRollEnum.Damage, _attacker.CharacterSheet.EquipedWeapon.DamageD, _attacker.CharacterSheet.CurrentRangeDamageBonus);
+                if (damage < 1)
+                    damage = 1;
+                GetEditableSheet(_targetCharacter).HitPoints -= damage;
+            }
         }
 
         private static int GetDistance(Position position1, Position position2)

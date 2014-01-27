@@ -50,8 +50,11 @@
     <Compile Include="Board.cs" />
     <Compile Include="Characters\Character.cs" />
     <Compile Include="Characters\CharacterSheet.cs" />
+    <Compile Include="Dice\DiceCheck.cs" />
     <Compile Include="Dice\DiceRandomizer.cs" />
+    <Compile Include="Dice\DiceRoll.cs" />
     <Compile Include="Dice\DiceRoller.cs" />
+    <Compile Include="Dice\AttackRoll.cs" />
     <Compile Include="Encounter.cs" />
     <Compile Include="Factories\AbstractActionFactory.cs" />
     <Compile Include="Factories\ArmorFactory.cs" />
@@ -66,7 +69,7 @@
     <Compile Include="Dice\IDiceMonitor.cs" />
     <Compile Include="Dice\IDiceRandomizer.cs" />
     <Compile Include="Dice\IDiceRoll.cs" />
-    <Compile Include="Dice\IDiceRollCheck.cs" />
+    <Compile Include="Dice\IDiceCheck.cs" />
     <Compile Include="Dice\IDiceRoller.cs" />
     <Compile Include="IEncounter.cs" />
     <Compile Include="IEntity.cs" />
