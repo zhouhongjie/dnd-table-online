@@ -44,7 +44,7 @@ namespace DndTable.Core.Test.UnitTests
             Assert.AreEqual(10, char2.CharacterSheet.HitPoints, "Precondition");
 
 
-            var meleeAttack = new MeleeAttackAction(char1);
+            var meleeAttack = new AttackAction(char1);
             meleeAttack.Initialize(diceRoller, encounter, board);
 
 

@@ -7,11 +7,11 @@ using DndTable.Core.Dice;
 
 namespace DndTable.Core.Actions
 {
-    class MeleeAttackAction : BaseAction, IAttackAction
+    class AttackAction : BaseAction, IAttackAction
     {
         private ICharacter _attacker;
 
-        internal MeleeAttackAction(ICharacter attacker)
+        internal AttackAction(ICharacter attacker)
         {
             _attacker = attacker;
         }

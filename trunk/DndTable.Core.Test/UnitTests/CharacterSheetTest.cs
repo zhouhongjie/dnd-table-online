@@ -54,5 +54,17 @@ namespace DndTable.Core.Test.UnitTests
             sheet.SizeModifier = -2;
             Assert.AreEqual(8, sheet.ArmorClass);
         }
+
+        [Test]
+        public void GetCurrentAttackBonusTest()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void GetCurrentDamageBonusTest()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

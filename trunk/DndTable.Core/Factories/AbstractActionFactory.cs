@@ -23,7 +23,7 @@ namespace DndTable.Core.Factories
 
         public IAttackAction MeleeAttack(ICharacter attacker)
         {
-            var action = new MeleeAttackAction(attacker);
+            var action = new AttackAction(attacker);
             action.Initialize(_diceRoller, _encounter, _board);
             return action;
         }
