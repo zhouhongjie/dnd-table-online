@@ -12,5 +12,7 @@ namespace DndTable.Core.Actions
         void Do();
 
         ActionTypeEnum Type { get; }
+
+        string Description { get; }
     }
 }

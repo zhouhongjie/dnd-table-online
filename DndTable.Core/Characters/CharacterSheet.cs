@@ -55,12 +55,12 @@ namespace DndTable.Core.Characters
 
         public int BaseAttackBonus { get; internal set; }
 
-        public int MeleeAttackBonus
+        private int MeleeAttackBonus
         {
             get { return BaseAttackBonus + SizeModifier + GetAbilityBonus(Strength); }
         }
 
-        public int GetRangedAttackBonus(int range)
+        private int GetRangedAttackBonus(int range)
         {
             if (range >= EquipedWeapon.RangeIncrement)
             {
@@ -77,28 +77,34 @@ namespace DndTable.Core.Characters
 
         public IWeapon EquipedWeapon { get; internal set; }
 
-        public int CurrentMeleeDamageBonus
+        public int GetCurrentAttackBonus(int range)
         {
-            get
-            {
-                // TODO: weapon bonus
-                // TODO: weapon focus
-                // ...
-
-                return GetAbilityBonus(Strength);
-            }
+            // Unarmed
+            if (EquipedWeapon == null)
+                return MeleeAttackBonus;
+            // Ranged
+            if (EquipedWeapon.IsRanged)
+                return GetRangedAttackBonus(range);
+            
+            // Melee
+            return MeleeAttackBonus;
         }
 
-        public int CurrentRangeDamageBonus
+        public int GetCurrentDamageBonus()
         {
-            get
-            {
-                // TODO: weapon bonus
-                // TODO: weapon focus
-                // ...
+            // TODO: weapon bonus
+            // TODO: weapon focus
+            // ...
 
+            // Unarmed
+            if (EquipedWeapon == null)
+                return GetAbilityBonus(Strength);
+            // Ranged
+            if (EquipedWeapon.IsRanged)
                 return 0;
-            }
+
+            // Melee
+            return GetAbilityBonus(Strength);
         }
 
         private static int GetAbilityBonus(int baseAbiltyScore)

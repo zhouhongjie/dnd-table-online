@@ -23,14 +23,13 @@
         int SizeModifier { get; }
 
         int BaseAttackBonus { get; }
-        int MeleeAttackBonus { get; }
-        int GetRangedAttackBonus(int range);
 
         IArmor EquipedArmor { get; }
         IWeapon EquipedWeapon { get; }
 
 
-        int CurrentMeleeDamageBonus { get; }
-        int CurrentRangeDamageBonus { get; }
+
+        int GetCurrentAttackBonus(int range);
+        int GetCurrentDamageBonus();
     }
 }

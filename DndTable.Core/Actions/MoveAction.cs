@@ -21,6 +21,8 @@ namespace DndTable.Core.Actions
             get { return ActionTypeEnum.MoveEquivalent; }
         }
 
+        public override string Description { get { return "Move"; } }
+
         public override void Do()
         {
             if (_targetPosition == null)

@@ -19,17 +19,20 @@ namespace DndTable.Core.Dice
 
         public bool Success { get; protected set; }
 
-        public override string Description()
+        public override string Description
         {
-            return string.Format("{0}-{1}: {3}(1d{2}) + {4} = {5}; DC = {6} => {7}",
-                                 Roller.CharacterSheet.Name,
-                                 Type,
-                                 D,
-                                 Roll,
-                                 Bonus,
-                                 Result,
-                                 DC,
-                                 Success ? "Success" : "fail");
+            get
+            {
+                return string.Format("{0}-{1}: {3}(1d{2}) + {4} = {5}; DC = {6} => {7}",
+                                     Roller.CharacterSheet.Name,
+                                     Type,
+                                     D,
+                                     Roll,
+                                     Bonus,
+                                     Result,
+                                     DC,
+                                     Success ? "Success" : "fail");
+            }
         }
 
     }
