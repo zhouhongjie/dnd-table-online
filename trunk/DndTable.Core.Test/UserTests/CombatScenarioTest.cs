@@ -84,7 +84,7 @@ namespace DndTable.Core.Test.UserTests
         {
             foreach (var roll in game.DiceMonitor.GetAllRolls())
             {
-                Console.WriteLine(roll.Description());
+                Console.WriteLine(roll.Description);
             }
         }
 

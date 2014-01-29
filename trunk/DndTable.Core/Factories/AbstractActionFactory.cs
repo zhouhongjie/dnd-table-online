@@ -30,9 +30,7 @@ namespace DndTable.Core.Factories
 
         public IAttackAction RangeAttack(ICharacter attacker)
         {
-            var action = new RangeAttackAction(attacker);
-            action.Initialize(_diceRoller, _encounter, _board);
-            return action;
+            return MeleeAttack(attacker);
         }
 
         public IMoveAction Move(ICharacter character)

@@ -9,6 +9,6 @@ namespace DndTable.Core.Dice
 
     public interface IDiceRoll
     {
-        string Description();
+        string Description { get; }
     }
 }

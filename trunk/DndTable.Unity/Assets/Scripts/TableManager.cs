@@ -90,7 +90,7 @@ public class TableManager : MonoBehaviour
         var offset = 0;
         foreach (var action in CurrentEncounter.GetPossibleActionsForCurrentCharacter())
         {
-            if (GUI.Button(new Rect(10, 70 + offset, 300, 30), action.GetType().ToString()))
+            if (GUI.Button(new Rect(10, 70 + offset, 300, 30), action.Description))
             {
                 if (action is IMoveAction)
                 {
@@ -135,7 +135,7 @@ public class TableManager : MonoBehaviour
         var label = String.Empty;
         foreach (var roll in Game.DiceMonitor.GetLastRolls(10))
         {
-            var currentLine = roll.Description();
+            var currentLine = roll.Description;
 
             label += currentLine + "\n";
             height += 18;

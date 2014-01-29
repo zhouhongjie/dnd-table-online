@@ -11,6 +11,7 @@ namespace DndTable.Core.Actions
     {
         public abstract void Do();
         public abstract ActionTypeEnum Type { get; }
+        public abstract string Description { get; }
 
         protected Position _targetPosition;
         public IAction Target(Position position)
