@@ -135,31 +135,7 @@ public class TableManager : MonoBehaviour
         var label = String.Empty;
         foreach (var roll in Game.DiceMonitor.GetLastRolls(10))
         {
-            var currentLine = String.Empty;
-
-            if (roll is IDiceCheck)
-            {
-                var check = roll as IDiceCheck;
-                currentLine = string.Format("{0}-{1}: {3}(1d{2}) + {4} = {5}; DC = {6} => {7}",
-                                            roll.Roller.CharacterSheet.Name,
-                                            roll.Type,
-                                            roll.D,
-                                            roll.Roll,
-                                            roll.Bonus,
-                                            roll.Result,
-                                            check.DC,
-                                            check.Success ? "Success" : "fail");
-            }
-            else
-            {
-                currentLine = string.Format("{0}-{1}: {3}(1d{2}) + {4} = {5}",
-                                            roll.Roller.CharacterSheet.Name,
-                                            roll.Type,
-                                            roll.D,
-                                            roll.Roll,
-                                            roll.Bonus,
-                                            roll.Result);
-            }
+            var currentLine = roll.Description();
 
             label += currentLine + "\n";
             height += 18;

@@ -26,5 +26,16 @@ namespace DndTable.Core.Dice
 
         public int Roll { get; private set; }
         public int Result { get; private set; }
+
+        public virtual string Description()
+        {
+            return string.Format("{0}-{1}: {3}(1d{2}) + {4} = {5}",
+                                 Roller.CharacterSheet.Name,
+                                 Type,
+                                 D,
+                                 Roll,
+                                 Bonus,
+                                 Result);
+        }
     }
 }
