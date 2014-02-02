@@ -70,7 +70,25 @@ namespace DndTable.Core
             return _currentFieldOfView[position.X, position.Y];
         }
 
-        public bool[,] CalculateFieldOfView(Position origin)
+        public bool[,] GetFieldOfViewForCurrentPlayer()
+        {
+            if (_currentFieldOfView == null)
+                throw new InvalidOperationException("CalculateFieldOfView should have been called before using IsVisibleForCurrentPlayer");
+
+            return _currentFieldOfView;
+        }
+
+        public bool[,] GetFieldOfView(Position origin)
+        {
+            return CalculateFieldOfView(origin);
+        }
+
+        internal void OptimizeFieldOfViewForCurrentPlayer(Position origin)
+        {
+            _currentFieldOfView = CalculateFieldOfView(origin);
+        }
+
+        private bool[,] CalculateFieldOfView(Position origin)
         {
             bool[,] map = new bool[MaxX, MaxY];
 
@@ -104,8 +122,7 @@ namespace DndTable.Core
                 (x1, y1) => map[x1, y1],
                 (x2, y2) => { fieldOfView[x2, y2] = true; });
 
-            _currentFieldOfView = fieldOfView;
-            return _currentFieldOfView;
+            return fieldOfView;
         }
 
         internal bool AddEntity(IEntity entity, Position position)

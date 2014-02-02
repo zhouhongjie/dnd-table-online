@@ -18,7 +18,7 @@ namespace DndTable.Core.Test.UnitTests
             board.AddEntity(Factory.CreateWall(), Position.Create(3, 3));
             board.AddEntity(Factory.CreateWall(), Position.Create(3, 4));
 
-            var foV = board.CalculateFieldOfView(Position.Create(1, 1));
+            var foV = board.GetFieldOfView(Position.Create(1, 1));
             DrawInConsole(foV);
         }
 

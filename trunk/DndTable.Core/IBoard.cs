@@ -14,7 +14,9 @@ namespace DndTable.Core
         IEntity GetEntity(Position position);
         bool MoveEntity(Position from, Position to);
 
-        bool IsVisibleForCurrentPlayer(Position position);
-        bool[,] CalculateFieldOfView(Position origin);
+        bool IsVisibleForCurrentPlayer(Position origin);
+        bool[,] GetFieldOfViewForCurrentPlayer();
+
+        bool[,] GetFieldOfView(Position origin);
     }
 }

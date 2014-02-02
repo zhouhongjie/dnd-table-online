@@ -27,11 +27,20 @@ namespace DndTable.Core
             _gameBoard = gameBoard;
 
             _participants = DoInitiaticeChecks(diceRoller, participants);
+
+            //_gameBoard.CalculateFieldOfView(GetCurrentCharacter().Position);
         }
 
         internal void RegisterAction(ActionTypeEnum actionType)
         {
             _actionDoneByCurrentChar.Add(actionType);
+
+
+            //// FoV
+            //var currentCharacter = GetCurrentCharacter();
+            //if (currentCharacter != null)
+            //    _gameBoard.CalculateFieldOfView(currentCharacter.Position);
+
         }
 
         private static List<ICharacter> DoInitiaticeChecks(IDiceRoller diceRoller, List<ICharacter> participants)
@@ -67,11 +76,6 @@ namespace DndTable.Core
             }
 
             _actionDoneByCurrentChar.Clear();
-
-            var currentCharacter = GetCurrentCharacter();
-
-            if (currentCharacter != null)
-                _gameBoard.CalculateFieldOfView(currentCharacter.Position);
 
             return GetCurrentCharacter();
         }
