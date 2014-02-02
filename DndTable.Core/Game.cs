@@ -41,6 +41,11 @@ namespace DndTable.Core
             return _gameBoard.AddEntity(Factory.CreateWall(), position);
         }
 
+        public void RemoveWall(Position selectedPosition)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<ICharacter> GetCharacters()
         {
             return _characters;

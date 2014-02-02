@@ -23,7 +23,10 @@ public class TableManager : MonoBehaviour
     public IGame Game;
     public IEncounter CurrentEncounter;
 
-    public BaseActionUI  _currentActionUI;
+    private BaseActionUI  _currentActionUI;
+    private MapEditorUI _mapEditorUI;
+
+    private HashSet<int> _entityIds = new HashSet<int>();
 
 	// Use this for initialization
 	void Start ()
@@ -52,16 +55,40 @@ public class TableManager : MonoBehaviour
         }
 
         CreateBoard();
+        UpdateEntities();
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
+        UpdateEntities();
 
         //ProcessUserInput();
 
         if (_currentActionUI != null && !_currentActionUI.IsDone)
             _currentActionUI.Update();
-	}
+
+        // Handle MapEditor
+	    {
+	        if (_mapEditorUI != null)
+                _mapEditorUI.Update();
+
+            if (Input.GetKey(KeyCode.F1))
+                _mapEditorUI = new MapEditorUI(Game);
+            if (Input.GetKey(KeyCode.F2))
+            {
+                if (_mapEditorUI != null)
+                    _mapEditorUI.Stop();
+                _mapEditorUI = null;
+            }
+	    }
+    }
+
+    private void UpdateBoard()
+    {
+        
+
+    }
 
     public ICharacter CurrentPlayer { get { return CurrentEncounter.GetCurrentCharacter(); } }
 
@@ -163,13 +190,27 @@ public class TableManager : MonoBehaviour
 
     private void UpdateFieldOfView()
     {
-        var fieldOfView = Game.GameBoard.CalculateFieldOfView(CurrentPlayer.Position);
+        //var fieldOfView = Game.GameBoard.GetFieldOfViewForCurrentPlayer();
+        var fieldOfView = Game.GameBoard.GetFieldOfView(CurrentPlayer.Position);
 
         for (var i=0; i < transform.childCount; i++)
         {
             var child = transform.GetChild(i);
             bool isVisible = fieldOfView[(int)child.position.x, (int)child.position.z];
-            child.transform.renderer.material.color = isVisible ? Color.white : Color.gray;
+
+            SetColorRecursive(child.transform, isVisible ? Color.white : Color.gray);
+        }
+    }
+
+    private static void SetColorRecursive(Transform currentTransform, Color color)
+    {
+        if (currentTransform.renderer != null)
+            currentTransform.renderer.material.color = color;
+
+        for (var i = 0; i < currentTransform.childCount; i++)
+        {
+            var child = currentTransform.GetChild(i);
+            SetColorRecursive(child, color);
         }
     }
 
@@ -180,10 +221,22 @@ public class TableManager : MonoBehaviour
             for (int j=0; j < Game.GameBoard.MaxY; j++)
             {
                 CreateTile(i, j);
+            }
+        }
+    }
 
+    private void UpdateEntities()
+    {
+        for (int i=0; i < Game.GameBoard.MaxX; i++)
+        {
+            for (int j=0; j < Game.GameBoard.MaxY; j++)
+            {
                 var entity = Game.GameBoard.GetEntity(Position.Create(i, j));
                 if (entity != null)
                 {
+                    if (_entityIds.Contains(entity.Id))
+                        continue;
+
                     if (entity.EntityType == EntityTypeEnum.Character)
                     {
                         CreateEntity(PlayerTemplate, i, j, entity);
@@ -196,6 +249,8 @@ public class TableManager : MonoBehaviour
                     {
                         throw new NotSupportedException("EntityType does not have a template Transform: " + entity.EntityType);
                     }
+
+                    _entityIds.Add(entity.Id);
                 }
             }
         }

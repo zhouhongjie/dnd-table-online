@@ -2,6 +2,7 @@
 {
     public interface IEntity
     {
+        int Id { get; }
         EntityTypeEnum EntityType { get; }
         Position Position { get; }
         double Angle { get; }
