@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace DndTable.Core
+﻿namespace DndTable.Core.Entities
 {
     public interface IEntity
     {
@@ -14,6 +9,6 @@ namespace DndTable.Core
 
     public enum EntityTypeEnum
     {
-        Character
+        Character, Wall
     }
 }

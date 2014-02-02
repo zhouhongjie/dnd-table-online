@@ -5,6 +5,7 @@ using DndTable.Core;
 using DndTable.Core.Actions;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
+using DndTable.Core.Entities;
 using DndTable.Core.Factories;
 using DndTable.UnityUI;
 using UnityEngine;
@@ -12,10 +13,11 @@ using System.Collections;
 
 public class TableManager : MonoBehaviour 
 {
-    public int MaxX = 100;
-    public int MaxY = 100;
+    public int MaxX = 20;
+    public int MaxY = 20;
     public Transform TileTemplate;
     public Transform PlayerTemplate;
+    public Transform WallTemplate;
 
 
     public IGame Game;
@@ -25,21 +27,32 @@ public class TableManager : MonoBehaviour
 
 	// Use this for initialization
 	void Start ()
-	{
+    {
         Game = Factory.CreateGame(MaxX, MaxY);
 
-        // Temp
-	    var regdar = Factory.CreateCharacter("Regdar");
-	    var tordek = Factory.CreateCharacter("Tordek");
-        Game.EquipWeapon(regdar, WeaponFactory.CrossbowLight());
-        Game.EquipWeapon(tordek, WeaponFactory.Dagger());
-        Game.AddCharacter(regdar, Position.Create(10, 10));
-        Game.AddCharacter(tordek, Position.Create(10, 20));
+        // Temp: manual board setup
+        {
+            // Players
+            var regdar = Factory.CreateCharacter("Regdar");
+            var tordek = Factory.CreateCharacter("Tordek");
+            Game.EquipWeapon(regdar, WeaponFactory.CrossbowLight());
+            Game.EquipWeapon(tordek, WeaponFactory.Dagger());
+            Game.AddCharacter(regdar, Position.Create(10, 10));
+            Game.AddCharacter(tordek, Position.Create(10, 20));
 
-	    CurrentEncounter = Game.StartEncounter(new List<ICharacter>() {regdar, tordek});
+            // Walls
+            Game.AddWall(Position.Create(5, 5));
+            Game.AddWall(Position.Create(5, 6));
+            Game.AddWall(Position.Create(5, 7));
+            Game.AddWall(Position.Create(5, 9));
+            Game.AddWall(Position.Create(5, 10));
 
-	    CreateBoard();
-	}
+            // Start encounter
+	        CurrentEncounter = Game.StartEncounter(new List<ICharacter>() { regdar, tordek });
+        }
+
+        CreateBoard();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -79,6 +92,8 @@ public class TableManager : MonoBehaviour
     {
         if (!Application.isEditor)  // or check the app debug flag
             return;
+
+        UpdateFieldOfView();
 
         UpdateCharacterMonitorUI();
         UpdateDiceMonitorUI();
@@ -146,6 +161,18 @@ public class TableManager : MonoBehaviour
         GUI.Box(new Rect(Screen.width - width, 0, width, height), label);
     }
 
+    private void UpdateFieldOfView()
+    {
+        var fieldOfView = Game.GameBoard.CalculateFieldOfView(CurrentPlayer.Position);
+
+        for (var i=0; i < transform.childCount; i++)
+        {
+            var child = transform.GetChild(i);
+            bool isVisible = fieldOfView[(int)child.position.x, (int)child.position.z];
+            child.transform.renderer.material.color = isVisible ? Color.white : Color.gray;
+        }
+    }
+
     private void CreateBoard()
     {
         for (int i=0; i < Game.GameBoard.MaxX; i++)
@@ -161,9 +188,13 @@ public class TableManager : MonoBehaviour
                     {
                         CreateEntity(PlayerTemplate, i, j, entity);
                     }
+                    else if (entity.EntityType == EntityTypeEnum.Wall)
+                    {
+                        CreateEntity(WallTemplate, i, j, entity);
+                    }
                     else
                     {
-                        throw new NotSupportedException();
+                        throw new NotSupportedException("EntityType does not have a template Transform: " + entity.EntityType);
                     }
                 }
             }
@@ -174,12 +205,18 @@ public class TableManager : MonoBehaviour
     {
         Vector3 position = new Vector3(i, 0, j);
         Transform newObj = (Transform)Instantiate(TileTemplate, position, Quaternion.identity);
+
+        // Set as child
+        newObj.transform.parent = transform;
     }
 
     private void CreateEntity(Transform template, int i, int j, IEntity entity)
     {
         Vector3 position = new Vector3(i, 0, j);
         Transform newObj = (Transform)Instantiate(template, position, Quaternion.identity);
+
+        // Set as child
+        newObj.transform.parent = transform;
 
         // Entity
         {

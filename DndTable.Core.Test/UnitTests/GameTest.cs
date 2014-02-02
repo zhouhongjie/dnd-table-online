@@ -1,4 +1,5 @@
-﻿using DndTable.Core.Factories;
+﻿using DndTable.Core.Entities;
+using DndTable.Core.Factories;
 using NUnit.Framework;
 
 namespace DndTable.Core.Test.UnitTests

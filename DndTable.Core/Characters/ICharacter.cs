@@ -1,4 +1,6 @@
-﻿namespace DndTable.Core.Characters
+﻿using DndTable.Core.Entities;
+
+namespace DndTable.Core.Characters
 {
     public interface ICharacter : IEntity
     {

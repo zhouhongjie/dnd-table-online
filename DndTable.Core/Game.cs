@@ -36,6 +36,11 @@ namespace DndTable.Core
             return true;
         }
 
+        public bool AddWall(Position position)
+        {
+            return _gameBoard.AddEntity(Factory.CreateWall(), position);
+        }
+
         public List<ICharacter> GetCharacters()
         {
             return _characters;

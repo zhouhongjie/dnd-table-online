@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DndTable.Core.Entities;
 
 namespace DndTable.Core
 {
@@ -12,5 +13,8 @@ namespace DndTable.Core
 
         IEntity GetEntity(Position position);
         bool MoveEntity(Position from, Position to);
+
+        bool IsVisibleForCurrentPlayer(Position position);
+        bool[,] CalculateFieldOfView(Position origin);
     }
 }
