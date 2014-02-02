@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DndTable.Core.Entities;
+using SilverlightShadowCasting;
 
 namespace DndTable.Core
 {
@@ -11,6 +13,7 @@ namespace DndTable.Core
         public int MaxY { get; private set; }
 
         private readonly BaseEntity[,] _cells;
+        private bool[,] _currentFieldOfView;
 
         public Board(int maxX, int maxY)
         {
@@ -57,6 +60,52 @@ namespace DndTable.Core
             entity.Position = to;
 
             return true;
+        }
+
+        public bool IsVisibleForCurrentPlayer(Position position)
+        {
+            if (_currentFieldOfView == null)
+                throw new InvalidOperationException("CalculateFieldOfView should have been called before using IsVisibleForCurrentPlayer");
+
+            return _currentFieldOfView[position.X, position.Y];
+        }
+
+        public bool[,] CalculateFieldOfView(Position origin)
+        {
+            bool[,] map = new bool[MaxX, MaxY];
+
+            // Create outerwalls
+            for (var i = 0; i < MaxX; i++)
+            {
+                map[i, 0] = true;
+                map[i, MaxY - 1] = true;
+            }
+            for (var i = 0; i < MaxY; i++)
+            {
+                map[0, i] = true;
+                map[MaxX - 1, i] = true;
+            }
+
+            // Add walls
+            for (var i = 0; i < _cells.GetLength(0); i++)
+            {
+                for (var j = 0; j < _cells.GetLength(1); j++)
+                {
+                    if (_cells[i, j] != null)
+                        map[i, j] = _cells[i, j].EntityType == EntityTypeEnum.Wall;
+                }
+            }
+
+            // Calculate FoV
+            int radius = 1000; // infinite
+            bool[,] fieldOfView = new bool[MaxX, MaxY];
+            ShadowCaster.ComputeFieldOfViewWithShadowCasting(
+                origin.X, origin.Y, radius,
+                (x1, y1) => map[x1, y1],
+                (x2, y2) => { fieldOfView[x2, y2] = true; });
+
+            _currentFieldOfView = fieldOfView;
+            return _currentFieldOfView;
         }
 
         internal bool AddEntity(IEntity entity, Position position)

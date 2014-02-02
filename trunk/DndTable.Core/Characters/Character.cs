@@ -1,5 +1,6 @@
 ﻿using System;
 using DndTable.Core.Dice;
+using DndTable.Core.Entities;
 
 namespace DndTable.Core.Characters
 {

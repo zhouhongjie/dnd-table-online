@@ -12,7 +12,7 @@ namespace DndTable.Core
     class Encounter : IEncounter
     {
         private AbstractActionFactory _actionFactory;
-        //private IDiceRoller _diceRoller;
+        private Board _gameBoard;
 
         private List<ICharacter> _participants;
         private int _currentIndex = 0;
@@ -24,6 +24,7 @@ namespace DndTable.Core
         internal Encounter(Board gameBoard, IDiceRoller diceRoller, List<ICharacter> participants)
         {
             _actionFactory = new AbstractActionFactory(this, gameBoard, diceRoller);
+            _gameBoard = gameBoard;
 
             _participants = DoInitiaticeChecks(diceRoller, participants);
         }
@@ -66,6 +67,12 @@ namespace DndTable.Core
             }
 
             _actionDoneByCurrentChar.Clear();
+
+            var currentCharacter = GetCurrentCharacter();
+
+            if (currentCharacter != null)
+                _gameBoard.CalculateFieldOfView(currentCharacter.Position);
+
             return GetCurrentCharacter();
         }
 

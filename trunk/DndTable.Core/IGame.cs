@@ -17,6 +17,8 @@ namespace DndTable.Core
         bool AddCharacter(ICharacter character, Position position);
         List<ICharacter> GetCharacters();
 
+        bool AddWall(Position position);
+
         IEncounter StartEncounter(List<ICharacter> characters);
         IEncounter CurrentEncounter { get; }
 

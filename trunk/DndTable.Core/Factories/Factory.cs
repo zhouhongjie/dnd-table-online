@@ -1,5 +1,6 @@
 ﻿using DndTable.Core.Characters;
 using DndTable.Core.Dice;
+using DndTable.Core.Entities;
 
 namespace DndTable.Core.Factories
 {
@@ -29,6 +30,11 @@ namespace DndTable.Core.Factories
             sheet.HitPoints = 10;
 
             return new Character(sheet);
+        }
+
+        public static IEntity CreateWall()
+        {
+            return new Wall();
         }
     }
 }

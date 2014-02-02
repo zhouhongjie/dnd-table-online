@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using DndTable.Core;
+using DndTable.Core.Entities;
 using UnityEngine;
 using System.Collections;
 
@@ -36,6 +37,17 @@ public class EntityScript : MonoBehaviour {
         if (Game.CurrentEncounter == null)
             return false;
         return Game.CurrentEncounter.GetCurrentCharacter() == Entity;
+    }
+
+    private bool IsVisibleForCurrent()
+    {
+        if (Game == null)
+            throw new NullReferenceException("Game is not set during creation");
+        if (Game.CurrentEncounter == null)
+            return false;
+
+        var position = Position.Create((int)transform.position.x, (int)transform.position.z);
+        return Game.GameBoard.IsVisibleForCurrentPlayer(position);
     }
 
     private Transform GetIndicator()
