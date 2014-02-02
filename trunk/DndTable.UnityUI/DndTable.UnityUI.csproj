@@ -47,7 +47,6 @@
   <ItemGroup>
     <Compile Include="AttackActionUI.cs" />
     <Compile Include="BaseActionUI.cs" />
-    <Compile Include="Factory.cs" />
     <Compile Include="MapEditorUI.cs" />
     <Compile Include="MoveActionUI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
