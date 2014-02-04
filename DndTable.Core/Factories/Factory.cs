@@ -28,6 +28,7 @@ namespace DndTable.Core.Factories
             sheet.Charisma = 10;
 
             sheet.HitPoints = 10;
+            sheet.Speed = 30;
 
             return new Character(sheet);
         }

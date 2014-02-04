@@ -25,19 +25,31 @@ namespace DndTable.Core.Actions
 
         public override void Do()
         {
-            if (_targetPosition == null)
-                throw new InvalidOperationException("Position target expected");
+            //if (_targetPosition == null)
+            //    throw new InvalidOperationException("Position target expected");
 
             Register();
 
-            // Can move
+            // TODO: Can move?
 
-            // Can move to this point
+            // TODO: Can move to this point?
 
 
 
             // TEMP
-            Board.MoveEntity(_character.Position, _targetPosition);
+            //Board.MoveEntity(_character.Position, _targetPosition);
+        }
+
+        public void DoOneStep(Position newLocation)
+        {
+            // TODO: Can move?
+
+            // TODO: Can move to this point?
+
+
+
+            // TEMP
+            Board.MoveEntity(_character.Position, newLocation);
         }
     }
 }

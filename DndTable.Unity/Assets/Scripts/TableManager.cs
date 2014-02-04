@@ -24,7 +24,13 @@ public class TableManager : MonoBehaviour
     public IEncounter CurrentEncounter;
 
     private BaseActionUI  _currentActionUI;
-    private MapEditorUI _mapEditorUI;
+
+    private enum ModeEnum
+    {
+        Player, MapEditor
+    }
+
+    private ModeEnum _mode = ModeEnum.Player;
 
     private HashSet<int> _entityIds = new HashSet<int>();
 
@@ -62,58 +68,37 @@ public class TableManager : MonoBehaviour
 	void Update ()
 	{
         UpdateEntities();
+	    UpdateEditorMode();
 
         //ProcessUserInput();
 
         if (_currentActionUI != null && !_currentActionUI.IsDone)
             _currentActionUI.Update();
 
-        // Handle MapEditor
-	    {
-	        if (_mapEditorUI != null)
-                _mapEditorUI.Update();
-
-            if (Input.GetKey(KeyCode.F1))
-                _mapEditorUI = new MapEditorUI(Game);
-            if (Input.GetKey(KeyCode.F2))
-            {
-                if (_mapEditorUI != null)
-                    _mapEditorUI.Stop();
-                _mapEditorUI = null;
-            }
-	    }
     }
 
-    private void UpdateBoard()
+    private void UpdateEditorMode()
     {
-        
+        if (Input.GetKey(KeyCode.F1))
+        {
+            StopCurrentAction();
+            _mode = ModeEnum.MapEditor;
+        }
+        else if (Input.GetKey(KeyCode.F2))
+        {
+            StopCurrentAction();
+            _mode = ModeEnum.Player;
+        }
+    }
 
+    private void StopCurrentAction()
+    {
+        if (_currentActionUI != null)
+            _currentActionUI.Stop();
+        _currentActionUI = null;
     }
 
     public ICharacter CurrentPlayer { get { return CurrentEncounter.GetCurrentCharacter(); } }
-
-    //private void ProcessUserInput()
-    //{
-    //    var x = CurrentPlayer.Position.X;
-    //    var y = CurrentPlayer.Position.Y;
-
-    //    if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.Z))
-    //    {
-    //        y += 1;
-    //    }
-    //    if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
-    //        y -= 1;
-    //    if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.Q))
-    //    {
-    //        x -= 1;
-    //    }
-    //    if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
-    //    {
-    //        x += 1;
-    //    }
-
-    //    Game.ActionFactory.Move(CurrentPlayer).Target(Position.Create(x, y)).Do();
-    //}
 
     void OnGUI()
     {
@@ -124,7 +109,23 @@ public class TableManager : MonoBehaviour
 
         UpdateCharacterMonitorUI();
         UpdateDiceMonitorUI();
-        UpdatePossibleActionsUI();
+
+        if (_mode == ModeEnum.Player) 
+            UpdatePossibleActionsUI();
+        else if (_mode == ModeEnum.MapEditor) 
+            UpdateMapEditorActionsUI();
+    }
+
+    private void UpdateMapEditorActionsUI()
+    {
+        var offset = 0;
+        {
+            if (GUI.Button(new Rect(10, 70 + offset, 300, 30), "Walls"))
+            {
+                StopCurrentAction();
+                _currentActionUI = new MapEditorUI(Game);
+            }
+        }     
     }
 
     private void UpdatePossibleActionsUI()
@@ -134,16 +135,14 @@ public class TableManager : MonoBehaviour
         {
             if (GUI.Button(new Rect(10, 70 + offset, 300, 30), action.Description))
             {
+                StopCurrentAction();
+
                 if (action is IMoveAction)
                 {
-                    if (_currentActionUI != null)
-                        _currentActionUI.Stop();
                     _currentActionUI = new MoveActionUI(CurrentPlayer, action as IMoveAction);
                 }
                 else if (action is IAttackAction)
                 {
-                    if (_currentActionUI != null)
-                        _currentActionUI.Stop();
                     _currentActionUI = new AttackActionUI(Game, action as IAttackAction, CurrentPlayer);
                 }
                 else

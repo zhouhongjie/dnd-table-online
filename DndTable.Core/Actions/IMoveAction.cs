@@ -8,5 +8,7 @@ namespace DndTable.Core.Actions
     public interface IMoveAction : IAction
     {
         IAction Target(Position position);
+
+        void DoOneStep(Position newLocation);
     }
 }

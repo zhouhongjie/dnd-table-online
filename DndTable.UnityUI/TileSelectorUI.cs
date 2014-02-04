@@ -44,6 +44,13 @@ namespace DndTable.UnityUI
             return Position.Create((int)_lastTransform.position.x, (int)_lastTransform.position.z);
         }
 
+        public bool IsCurrentPositionValid()
+        {
+             if (_lastTransform == null)
+                return false;
+            return IsRangeValid(_lastTransform);
+        }
+
         public void Stop()
         {
             RevertToOriginalColors();
@@ -103,6 +110,7 @@ namespace DndTable.UnityUI
             {
                 kvp.Key.renderer.material.color = kvp.Value;
             }
+            _originalColors.Clear();
         }
 
     }

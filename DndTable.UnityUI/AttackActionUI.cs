@@ -26,18 +26,21 @@ namespace DndTable.UnityUI
         {
             _selector.Update();
 
-            // Mark
-            _selectedPosition = _selector.GetCurrentPosition();
-
-            // Attack
-            if (Input.GetMouseButtonDown(0))
+            // Can attack?
+            if (_selector.IsCurrentPositionValid())
             {
-                var target = _game.GameBoard.GetEntity(_selectedPosition) as ICharacter;
-                if (target != null)
-                {
-                    _attackAction.Target(target).Do();
+                _selectedPosition = _selector.GetCurrentPosition();
 
-                    Stop();
+                // Attack
+                if (Input.GetMouseButtonDown(0))
+                {
+                    var target = _game.GameBoard.GetEntity(_selectedPosition) as ICharacter;
+                    if (target != null)
+                    {
+                        _attackAction.Target(target).Do();
+
+                        Stop();
+                    }
                 }
             }
         }
