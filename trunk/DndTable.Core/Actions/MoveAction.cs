@@ -9,11 +9,14 @@ namespace DndTable.Core.Actions
     class MoveAction : BaseAction, IMoveAction
     {
         private ICharacter _character;
-
+        private int _maxNrOfSteps;
+        private int _nrOfStepsCounter;
+        private bool _isDone;
 
         internal MoveAction(ICharacter character)
         {
             _character = character;
+            _maxNrOfSteps = character.CharacterSheet.Speed/5;
         }
 
         public override ActionTypeEnum Type
@@ -25,31 +28,32 @@ namespace DndTable.Core.Actions
 
         public override void Do()
         {
-            //if (_targetPosition == null)
-            //    throw new InvalidOperationException("Position target expected");
+            if (_isDone)
+                throw new InvalidOperationException("Action was already stopped");
 
+            _isDone = true;
             Register();
-
-            // TODO: Can move?
-
-            // TODO: Can move to this point?
-
-
-
-            // TEMP
-            //Board.MoveEntity(_character.Position, _targetPosition);
         }
 
-        public void DoOneStep(Position newLocation)
+        public bool DoOneStep(Position newLocation)
         {
-            // TODO: Can move?
+            if (_isDone)
+                return false;
+            if (GetTilesDistance(newLocation, _character.Position) > 1)
+                return false;
+            if (_nrOfStepsCounter >= _maxNrOfSteps)
+                return false;
 
-            // TODO: Can move to this point?
+            // TODO: Can move? (paralysed, disabled, ...)
+
+            // Can move to this point? (wall, other player, ...)
+            if (!Board.MoveEntity(_character.Position, newLocation))
+                return false;
 
 
+            _nrOfStepsCounter++;
 
-            // TEMP
-            Board.MoveEntity(_character.Position, newLocation);
+            return true;
         }
     }
 }

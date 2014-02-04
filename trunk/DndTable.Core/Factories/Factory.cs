@@ -33,6 +33,11 @@ namespace DndTable.Core.Factories
             return new Character(sheet);
         }
 
+        public static ICharacter CreateCharacter(string name, ICharacterSheet sheet)
+        {
+            return new Character(sheet);
+        }
+
         public static IEntity CreateWall()
         {
             return new Wall();
