@@ -9,6 +9,6 @@ namespace DndTable.Core.Actions
     {
         IAction Target(Position position);
 
-        void DoOneStep(Position newLocation);
+        bool DoOneStep(Position newLocation);
     }
 }

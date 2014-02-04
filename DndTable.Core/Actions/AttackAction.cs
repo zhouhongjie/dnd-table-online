@@ -44,7 +44,7 @@ namespace DndTable.Core.Actions
                 throw new ArgumentException("attacker has no equiped weapon");
 
             // Check max range
-            var rangeRounded = Math.Floor(GetDistance(_attacker.Position, _targetCharacter.Position));
+            var rangeRounded = GetTilesDistance(_attacker.Position, _targetCharacter.Position);
             if (rangeRounded > MaxRange)
                 throw new InvalidOperationException("Out of range: should have been checked before calling this method");
 

@@ -61,5 +61,10 @@ namespace DndTable.Core.Actions
 
             return Math.Sqrt(dx * dx + dy * dy);
         }
+
+        protected static int GetTilesDistance(Position position1, Position position2)
+        {
+            return (int)Math.Floor(GetDistance(position1, position2));
+        }
     }
 }

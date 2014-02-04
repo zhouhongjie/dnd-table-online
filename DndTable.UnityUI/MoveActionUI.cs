@@ -37,15 +37,13 @@ namespace DndTable.UnityUI
             {
                 var newPosition = _selector.GetCurrentPosition();
 
-                _moveAction.DoOneStep(newPosition);
-                _nrOfStepsCounter++;
-
-                _selector.InitializeRangeCheck(newPosition, 1);
-
-                // Max nr of tiles moved
-                if (_nrOfStepsCounter >= _maxNrOfSteps)
+                // Step ok?
+                if (_moveAction.DoOneStep(newPosition))
                 {
-                    Stop();
+                    _nrOfStepsCounter++;
+
+                    var maxReached = (_nrOfStepsCounter >= _maxNrOfSteps);
+                    _selector.InitializeRangeCheck(newPosition, maxReached ? 0 : 1);
                 }
             }
         }
