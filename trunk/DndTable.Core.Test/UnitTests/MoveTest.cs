@@ -60,6 +60,7 @@ namespace DndTable.Core.Test.UnitTests
         {
             var board = new Board(10, 10);
             var game = CreateGame(board);
+            var actionFactory = new AbstractActionFactory(null, board, null);
 
             // 2 steps max
             var sheet = new CharacterSheet { Speed = speed };
@@ -69,7 +70,7 @@ namespace DndTable.Core.Test.UnitTests
 
 
             var moveAction = new MoveAction(char1);
-            moveAction.Initialize(null, null, board);
+            moveAction.Initialize(actionFactory);
             return moveAction;
         }
 
@@ -78,6 +79,7 @@ namespace DndTable.Core.Test.UnitTests
         {
             var board = new Board(10, 10);
             var game = CreateGame(board);
+            var actionFactory = new AbstractActionFactory(null, board, null);
 
             // 2 steps max
             var sheet = new CharacterSheet {Speed = 10}; 
@@ -87,7 +89,7 @@ namespace DndTable.Core.Test.UnitTests
             Assert.AreEqual(char1, game.GameBoard.GetEntity(Position.Create(1, 1)));
 
             var moveAction = new MoveAction(char1);
-            moveAction.Initialize(null, null, board);
+            moveAction.Initialize(actionFactory);
 
             // Step
             Assert.IsTrue(moveAction.DoOneStep(Position.Create(1, 2)));
@@ -113,6 +115,7 @@ namespace DndTable.Core.Test.UnitTests
         {
             var board = new Board(10, 10);
             var game = CreateGame(board);
+            var actionFactory = new AbstractActionFactory(null, board, null);
 
             // 2 steps max
             var sheet = new CharacterSheet {Speed = 10};
@@ -124,7 +127,7 @@ namespace DndTable.Core.Test.UnitTests
             game.AddWall(Position.Create(2, 1));
 
             var moveAction = new MoveAction(char1);
-            moveAction.Initialize(null, null, board);
+            moveAction.Initialize(actionFactory);
 
             Assert.IsFalse(moveAction.DoOneStep(Position.Create(1, 2)), "stepped on obstacle");
             Assert.IsFalse(moveAction.DoOneStep(Position.Create(2, 1)), "stepped on obstacle");

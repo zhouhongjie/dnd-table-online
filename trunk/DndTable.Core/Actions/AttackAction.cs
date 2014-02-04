@@ -51,6 +51,17 @@ namespace DndTable.Core.Actions
             Register();
 
 
+            // Check counter AttackOfOpportunity
+            if (ProvokesAttackOfOpportunity())
+            {
+                HandleAttackOfOpportunity();
+
+                // TODO: CharacterSheet function to check if a char can still act
+                if (_attacker.CharacterSheet.HitPoints <= 0)
+                    return;
+            }
+
+
             // Check hit
             var check = DiceRoller.RollAttack(
                 _attacker, 
@@ -90,6 +101,50 @@ namespace DndTable.Core.Actions
 
                 GetEditableSheet(_targetCharacter).HitPoints -= damage;
             }
+        }
+
+        private void HandleAttackOfOpportunity()
+        {
+            foreach (var participant in this.Encounter.Participants)
+            {
+                // no self bashing
+                if (participant == _attacker)
+                    continue;
+
+                if (IsInThreatenedArea(_attacker, participant))
+                {
+                    // check participant already did an AoO
+                    // TODO: possibly multiple AoO's (combat reflexes)
+                    var roundInfo = Encounter.GetRoundInfo(participant);
+                    if (roundInfo.AttackOfOpportunityCounter > 0)
+                        continue;
+
+                    // Increase counter
+                    roundInfo.AttackOfOpportunityCounter++;
+
+                    // handle AttackAction of participant
+                    // TODO: requires UI interaction !!!!!! (for the moment auto attack)
+
+                    // Note: AoO is always a MeleeAttack in the proper range (otherwise ThreatenedArea is wrong)
+                    var attackOfOpportunity = ActionFactory.MeleeAttack(participant);
+                    attackOfOpportunity.Target(_attacker);
+                    attackOfOpportunity.Do();
+                }
+            }
+        }
+
+        private bool IsInThreatenedArea(ICharacter attacker, ICharacter participant)
+        {
+            if (attacker.CharacterSheet.EquipedWeapon == null || attacker.CharacterSheet.EquipedWeapon.IsRanged)
+                return false;
+
+            // TODO: reach weapons, etc ...
+            return GetTilesDistance(attacker.Position, participant.Position) == 1;
+        }
+
+        private bool ProvokesAttackOfOpportunity()
+        {
+            return _attacker.CharacterSheet.EquipedWeapon.IsRanged;
         }
 
         public int MaxRange

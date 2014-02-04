@@ -12,7 +12,7 @@ using NUnit.Framework;
 namespace DndTable.Core.Test.UnitTests
 {
     [TestFixture]
-    public class MeleeAttackTest
+    public class AttackTest
     {
         [Test]
         public void SimpleAttack()
@@ -49,12 +49,13 @@ namespace DndTable.Core.Test.UnitTests
             game.AddCharacter(char2, targetPosition);
 
             var encounter = new Encounter(board, diceRoller, new List<ICharacter>() {char1, char2});
+            var actionFactory = new AbstractActionFactory(encounter, board, diceRoller);
 
             Assert.AreEqual(10, char2.CharacterSheet.HitPoints, "Precondition");
 
 
             var meleeAttack = new AttackAction(char1);
-            meleeAttack.Initialize(diceRoller, encounter, board);
+            meleeAttack.Initialize(actionFactory);
 
 
             meleeAttack.Target(char2).Do();
