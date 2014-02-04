@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using DndTable.Core.Actions;
 using DndTable.Core.Characters;
+using DndTable.Core.Dice;
 using DndTable.Core.Factories;
-using DndTable.Core.Test.Mocks;
+using Moq;
 using NUnit.Framework;
 
 namespace DndTable.Core.Test.UnitTests
@@ -16,25 +17,33 @@ namespace DndTable.Core.Test.UnitTests
         [Test]
         public void SimpleAttack()
         {
-            DoSimpleAttack(Position.Create(1, 1), Position.Create(1, 2), CreateDiceRoller(5, true));
+            DoSimpleAttack(Position.Create(1, 1), Position.Create(1, 2), CreateDiceRoller(15, 4), 4);
         }
 
-        private MockDiceRoller CreateDiceRoller(int roll, bool hit)
+        [Test]
+        public void CriticalAttack()
         {
-            var diceRoller = new MockDiceRoller();
-            diceRoller.MockCheck = hit; // = hit
-            diceRoller.MockRoll = roll; // = damage
+            DoSimpleAttack(Position.Create(1, 1), Position.Create(1, 2), CreateDiceRoller(20, 4), 8);
+        }
+
+        private DiceRoller CreateDiceRoller(int d20Roll, int d4Roll)
+        {
+            var diceRandomizer = new Mock<IDiceRandomizer>();
+            diceRandomizer.Setup(dr => dr.Roll(20)).Returns(d20Roll);
+            diceRandomizer.Setup(dr => dr.Roll(4)).Returns(d4Roll);
+
+            var diceRoller = new DiceRoller(diceRandomizer.Object);
             return diceRoller;
         }
 
-        private void DoSimpleAttack(Position attackerPosition, Position targetPosition, MockDiceRoller diceRoller)
+        private void DoSimpleAttack(Position attackerPosition, Position targetPosition, IDiceRoller diceRoller, int expectedDamage)
         {
             var board = new Board(10, 10);
             var game = new Game(board, diceRoller);
 
             var char1 = Factory.CreateCharacter("dummy1");
             game.AddCharacter(char1, attackerPosition);
-            game.EquipWeapon(char1, WeaponFactory.Dagger());
+            game.EquipWeapon(char1, WeaponFactory.Dagger()); // damage = D4
 
             var char2 = Factory.CreateCharacter("dummy2");
             game.AddCharacter(char2, targetPosition);
@@ -49,10 +58,10 @@ namespace DndTable.Core.Test.UnitTests
 
 
             meleeAttack.Target(char2).Do();
-            Assert.AreEqual(5, char2.CharacterSheet.HitPoints);
+            Assert.AreEqual(10 - expectedDamage, char2.CharacterSheet.HitPoints);
 
             meleeAttack.Target(char2).Do();
-            Assert.AreEqual(0, char2.CharacterSheet.HitPoints);
+            Assert.AreEqual(10 - 2 * expectedDamage, char2.CharacterSheet.HitPoints);
         }
 
         [TestCase(1, 1)]
@@ -68,7 +77,7 @@ namespace DndTable.Core.Test.UnitTests
             var attackerPosition = Position.Create(2, 2);
             var targetPosition = Position.Create(targetPositionX, targetPositionY);
 
-            DoSimpleAttack(attackerPosition, targetPosition, CreateDiceRoller(5, true));
+            DoSimpleAttack(attackerPosition, targetPosition, CreateDiceRoller(15, 4), 4);
         }
 
         [TestCase(0, 0)]
@@ -85,7 +94,7 @@ namespace DndTable.Core.Test.UnitTests
             var attackerPosition = Position.Create(2, 2);
             var targetPosition = Position.Create(targetPositionX, targetPositionY);
 
-            DoSimpleAttack(attackerPosition, targetPosition, CreateDiceRoller(5, true));
+            DoSimpleAttack(attackerPosition, targetPosition, CreateDiceRoller(15, 4), 4);
         }
     }
 }

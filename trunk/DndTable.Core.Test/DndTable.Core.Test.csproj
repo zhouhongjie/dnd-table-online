@@ -46,11 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mocks\MockDiceRoller.cs" />
     <Compile Include="UnitTests\AttackRollTest.cs" />
     <Compile Include="UnitTests\BoardTest.cs" />
     <Compile Include="UnitTests\CharacterSheetTest.cs" />
     <Compile Include="UnitTests\MeleeAttackTest.cs" />
+    <Compile Include="UnitTests\MoveAttackOfOpportunityTest.cs" />
     <Compile Include="UnitTests\ShadowCasterTest.cs" />
     <Compile Include="UserTests\CombatScenarioTest.cs" />
     <Compile Include="UnitTests\GameTest.cs" />
@@ -65,6 +65,9 @@
       <Project>{AF9E6D0F-FD71-4A92-85DD-60ECB89E0159}</Project>
       <Name>DndTable.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Mocks\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
