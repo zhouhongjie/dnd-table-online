@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace DndTable.UnityUI
 {
-    public class MapEditorUI
+    public class MapEditorUI : BaseActionUI
     {
         private IGame _game;
         private TileSelectorUI _selector;
@@ -19,7 +19,7 @@ namespace DndTable.UnityUI
             _selector = new TileSelectorUI();
         }
 
-        public void Update()
+        public override void Update()
         {
             _selector.Update();
 
@@ -42,8 +42,9 @@ namespace DndTable.UnityUI
             }
         }
 
-        public void Stop()
+        public override void Stop()
         {
+            IsDone = true;
             _selector.Stop();
         }
 
