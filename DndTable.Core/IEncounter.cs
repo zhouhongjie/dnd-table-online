@@ -9,6 +9,8 @@ namespace DndTable.Core
 {
     public interface IEncounter
     {
+        List<ICharacter> Participants { get; }
+
         ICharacter GetCurrentCharacter();
         ICharacter GetNextCharacter();
 

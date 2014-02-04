@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
+using DndTable.Core.Factories;
 
 namespace DndTable.Core.Actions
 {
@@ -30,12 +31,14 @@ namespace DndTable.Core.Actions
         protected IDiceRoller DiceRoller { get; private set; }
         protected Encounter Encounter { get; private set; }
         protected Board Board { get; private set; }
+        protected AbstractActionFactory ActionFactory { get; private set; }
 
-        internal void Initialize(IDiceRoller diceRoller, Encounter encounter, Board board)
+        internal void Initialize(AbstractActionFactory actionFactory)
         {
-            DiceRoller = diceRoller;
-            Encounter = encounter;
-            Board = board;
+            ActionFactory = actionFactory;
+            DiceRoller = actionFactory.DiceRoller;
+            Encounter = actionFactory.Encounter;
+            Board = actionFactory.Board;
         }
 
         protected void Register()

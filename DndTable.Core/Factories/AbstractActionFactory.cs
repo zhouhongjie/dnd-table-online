@@ -10,21 +10,21 @@ namespace DndTable.Core.Factories
 {
     public class AbstractActionFactory
     {
-        private readonly Encounter _encounter;
-        private readonly Board _board;
-        private readonly IDiceRoller _diceRoller;
+        internal Encounter Encounter { get; private set; }
+        internal Board Board  { get; private set; }
+        internal IDiceRoller DiceRoller { get; private set; }
 
         internal AbstractActionFactory(Encounter encounter, Board board, IDiceRoller diceRoller)
         {
-            _encounter = encounter;
-            _board = board;
-            _diceRoller = diceRoller;
+            Encounter = encounter;
+            Board = board;
+            DiceRoller = diceRoller;
         }
 
         public IAttackAction MeleeAttack(ICharacter attacker)
         {
             var action = new AttackAction(attacker);
-            action.Initialize(_diceRoller, _encounter, _board);
+            action.Initialize(this);
             return action;
         }
 
@@ -36,7 +36,7 @@ namespace DndTable.Core.Factories
         public IMoveAction Move(ICharacter character)
         {
             var action = new MoveAction(character);
-            action.Initialize(_diceRoller, _encounter, _board);
+            action.Initialize(this);
             return action;
         }
     }

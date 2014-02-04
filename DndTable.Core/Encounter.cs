@@ -9,16 +9,29 @@ using DndTable.Core.Factories;
 
 namespace DndTable.Core
 {
+    class RoundInfo
+    {
+        public int AttackOfOpportunityCounter;
+
+        public void Reset()
+        {
+            AttackOfOpportunityCounter = 0;
+        }
+    }
+        
+
     class Encounter : IEncounter
     {
+        public List<ICharacter> Participants { get; private set; }
+
         private AbstractActionFactory _actionFactory;
         private Board _gameBoard;
 
-        private List<ICharacter> _participants;
         private int _currentIndex = 0;
         private int _currentRound = 0;
 
         private List<ActionTypeEnum> _actionDoneByCurrentChar = new List<ActionTypeEnum>();
+        private Dictionary<ICharacter, RoundInfo> _roundInfo = new Dictionary<ICharacter, RoundInfo>();
 
 
         internal Encounter(Board gameBoard, IDiceRoller diceRoller, List<ICharacter> participants)
@@ -26,7 +39,7 @@ namespace DndTable.Core
             _actionFactory = new AbstractActionFactory(this, gameBoard, diceRoller);
             _gameBoard = gameBoard;
 
-            _participants = DoInitiaticeChecks(diceRoller, participants);
+            Participants = DoInitiaticeChecks(diceRoller, participants);
 
             //_gameBoard.CalculateFieldOfView(GetCurrentCharacter().Position);
         }
@@ -64,18 +77,19 @@ namespace DndTable.Core
 
         public ICharacter GetCurrentCharacter()
         {
-            return _participants[_currentIndex];
+            return Participants[_currentIndex];
         }
 
         public ICharacter GetNextCharacter()
         {
-            if (_currentIndex++ >= _participants.Count - 1)
+            if (_currentIndex++ >= Participants.Count - 1)
             {
                 _currentRound++;
                 _currentIndex = 0;
             }
 
             _actionDoneByCurrentChar.Clear();
+            GetRoundInfo(GetCurrentCharacter()).Reset();
 
             return GetCurrentCharacter();
         }
@@ -112,6 +126,17 @@ namespace DndTable.Core
             }
 
             return actions;
+        }
+
+        public RoundInfo GetRoundInfo(ICharacter participant)
+        {
+            RoundInfo roundInfo;
+            if (!_roundInfo.TryGetValue(participant, out roundInfo))
+            {
+                roundInfo = new RoundInfo();
+                _roundInfo.Add(participant, roundInfo);
+            }
+            return roundInfo;
         }
     }
 }
