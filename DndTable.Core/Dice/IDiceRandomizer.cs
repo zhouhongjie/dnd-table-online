@@ -1,6 +1,6 @@
 ﻿namespace DndTable.Core.Dice
 {
-    internal interface IDiceRandomizer
+    public interface IDiceRandomizer
     {
         int Roll(int d);
     }

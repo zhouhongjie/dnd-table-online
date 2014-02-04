@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DndTable.Core.Dice;
 using NUnit.Framework;
 
 namespace DndTable.Core.Test.UnitTests
@@ -9,34 +10,43 @@ namespace DndTable.Core.Test.UnitTests
     [TestFixture]
     public class AttackRollTest
     {
-        [Test]
-        public void SuccessTest()
+        [TestCase(0, 9, false)]
+        [TestCase(0, 10, true)]
+        [TestCase(1, 9, true)]
+        public void SuccessTest(int bonus, int roll, bool shouldHit)
         {
-            throw new NotImplementedException();
+            var attackRoll = new AttackRoll(null, DiceRollEnum.Attack, bonus, roll, 10, 20);
+            Assert.AreEqual(shouldHit, attackRoll.Success);
         }
 
-        [Test]
-        public void AutoSuccessTest()
+        [TestCase(0)]
+        [TestCase(10)]
+        [TestCase(20)]
+        [TestCase(100)]
+        public void AutoSuccessTest(int ac)
         {
-            throw new NotImplementedException();
+            var attackRoll = new AttackRoll(null, DiceRollEnum.Attack, 0, 20, 10, ac);
+            Assert.That(attackRoll.Success);
         }
 
-        [Test]
-        public void FailTest()
+        [TestCase(0)]
+        [TestCase(10)]
+        [TestCase(20)]
+        [TestCase(100)]
+        public void AutoFailTest(int ac)
         {
-            throw new NotImplementedException();
+            var attackRoll = new AttackRoll(null, DiceRollEnum.Attack, 0, 1, 10, ac);
+            Assert.That(!attackRoll.Success);
         }
 
-        [Test]
-        public void AutoFailTest()
+        [TestCase(19, 20, false)]
+        [TestCase(19, 19, true)]
+        [TestCase(20, 20, true)]
+        [TestCase(20, 19, true)]
+        public void ThreatTest(int roll, int threatRange, bool shouldThreat)
         {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void ThreatTest()
-        {
-            throw new NotImplementedException();
+            var attackRoll = new AttackRoll(null, DiceRollEnum.Attack, 5, roll, 10, threatRange);
+            Assert.AreEqual(shouldThreat, attackRoll.IsThreat);
         }
     }
 }

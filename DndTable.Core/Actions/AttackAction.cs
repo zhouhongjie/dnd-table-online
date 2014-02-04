@@ -55,9 +55,9 @@ namespace DndTable.Core.Actions
             var check = DiceRoller.RollAttack(
                 _attacker, 
                 DiceRollEnum.Attack,
-                _targetCharacter.CharacterSheet.GetCurrentAttackBonus((int)rangeRounded * 5),  // Convert tiles to feet
+                _attacker.CharacterSheet.GetCurrentAttackBonus((int)rangeRounded * 5),  // Convert tiles to feet
                 _targetCharacter.CharacterSheet.ArmorClass,
-                20 - _targetCharacter.CharacterSheet.EquipedWeapon.CriticalRange);
+                20 - _attacker.CharacterSheet.EquipedWeapon.CriticalRange);
 
             if (!check.Success)
                 return;
