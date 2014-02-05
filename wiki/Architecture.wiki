@@ -2,6 +2,7 @@
 
 = Current architecture =
 
+https://docs.google.com/drawings/d/1uzcJCdTAaoNIJGmh0EMwcskihGyuwJqmcuthNdSPfrU/pub?w=627&h=158&nonsense=dummy.jpg
 
 = Envisioned architecture =
 
