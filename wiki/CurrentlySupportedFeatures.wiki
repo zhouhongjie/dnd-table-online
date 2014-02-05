@@ -10,6 +10,8 @@
   * Dagger
   * Light crossbow
 
+ * Initiative
+
  * Attack
   * Critical hits
   * Simple ranged
