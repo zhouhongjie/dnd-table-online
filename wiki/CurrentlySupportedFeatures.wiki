@@ -18,6 +18,7 @@
 
  * Standard move
 
+ * Field of view calculation & visualisation
 
 = DM mode =
 
