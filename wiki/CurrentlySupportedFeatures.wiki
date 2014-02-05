@@ -18,7 +18,7 @@
    * + Attack of opportinity
   * Simple melee
 
- * Standard move
+ * Standard move (tile by tile)
 
  * Field of view calculation & visualisation
 
