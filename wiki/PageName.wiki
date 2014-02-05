@@ -1,0 +1,7 @@
+#summary References to related projects around the web
+
+
+ * http://roll20.net/
+ * http://www.fantasygrounds.com/home/
+ * http://www.inkarnate.com/
+ * http://www.socalled.org/vd/
