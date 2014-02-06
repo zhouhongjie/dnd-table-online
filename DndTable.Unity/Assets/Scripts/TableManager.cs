@@ -285,12 +285,24 @@ public class TableManager : MonoBehaviour
         // CharacterSheetInfo
         if (entity is ICharacter)
         {
+            var charName = (entity as ICharacter).CharacterSheet.Name;
+            var texture = Resources.Load<Texture2D>(charName);
+
+            ApplyTextureToChild(newObj, "Body", texture);
+            ApplyTextureToChild(newObj, "Foot", texture);
+
             var caracterSheetInfoScript = newObj.GetComponent("CharacterSheetInfo") as CharacterSheetInfo;
             if (caracterSheetInfoScript != null)
             {
                 caracterSheetInfoScript.Character = entity as ICharacter;
             }
         }
+    }
 
+    private static void ApplyTextureToChild(Transform parent, string childName, Texture2D texture)
+    {
+        var body = parent.FindChild(childName);
+        if (body != null)
+            body.renderer.material.mainTexture = texture;
     }
 }
