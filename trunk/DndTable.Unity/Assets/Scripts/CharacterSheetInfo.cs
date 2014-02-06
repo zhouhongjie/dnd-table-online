@@ -16,7 +16,7 @@ public class CharacterSheetInfo : MonoBehaviour {
         if (Camera.main == null)
             return;
 
-        const float offset = 0.2f;
+        const float offset = 1.5f;
 
         var topOfAvatar = transform.position;
         topOfAvatar.y += transform.lossyScale.y + offset;
