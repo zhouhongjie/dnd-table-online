@@ -297,6 +297,16 @@ public class TableManager : MonoBehaviour
                 caracterSheetInfoScript.Character = entity as ICharacter;
             }
         }
+
+        // Wall
+        {
+            var script = newObj.GetComponent("WallScript") as WallScript;
+            if (script != null)
+            {
+                script.Wall = entity;
+                script.GameBoard = Game.GameBoard;
+            }
+        }
     }
 
     private static void ApplyTextureToChild(Transform parent, string childName, Texture2D texture)

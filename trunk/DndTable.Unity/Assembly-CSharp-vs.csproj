@@ -52,6 +52,7 @@
      <Compile Include="Assets\Scripts\FreeCamera.cs" />
      <Compile Include="Assets\Scripts\MoveCamera.cs" />
      <Compile Include="Assets\Scripts\TableManager.cs" />
+     <Compile Include="Assets\Scripts\WallScript.cs" />
  <Reference Include="Assembly-UnityScript-firstpass">
  <HintPath>Library\ScriptAssemblies\Assembly-UnityScript-firstpass.dll</HintPath>
  </Reference>

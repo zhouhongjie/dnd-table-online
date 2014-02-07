@@ -52,6 +52,7 @@
      <Compile Include="Assets\Scripts\FreeCamera.cs" />
      <Compile Include="Assets\Scripts\MoveCamera.cs" />
      <Compile Include="Assets\Scripts\TableManager.cs" />
+     <Compile Include="Assets\Scripts\WallScript.cs" />
  <Reference Include="DndTable.Core">
  <HintPath>Assets\Libs\DndTable.Core.dll</HintPath>
  </Reference>
