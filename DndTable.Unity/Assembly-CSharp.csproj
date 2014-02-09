@@ -50,7 +50,12 @@
      <Compile Include="Assets\Scripts\EntityScript.cs" />
      <Compile Include="Assets\Scripts\EntitySelector.cs" />
      <Compile Include="Assets\Scripts\FreeCamera.cs" />
+     <Compile Include="Assets\Scripts\Helpers\LerpInfo.cs" />
+     <Compile Include="Assets\Scripts\Helpers\Singleton.cs" />
+     <Compile Include="Assets\Scripts\IndicatorScript.cs" />
+     <Compile Include="Assets\Scripts\MouseOrbitImproved.cs" />
      <Compile Include="Assets\Scripts\MoveCamera.cs" />
+     <Compile Include="Assets\Scripts\PlayerCameraManager.cs" />
      <Compile Include="Assets\Scripts\TableManager.cs" />
      <Compile Include="Assets\Scripts\WallScript.cs" />
  <Reference Include="DndTable.Core">

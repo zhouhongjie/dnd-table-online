@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Assets.Scripts.Helpers;
 using DndTable.Core;
 using DndTable.Core.Entities;
 using UnityEngine;
@@ -75,48 +76,5 @@ public class EntityScript : MonoBehaviour {
     private static double RadianToDegree(double angle)
     {
         return angle * (180.0 / Math.PI);
-    }
-}
-
-class LerpInfo
-{
-    private Vector3 _endMarker;
-    private Vector3 _current;
-
-    private Vector3 _step;
-    private int _stepCounter;
-
-    private int _nrOfSteps = 1;
-
-    public LerpInfo(Vector3 start, int nrOfStep)
-    {
-        _current = start;
-        _nrOfSteps = nrOfStep;
-
-        SetNewTarget(start);
-    }
-
-    private void SetNewTarget(Vector3 newTarget)
-    {
-        if (newTarget == _endMarker)
-            return;
-
-        _endMarker = newTarget;
-
-        _step = (_endMarker - _current) / _nrOfSteps;
-        _stepCounter = 0;
-    }
-
-    public Vector3 UpdateLerp(Vector3 newTarget)
-    {
-        SetNewTarget(newTarget);
-
-        if (_stepCounter >= _nrOfSteps)
-            return _current;
-
-        _current += _step;
-        _stepCounter++;
-
-        return _current;
     }
 }
