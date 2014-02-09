@@ -19,9 +19,20 @@ public class TableManager : MonoBehaviour
     public Transform PlayerTemplate;
     public Transform WallTemplate;
 
+    public Camera PlayerCameraTemplate;
+    public Transform IndicatorTemplate;
+
 
     public IGame Game;
     public IEncounter CurrentEncounter;
+
+    public Transform GetCurrentCharacterTransform()
+    {
+        if (CurrentPlayer == null)
+            return null;
+
+        return _entityIdToTransformMap[CurrentPlayer.Id];
+    }
 
     private BaseActionUI  _currentActionUI;
 
@@ -32,7 +43,7 @@ public class TableManager : MonoBehaviour
 
     private ModeEnum _mode = ModeEnum.Player;
 
-    private HashSet<int> _entityIds = new HashSet<int>();
+    private Dictionary<int, Transform> _entityIdToTransformMap = new Dictionary<int, Transform>();
 
 	// Use this for initialization
 	void Start ()
@@ -60,17 +71,20 @@ public class TableManager : MonoBehaviour
 	        CurrentEncounter = Game.StartEncounter(new List<ICharacter>() { regdar, tordek });
         }
 
+	    CreateSupportObjects();
         CreateBoard();
         UpdateEntities();
     }
-	
-	// Update is called once per frame
+
+    // Update is called once per frame
 	void Update ()
 	{
         UpdateEntities();
 	    UpdateEditorMode();
 
         //ProcessUserInput();
+        UpdateFieldOfView();
+
 
         if (_currentActionUI != null && !_currentActionUI.IsDone)
             _currentActionUI.Update();
@@ -104,8 +118,6 @@ public class TableManager : MonoBehaviour
     {
         if (!Application.isEditor)  // or check the app debug flag
             return;
-
-        UpdateFieldOfView();
 
         UpdateCharacterMonitorUI();
         UpdateDiceMonitorUI();
@@ -195,6 +207,12 @@ public class TableManager : MonoBehaviour
         for (var i=0; i < transform.childCount; i++)
         {
             var child = transform.GetChild(i);
+
+            if (child.position.x < 0 || child.position.x > fieldOfView.GetLength(0))
+                throw new IndexOutOfRangeException("FieldOfView problem with child '" + child.name + "' @ position.x: " + child.position.x);
+            if (child.position.z < 0 || child.position.z > fieldOfView.GetLength(0))
+                throw new IndexOutOfRangeException("FieldOfView problem with child '" + child.name + "' @ position.z: " + child.position.z);
+
             bool isVisible = fieldOfView[(int)child.position.x, (int)child.position.z];
 
             SetColorRecursive(child.transform, isVisible ? Color.white : Color.gray);
@@ -233,38 +251,73 @@ public class TableManager : MonoBehaviour
                 var entity = Game.GameBoard.GetEntity(Position.Create(i, j));
                 if (entity != null)
                 {
-                    if (_entityIds.Contains(entity.Id))
+                    if (_entityIdToTransformMap.ContainsKey(entity.Id))
                         continue;
+
+                    Transform newTransform = null;
 
                     if (entity.EntityType == EntityTypeEnum.Character)
                     {
-                        CreateEntity(PlayerTemplate, i, j, entity);
+                        newTransform = CreateEntity(PlayerTemplate, i, j, entity);
                     }
                     else if (entity.EntityType == EntityTypeEnum.Wall)
                     {
-                        CreateEntity(WallTemplate, i, j, entity);
+                        newTransform = CreateEntity(WallTemplate, i, j, entity);
                     }
                     else
                     {
                         throw new NotSupportedException("EntityType does not have a template Transform: " + entity.EntityType);
                     }
 
-                    _entityIds.Add(entity.Id);
+                    _entityIdToTransformMap.Add(entity.Id, newTransform);
                 }
             }
+        }
+    }
+
+    private void CreateSupportObjects()
+    {
+        var indicator = CreateIndicator();
+        CreateCamera(indicator);
+    }
+
+    private Transform CreateIndicator()
+    {
+        var newObj = (Transform) Instantiate(IndicatorTemplate);
+
+        // Set as child
+        newObj.transform.parent = transform;
+
+        return newObj;
+    }
+
+    private void CreateCamera(Transform indicator)
+    {
+        var position = new Vector3(0, 20, 0);
+        var newObj = (Component)Instantiate(PlayerCameraTemplate, position, Quaternion.identity);
+
+        // Do NOT Set as child => will cause problems with FoV markers (camera can be outside the board dimensions)
+        // TODO: keep the gameBoard entities & helper entities in different root containers
+        //newObj.transform.parent = transform;
+
+        // Point @ indicator
+        var cameraScript = newObj.transform.GetComponent("MouseOrbitImproved") as MouseOrbitImproved;
+        if (cameraScript != null)
+        {
+            cameraScript.target = indicator;
         }
     }
 
     private void CreateTile(int i, int j)
     {
         Vector3 position = new Vector3(i, 0, j);
-        Transform newObj = (Transform)Instantiate(TileTemplate, position, Quaternion.identity);
+        var newObj = (Component)Instantiate(TileTemplate, position, Quaternion.identity);
 
         // Set as child
         newObj.transform.parent = transform;
     }
 
-    private void CreateEntity(Transform template, int i, int j, IEntity entity)
+    private Transform CreateEntity(Transform template, int i, int j, IEntity entity)
     {
         Vector3 position = new Vector3(i, 0, j);
         Transform newObj = (Transform)Instantiate(template, position, Quaternion.identity);
@@ -291,10 +344,10 @@ public class TableManager : MonoBehaviour
             ApplyTextureToChild(newObj, "Body", texture);
             ApplyTextureToChild(newObj, "Foot", texture);
 
-            var caracterSheetInfoScript = newObj.GetComponent("CharacterSheetInfo") as CharacterSheetInfo;
-            if (caracterSheetInfoScript != null)
+            var characterSheetInfoScript = newObj.GetComponent("CharacterSheetInfo") as CharacterSheetInfo;
+            if (characterSheetInfoScript != null)
             {
-                caracterSheetInfoScript.Character = entity as ICharacter;
+                characterSheetInfoScript.Character = entity as ICharacter;
             }
         }
 
@@ -307,6 +360,8 @@ public class TableManager : MonoBehaviour
                 script.GameBoard = Game.GameBoard;
             }
         }
+
+        return newObj;
     }
 
     private static void ApplyTextureToChild(Transform parent, string childName, Texture2D texture)
