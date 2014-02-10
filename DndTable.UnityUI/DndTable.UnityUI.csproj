@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="AttackActionUI.cs" />
     <Compile Include="BaseActionUI.cs" />
+    <Compile Include="StraightLineMoveUI.cs" />
     <Compile Include="MoveActionUI.cs" />
     <Compile Include="MapEditorUI.cs" />
     <Compile Include="MoveActionUI_ByPath.cs" />

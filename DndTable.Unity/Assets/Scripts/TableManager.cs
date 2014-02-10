@@ -107,7 +107,7 @@ public class TableManager : MonoBehaviour
 
     private void StopCurrentAction()
     {
-        if (_currentActionUI != null)
+        if (_currentActionUI != null && !_currentActionUI.IsDone)
             _currentActionUI.Stop();
         _currentActionUI = null;
     }
@@ -142,6 +142,18 @@ public class TableManager : MonoBehaviour
 
     private void UpdatePossibleActionsUI()
     {
+        // Check for a Multi-step operation (needs to be stopped before chosing a new action)
+        if (_currentActionUI != null && !_currentActionUI.IsDone && _currentActionUI.IsMultiStep)
+        {
+            GUI.color = Color.yellow;
+            if (GUI.Button(new Rect(10, 70, 300, 30), "Stop current action"))
+            {
+                _currentActionUI.Stop();
+            }
+            return;
+        }
+
+
         var offset = 0;
         foreach (var action in CurrentEncounter.GetPossibleActionsForCurrentCharacter())
         {
@@ -157,6 +169,10 @@ public class TableManager : MonoBehaviour
                 {
                     _currentActionUI = new AttackActionUI(Game, action as IAttackAction, CurrentPlayer);
                 }
+                else if (action is IStraightLineMove)
+                {
+                    _currentActionUI = new StraightLineMoveUI(Game, action as IStraightLineMove, CurrentPlayer);
+                }
                 else
                 {
                     throw new NotSupportedException("TODO: UI for " + action);
@@ -165,7 +181,7 @@ public class TableManager : MonoBehaviour
 
             offset += 35;
         }
-        if (GUI.Button(new Rect(10, 70 + offset, 300, 30), "Click next player"))
+        if (GUI.Button(new Rect(10, 70 + offset, 300, 30), "Next player"))
             CurrentEncounter.GetNextCharacter();
     }
 

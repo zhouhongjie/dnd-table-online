@@ -15,12 +15,21 @@ namespace DndTable.UnityUI
         private bool _doRangeCheck;
         private Position _rangeCheckCenter;
         private int _rangeCheckMaxRange;
+        private int _rangeCheckMinRange = 1;
 
         public void InitializeRangeCheck(Position center, int rangeInTiles)
         {
             _doRangeCheck = true;
             _rangeCheckCenter = center;
             _rangeCheckMaxRange = rangeInTiles;
+        }
+
+        public void InitializeRangeCheck(Position center, int minRangeInTiles, int maxRangeInTiles)
+        {
+            _doRangeCheck = true;
+            _rangeCheckCenter = center;
+            _rangeCheckMinRange = minRangeInTiles;
+            _rangeCheckMaxRange = maxRangeInTiles;
         }
 
         public void Update()
@@ -93,7 +102,8 @@ namespace DndTable.UnityUI
             var distance = GetDistance(_rangeCheckCenter, Position.Create((int)target.position.x, (int)target.position.z));
             var distanceRounded = (int)Math.Floor(distance);
 
-            return distanceRounded <= _rangeCheckMaxRange;
+            return distanceRounded <= _rangeCheckMaxRange &&
+                   distanceRounded >= _rangeCheckMinRange;
         }
 
         protected static double GetDistance(Position position1, Position position2)
