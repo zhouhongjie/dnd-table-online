@@ -20,6 +20,8 @@ namespace DndTable.UnityUI
 
         public MoveActionUI(ICharacter currentPlayer, IMoveAction moveAction)
         {
+            IsMultiStep = true;
+
             _currentPlayer = currentPlayer;
             _moveAction = moveAction;
             _selector = new TileSelectorUI();
@@ -58,7 +60,5 @@ namespace DndTable.UnityUI
             _selector.Stop();
             IsDone = true;
         }
-
-  
     }
 }

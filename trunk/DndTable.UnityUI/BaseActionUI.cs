@@ -8,6 +8,7 @@ namespace DndTable.UnityUI
     public abstract class BaseActionUI
     {
         public bool IsDone { get; protected set; }
+        public bool IsMultiStep { get; protected set; }
 
         public abstract void Update();
         public abstract void Stop();

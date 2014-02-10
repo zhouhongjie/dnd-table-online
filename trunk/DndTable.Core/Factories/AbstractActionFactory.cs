@@ -39,5 +39,12 @@ namespace DndTable.Core.Factories
             action.Initialize(this);
             return action;
         }
+
+        public IStraightLineMove FiveFootStep(ICharacter character)
+        {
+            var action = new FiveFootStep(character);
+            action.Initialize(this);
+            return action;
+        }
     }
 }

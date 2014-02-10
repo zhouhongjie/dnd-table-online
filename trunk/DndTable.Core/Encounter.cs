@@ -12,10 +12,12 @@ namespace DndTable.Core
     class RoundInfo
     {
         public int AttackOfOpportunityCounter;
+        public Position StartPosition;
 
-        public void Reset()
+        public void Reset(ICharacter character)
         {
             AttackOfOpportunityCounter = 0;
+            StartPosition = character.Position;
         }
     }
         
@@ -40,6 +42,9 @@ namespace DndTable.Core
             _gameBoard = gameBoard;
 
             Participants = DoInitiaticeChecks(diceRoller, participants);
+
+            // Init roundInfo
+            GetRoundInfo(GetCurrentCharacter()).Reset(GetCurrentCharacter());
 
             //_gameBoard.CalculateFieldOfView(GetCurrentCharacter().Position);
         }
@@ -88,10 +93,12 @@ namespace DndTable.Core
                 _currentIndex = 0;
             }
 
-            _actionDoneByCurrentChar.Clear();
-            GetRoundInfo(GetCurrentCharacter()).Reset();
+            var current = GetCurrentCharacter();
 
-            return GetCurrentCharacter();
+            _actionDoneByCurrentChar.Clear();
+            GetRoundInfo(current).Reset(current);
+
+            return current;
         }
 
         public int GetRound()
@@ -103,11 +110,11 @@ namespace DndTable.Core
         {
             var actions = new List<IAction>();
 
-            // 2 partial actions done
+            // 2 Standard actions done
             if (_actionDoneByCurrentChar.Count(a => (a == ActionTypeEnum.MoveEquivalent) || (a == ActionTypeEnum.Standard)) >= 2)
                 return actions;
 
-            // Check partial actions
+            // Check Standard actions
             if (!_actionDoneByCurrentChar.Contains(ActionTypeEnum.Standard))
             {
                 if (GetCurrentCharacter().CharacterSheet.EquipedWeapon != null)
@@ -120,9 +127,16 @@ namespace DndTable.Core
             }
 
             // Check MoveEquivalent actions
-            if (_actionDoneByCurrentChar.Count(a => a == ActionTypeEnum.MoveEquivalent) < 2)
+            if (_actionDoneByCurrentChar.Count(a => a == ActionTypeEnum.MoveEquivalent || a == ActionTypeEnum.FiveFootStep) < 2)
             {
                 actions.Add(_actionFactory.Move(GetCurrentCharacter()));
+            }
+
+            // Check 5-foot-move
+            // "If you move no actual distance in a round (commonly because you have swapped your move for one or more equivalent actions), you can take one 5-foot step either before, during, or after the action"
+            if (GetRoundInfo(GetCurrentCharacter()).StartPosition == GetCurrentCharacter().Position)
+            {
+                actions.Add(_actionFactory.FiveFootStep(GetCurrentCharacter()));
             }
 
             return actions;
