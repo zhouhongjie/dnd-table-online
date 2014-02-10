@@ -38,5 +38,21 @@ namespace DndTable.Core.Factories
 
             return weapon;
         }
+
+        public static IWeapon Club()
+        {
+            var weapon = new Weapon();
+
+            weapon.Proficiency = WeaponProficiencyEnum.Simple;
+            weapon.IsRanged = false;
+            weapon.DamageD = 6;
+            weapon.CriticalMultiplier = 2;
+            weapon.CriticalRange = 0;
+            weapon.RangeIncrement = 10;
+            weapon.Weight = 6; // ?
+            weapon.DamageTypes.Add(WeaponDamageTypeEnum.Bludgeoning);
+
+            return weapon;
+        }
     }
 }
