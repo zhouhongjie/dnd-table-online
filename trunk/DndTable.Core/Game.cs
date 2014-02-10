@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
+using DndTable.Core.Entities;
 using DndTable.Core.Factories;
 
 namespace DndTable.Core
@@ -41,14 +42,23 @@ namespace DndTable.Core
             return _gameBoard.AddEntity(Factory.CreateWall(), position);
         }
 
-        public void RemoveWall(Position selectedPosition)
+        public bool RemoveWall(Position selectedPosition)
         {
-            throw new NotImplementedException();
+            var entity = _gameBoard.GetEntity(selectedPosition);
+            if (entity == null || entity.EntityType != EntityTypeEnum.Wall)
+                return false;
+
+            return _gameBoard.RemoveEntity(selectedPosition);
         }
 
         public List<ICharacter> GetCharacters()
         {
             return _characters;
+        }
+
+        public IEncounter StartEncounter()
+        {
+            return StartEncounter(_characters);
         }
 
         public IEncounter StartEncounter(List<ICharacter> characters)

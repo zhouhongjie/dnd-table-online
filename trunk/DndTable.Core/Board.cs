@@ -142,5 +142,18 @@ namespace DndTable.Core
 
             return true;
         }
+
+        internal bool RemoveEntity(Position position)
+        {
+            if (!CheckBoundaries(position))
+                return false;
+
+            if (_cells[position.X, position.Y] == null)
+                return false;
+
+            _cells[position.X, position.Y] = null;
+
+            return true;
+        }
     }
 }

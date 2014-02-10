@@ -60,6 +60,11 @@ public class TableManager : MonoBehaviour
             Game.AddCharacter(regdar, Position.Create(10, 10));
             Game.AddCharacter(tordek, Position.Create(10, 20));
 
+            // Orcs
+            Game.AddCharacter(Factory.CreateOrc(), Position.Create(20, 20));
+            Game.AddCharacter(Factory.CreateOrc(), Position.Create(20, 21));
+            Game.AddCharacter(Factory.CreateOrc(), Position.Create(20, 22));
+
             // Walls
             Game.AddWall(Position.Create(5, 5));
             Game.AddWall(Position.Create(5, 6));
@@ -68,7 +73,7 @@ public class TableManager : MonoBehaviour
             Game.AddWall(Position.Create(5, 10));
 
             // Start encounter
-	        CurrentEncounter = Game.StartEncounter(new List<ICharacter>() { regdar, tordek });
+	        CurrentEncounter = Game.StartEncounter();
         }
 
 	    CreateSupportObjects();
@@ -260,6 +265,8 @@ public class TableManager : MonoBehaviour
 
     private void UpdateEntities()
     {
+        var currentEntities = new HashSet<int>();
+
         for (int i=0; i < Game.GameBoard.MaxX; i++)
         {
             for (int j=0; j < Game.GameBoard.MaxY; j++)
@@ -267,6 +274,9 @@ public class TableManager : MonoBehaviour
                 var entity = Game.GameBoard.GetEntity(Position.Create(i, j));
                 if (entity != null)
                 {
+                    currentEntities.Add(entity.Id);
+
+                    // Add new
                     if (_entityIdToTransformMap.ContainsKey(entity.Id))
                         continue;
 
@@ -288,6 +298,17 @@ public class TableManager : MonoBehaviour
                     _entityIdToTransformMap.Add(entity.Id, newTransform);
                 }
             }
+        }
+
+        // Delete no longer existing
+        var transformMapCopy = new Dictionary<int, Transform>(_entityIdToTransformMap);
+        foreach (var kvp in transformMapCopy)
+        {
+            if (currentEntities.Contains(kvp.Key))
+                continue;
+
+            _entityIdToTransformMap.Remove(kvp.Key);
+            Destroy(kvp.Value.gameObject);
         }
     }
 
