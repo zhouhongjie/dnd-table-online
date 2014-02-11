@@ -37,21 +37,22 @@ namespace DndTable.Core.Factories
         {
             var sheet = new CharacterSheet();
 
-            sheet.Name = "orc";
+            sheet.Name = "Orc";
+            sheet.Race = CharacterRace.Orc;
 
             //var diceRoller = new DiceRoller();
-            sheet.Strength = 12;
+            sheet.Strength = 15;
             sheet.Dexterity = 10;
-            sheet.Constitution = 12;
-            sheet.Intelligent = 8;
-            sheet.Wisdom = 10;
+            sheet.Constitution = 11;
+            sheet.Intelligent = 9;
+            sheet.Wisdom = 8;
             sheet.Charisma = 8;
 
-            sheet.HitPoints = 10;
+            sheet.HitPoints = 4;
             sheet.Speed = 30;
 
             sheet.EquipedWeapon = WeaponFactory.Club();
-            sheet.EquipedArmor = ArmorFactory.Leather();
+            sheet.EquipedArmor = ArmorFactory.ScaleMail();
 
             return new Character(sheet);
         }

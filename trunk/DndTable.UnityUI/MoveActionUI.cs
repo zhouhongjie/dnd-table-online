@@ -25,7 +25,7 @@ namespace DndTable.UnityUI
             _currentPlayer = currentPlayer;
             _moveAction = moveAction;
             _selector = new TileSelectorUI();
-            _maxNrOfSteps = _currentPlayer.CharacterSheet.Speed/5;
+            _maxNrOfSteps = moveAction.MaxRange;
 
             // One by one steps
             _selector.InitializeRangeCheck(currentPlayer.Position, 1);

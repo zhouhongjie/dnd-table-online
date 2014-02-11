@@ -3,6 +3,7 @@
     public interface ICharacterSheet
     {
         string Name { get; }
+        CharacterRace Race { get; }
 
         int Strength { get; }
         int Dexterity { get; }
@@ -31,5 +32,6 @@
 
         int GetCurrentAttackBonus(int range);
         int GetCurrentDamageBonus();
+        int GetCurrentSpeed();
     }
 }
