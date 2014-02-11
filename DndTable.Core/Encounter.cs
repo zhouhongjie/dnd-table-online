@@ -13,11 +13,15 @@ namespace DndTable.Core
     {
         public int AttackOfOpportunityCounter;
         public Position StartPosition;
+        public int AttackBonus;
+        public int ArmorBonus;
 
         public void Reset(ICharacter character)
         {
             AttackOfOpportunityCounter = 0;
             StartPosition = character.Position;
+            AttackBonus = 0;
+            ArmorBonus = 0;
         }
     }
         
@@ -33,8 +37,6 @@ namespace DndTable.Core
         private int _currentRound = 0;
 
         private List<ActionTypeEnum> _actionDoneByCurrentChar = new List<ActionTypeEnum>();
-        private Dictionary<ICharacter, RoundInfo> _roundInfo = new Dictionary<ICharacter, RoundInfo>();
-
 
         internal Encounter(Board gameBoard, IDiceRoller diceRoller, List<ICharacter> participants)
         {
@@ -139,18 +141,18 @@ namespace DndTable.Core
                 actions.Add(_actionFactory.FiveFootStep(GetCurrentCharacter()));
             }
 
+            // Check charge (= Full-round action)
+            if (_actionDoneByCurrentChar.Count == 0)
+            {
+                actions.Add(_actionFactory.Charge(GetCurrentCharacter()));
+            }
+
             return actions;
         }
 
         public RoundInfo GetRoundInfo(ICharacter participant)
         {
-            RoundInfo roundInfo;
-            if (!_roundInfo.TryGetValue(participant, out roundInfo))
-            {
-                roundInfo = new RoundInfo();
-                _roundInfo.Add(participant, roundInfo);
-            }
-            return roundInfo;
+            return (participant.CharacterSheet as CharacterSheet).CurrentRoundInfo;
         }
     }
 }

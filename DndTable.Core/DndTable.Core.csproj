@@ -40,13 +40,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\BaseAction.cs" />
+    <Compile Include="Actions\ChargeAction.cs" />
     <Compile Include="Actions\FiveFootStep.cs" />
     <Compile Include="Actions\IAttackAction.cs" />
     <Compile Include="Actions\IMoveAction.cs" />
     <Compile Include="Actions\AttackAction.cs" />
     <Compile Include="Actions\IStraightLineMove.cs" />
+    <Compile Include="Actions\MathHelper.cs" />
     <Compile Include="Actions\MoveAction.cs" />
     <Compile Include="Armor.cs" />
+    <Compile Include="Characters\CharacterRace.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="Characters\Character.cs" />

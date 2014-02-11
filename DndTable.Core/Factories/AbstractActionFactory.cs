@@ -46,5 +46,12 @@ namespace DndTable.Core.Factories
             action.Initialize(this);
             return action;
         }
+
+        public IAttackAction Charge(ICharacter character)
+        {
+            var action = new ChargeAction(character);
+            action.Initialize(this);
+            return action;
+        }
     }
 }

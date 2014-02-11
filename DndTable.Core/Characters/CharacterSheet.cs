@@ -5,6 +5,7 @@ namespace DndTable.Core.Characters
     public class CharacterSheet : ICharacterSheet
     {
         public string Name { get; internal set; }
+        public CharacterRace Race { get; internal set; }
 
         public int Strength { get; internal set; }
         public int Dexterity { get; internal set; }
@@ -42,6 +43,9 @@ namespace DndTable.Core.Characters
                 // Add armor (not touch, ...)
                 if (EquipedArmor != null)
                     result += EquipedArmor.ArmorBonus;
+
+                // RoundInfo
+                result += CurrentRoundInfo.ArmorBonus;
 
                 return result;
             }
@@ -81,13 +85,13 @@ namespace DndTable.Core.Characters
         {
             // Unarmed
             if (EquipedWeapon == null)
-                return MeleeAttackBonus;
+                return MeleeAttackBonus + CurrentRoundInfo.AttackBonus;
             // Ranged
             if (EquipedWeapon.IsRanged)
-                return GetRangedAttackBonus(range);
+                return GetRangedAttackBonus(range) + CurrentRoundInfo.AttackBonus;
             
             // Melee
-            return MeleeAttackBonus;
+            return MeleeAttackBonus + CurrentRoundInfo.AttackBonus;
         }
 
         public int GetCurrentDamageBonus()
@@ -107,9 +111,22 @@ namespace DndTable.Core.Characters
             return GetAbilityBonus(Strength);
         }
 
+        public int GetCurrentSpeed()
+        {
+            // TODO: encumbrance
+
+            if (EquipedArmor == null)
+                return Speed;
+
+            return EquipedArmor.AdjustedSpeed(Speed);
+        }
+
         private static int GetAbilityBonus(int baseAbiltyScore)
         {
             return (int)Math.Floor((baseAbiltyScore - 10) / 2.0);
         }
+
+        private RoundInfo _currentRoundInfo = new RoundInfo();
+        internal RoundInfo CurrentRoundInfo { get { return _currentRoundInfo; } }
     }
 }

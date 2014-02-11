@@ -9,6 +9,11 @@ namespace DndTable.Core.Actions
     {
         IAction Target(Position position);
 
+        /// <summary>
+        /// MaxRange in Tiles (not in feet)
+        /// </summary>
+        int MaxRange { get; }
+
         bool DoOneStep(Position newLocation);
     }
 }

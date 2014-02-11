@@ -8,6 +8,9 @@ namespace DndTable.Core.Actions
 {
     class MoveAction : BaseAction, IMoveAction
     {
+        public int MaxRange { get { return _maxNrOfSteps; } }
+
+
         private ICharacter _character;
         private int _maxNrOfSteps;
         private int _nrOfStepsCounter;
@@ -16,7 +19,7 @@ namespace DndTable.Core.Actions
         internal MoveAction(ICharacter character)
         {
             _character = character;
-            _maxNrOfSteps = character.CharacterSheet.Speed/5;
+            _maxNrOfSteps = character.CharacterSheet.GetCurrentSpeed()/ 5;
         }
 
         public override ActionTypeEnum Type

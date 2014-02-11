@@ -19,7 +19,7 @@ namespace DndTable.UnityUI
             _attackAction = attackAction;
             _selector = new TileSelectorUI();
 
-            _selector.InitializeRangeCheck(attacker.Position, attackAction.MaxRange);
+            _selector.InitializeRangeCheck(attacker.Position, attackAction.MinRange, attackAction.MaxRange);
         }
 
         public override void Update()
