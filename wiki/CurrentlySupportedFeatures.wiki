@@ -2,6 +2,9 @@
 
 ... still in very early development phase
 
+= refs =
+http://www.dandwiki.com/wiki/SRD:Standard_Actions
+
 = Player Mode =
 
  * Armors
