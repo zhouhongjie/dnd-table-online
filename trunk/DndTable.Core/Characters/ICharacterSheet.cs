@@ -30,6 +30,7 @@
 
 
 
+        bool CanAct();
         int GetCurrentAttackBonus(int range);
         int GetCurrentDamageBonus();
         int GetCurrentSpeed();
