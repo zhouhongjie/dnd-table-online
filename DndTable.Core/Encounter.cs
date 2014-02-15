@@ -100,6 +100,13 @@ namespace DndTable.Core
             _actionDoneByCurrentChar.Clear();
             GetRoundInfo(current).Reset(current);
 
+            // TODO: Handle dying
+
+
+            // TODO: Handle infinite recursion when all chars are disabled
+            if (!current.CharacterSheet.CanAct())
+                return GetNextCharacter();
+
             return current;
         }
 

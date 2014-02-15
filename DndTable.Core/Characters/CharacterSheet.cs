@@ -81,6 +81,17 @@ namespace DndTable.Core.Characters
 
         public IWeapon EquipedWeapon { get; internal set; }
 
+        /// <summary>
+        /// Unconscious: http://www.dandwiki.com/wiki/SRD:Unconscious
+        /// Dead: http://www.dandwiki.com/wiki/SRD:Dead
+        /// </summary>
+        /// <returns></returns>
+        public bool CanAct()
+        {
+            // TEMP (I know this is not correct)
+            return HitPoints > 0;
+        }
+
         public int GetCurrentAttackBonus(int range)
         {
             // Unarmed

@@ -16,6 +16,10 @@ public class CharacterSheetInfo : MonoBehaviour {
         if (Camera.main == null)
             return;
 
+        if (!Character.CharacterSheet.CanAct())
+            GUI.color = Color.red;
+
+
         const float offset = 1.5f;
 
         var topOfAvatar = transform.position;
