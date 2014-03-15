@@ -55,13 +55,27 @@ namespace DndTable.Core.Test.UnitTests
         [Test]
         public void NoAoO_WhenUnarmed()
         {
-            throw new NotImplementedException();
+            // Next to each other
+            DoAttackWithAoO(
+                Position.Create(1, 1),
+                Position.Create(1, 2),
+                CreateDiceRoller(15, 3),        // 3 damage on the D4 roll 
+                0,                              // We expect a NO damage done by AoO
+                WeaponFactory.Dagger(),
+                null);                          // damage = ??
         }
 
         [Test]
         public void NoAoO_WithRangedWeapon()
         {
-            throw new NotImplementedException();
+            // Next to each other
+            DoAttackWithAoO(
+                Position.Create(1, 1),
+                Position.Create(1, 2),
+                CreateDiceRoller(15, 3),                        // 3 damage on the D4 roll 
+                0,                                              // We expect a NO damage done by AoO
+                WeaponFactory.Dagger(),
+                new Weapon() {IsRanged = true, DamageD = 4});   // damage = 4
         }
 
         private DiceRoller CreateDiceRoller(int d20Roll, int d4Roll)

@@ -135,7 +135,8 @@ namespace DndTable.Core.Actions
 
         private bool IsInThreatenedArea(ICharacter attacker, ICharacter participant)
         {
-            if (attacker.CharacterSheet.EquipedWeapon == null || attacker.CharacterSheet.EquipedWeapon.IsRanged)
+            // No AoO when unarmed, or with range weapon
+            if (participant.CharacterSheet.EquipedWeapon == null || participant.CharacterSheet.EquipedWeapon.IsRanged)
                 return false;
 
             // TODO: reach weapons, etc ...
