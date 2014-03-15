@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DndTable.Core.Characters;
+using DndTable.Core.Factories;
 using NUnit.Framework;
 
 namespace DndTable.Core.Test.UnitTests
@@ -62,9 +63,29 @@ namespace DndTable.Core.Test.UnitTests
         }
 
         [Test]
-        public void GetCurrentDamageBonusTest()
+        public void GetCurrentDamageBonusTest_Melee()
         {
-            throw new NotImplementedException();
+            var weapon = new Weapon() {IsRanged = false};
+
+            var sheet = new CharacterSheet();
+            sheet.Strength = 12;
+            sheet.EquipedWeapon = weapon;
+            Assert.AreEqual(1, sheet.GetCurrentDamageBonus());
+            sheet.Strength = 14;
+            Assert.AreEqual(2, sheet.GetCurrentDamageBonus());
+        }
+
+        [Test]
+        public void GetCurrentDamageBonusTest_Range()
+        {
+            var weapon = new Weapon() {IsRanged = true};
+
+            var sheet = new CharacterSheet();
+            sheet.Dexterity = 12;
+            sheet.EquipedWeapon = weapon;
+            Assert.AreEqual(0, sheet.GetCurrentDamageBonus());
+            sheet.Dexterity = 14;
+            Assert.AreEqual(0, sheet.GetCurrentDamageBonus());
         }
     }
 }
