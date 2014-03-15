@@ -21,11 +21,39 @@ namespace DndTable.Core.Test.UnitTests
         public void RangedAttackProvokesAoO()
         {
             // Next to each other
-            DoAttackWithAoO(Position.Create(1, 1), Position.Create(1, 2), CreateDiceRoller(15, 3), 3);
+            DoAttackWithAoO(
+                Position.Create(1, 1), 
+                Position.Create(1, 2), 
+                CreateDiceRoller(15, 3),        // 3 damage on the D4 roll 
+                3,                              // We expect a 3 damage done by AoO
+                WeaponFactory.CrossbowLight(),  
+                WeaponFactory.Dagger());        // damage = D4
+
+            // Not Next to each other
+            DoAttackWithAoO(
+                Position.Create(1, 1), 
+                Position.Create(1, 3), 
+                CreateDiceRoller(15, 3),        // 3 damage on the D4 roll 
+                0,                              // We expect a NO damage done by AoO
+                WeaponFactory.CrossbowLight(),  
+                WeaponFactory.Dagger());        // damage = D4
         }
 
         [Test]
-        public void NoAoO_Unarmed()
+        public void MeleeAttackDoesnNotProvokesAoO()
+        {
+            // Next to each other
+            DoAttackWithAoO(
+                Position.Create(1, 1), 
+                Position.Create(1, 2), 
+                CreateDiceRoller(15, 3),        // 3 damage on the D4 roll 
+                0,                              // We expect a NO damage done by AoO
+                WeaponFactory.Dagger(),         
+                WeaponFactory.Dagger());        // damage = D4
+        }
+
+        [Test]
+        public void NoAoO_WhenUnarmed()
         {
             throw new NotImplementedException();
         }
@@ -48,18 +76,20 @@ namespace DndTable.Core.Test.UnitTests
         }
 
 
-        private static void DoAttackWithAoO(Position attackerPosition, Position targetPosition, IDiceRoller diceRoller, int expectedOpportunityDamage)
+        private static void DoAttackWithAoO(
+            Position attackerPosition, Position targetPosition, IDiceRoller diceRoller, int expectedOpportunityDamage, 
+            IWeapon attackerWeapon, IWeapon opportunityWeapon)
         {
             var board = new Board(10, 10);
             var game = new Game(board, diceRoller);
 
             var char1 = Factory.CreateCharacter("dummy1");
             game.AddCharacter(char1, attackerPosition);
-            game.EquipWeapon(char1, WeaponFactory.CrossbowLight()); // damage = D8
+            game.EquipWeapon(char1, attackerWeapon); 
 
             var char2 = Factory.CreateCharacter("dummy2");
             game.AddCharacter(char2, targetPosition);
-            game.EquipWeapon(char2, WeaponFactory.Dagger()); // damage = D4
+            game.EquipWeapon(char2, opportunityWeapon); 
 
             var encounter = new Encounter(board, diceRoller, new List<ICharacter>() { char1, char2 });
             var actionFactory = new AbstractActionFactory(encounter, board, diceRoller);
