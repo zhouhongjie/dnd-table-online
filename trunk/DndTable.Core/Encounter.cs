@@ -31,7 +31,6 @@ namespace DndTable.Core
         public List<ICharacter> Participants { get; private set; }
 
         private AbstractActionFactory _actionFactory;
-        private Board _gameBoard;
 
         private int _currentIndex = 0;
         private int _currentRound = 0;
@@ -41,26 +40,16 @@ namespace DndTable.Core
         internal Encounter(Board gameBoard, IDiceRoller diceRoller, List<ICharacter> participants)
         {
             _actionFactory = new AbstractActionFactory(this, gameBoard, diceRoller);
-            _gameBoard = gameBoard;
 
             Participants = DoInitiaticeChecks(diceRoller, participants);
 
             // Init roundInfo
             GetRoundInfo(GetCurrentCharacter()).Reset(GetCurrentCharacter());
-
-            //_gameBoard.CalculateFieldOfView(GetCurrentCharacter().Position);
         }
 
         internal void RegisterAction(ActionTypeEnum actionType)
         {
             _actionDoneByCurrentChar.Add(actionType);
-
-
-            //// FoV
-            //var currentCharacter = GetCurrentCharacter();
-            //if (currentCharacter != null)
-            //    _gameBoard.CalculateFieldOfView(currentCharacter.Position);
-
         }
 
         private static List<ICharacter> DoInitiaticeChecks(IDiceRoller diceRoller, List<ICharacter> participants)
