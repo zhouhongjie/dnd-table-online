@@ -69,9 +69,11 @@ namespace DndTable.Core.Test.UnitTests
 
             var sheet = new CharacterSheet();
             sheet.Strength = 12;
+            sheet.Dexterity = 20;
             sheet.EquipedWeapon = weapon;
             Assert.AreEqual(1, sheet.GetCurrentDamageBonus());
             sheet.Strength = 14;
+            sheet.Dexterity = 20;
             Assert.AreEqual(2, sheet.GetCurrentDamageBonus());
         }
 
@@ -81,9 +83,11 @@ namespace DndTable.Core.Test.UnitTests
             var weapon = new Weapon() {IsRanged = true};
 
             var sheet = new CharacterSheet();
+            sheet.Strength = 20;
             sheet.Dexterity = 12;
             sheet.EquipedWeapon = weapon;
             Assert.AreEqual(0, sheet.GetCurrentDamageBonus());
+            sheet.Strength = 20;
             sheet.Dexterity = 14;
             Assert.AreEqual(0, sheet.GetCurrentDamageBonus());
         }
