@@ -66,12 +66,18 @@ namespace DndTable.Core.Characters
 
         private int GetRangedAttackBonus(int range)
         {
+            var rangePenalty = 0;
+
             if (range >= EquipedWeapon.RangeIncrement)
             {
-                // TODO: calculate range penalty
-                throw new NotImplementedException();
+                // TODO: MaxRange
+                // Difference between Thrown & Projectile
+                // * thrown = max range of 5 range increments
+                // * projectile = max range of 10 range increments
+
+                var nrOfRangeIncrements = (int)Math.Floor((double) range/(double) EquipedWeapon.RangeIncrement);
+                rangePenalty = nrOfRangeIncrements*-2;
             }
-            var rangePenalty = 0;
 
             return BaseAttackBonus + SizeModifier + GetAbilityBonus(Dexterity) + rangePenalty;
         }

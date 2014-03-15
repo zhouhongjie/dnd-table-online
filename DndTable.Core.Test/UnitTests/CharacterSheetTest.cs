@@ -57,9 +57,42 @@ namespace DndTable.Core.Test.UnitTests
         }
 
         [Test]
-        public void GetCurrentAttackBonusTest()
+        public void GetCurrentAttackBonusTest_Melee()
         {
-            throw new NotImplementedException();
+            var weapon = new Weapon() { IsRanged = false };
+
+            var sheet = new CharacterSheet();
+            sheet.Strength = 12;
+            sheet.Dexterity = 20;
+            sheet.EquipedWeapon = weapon;
+            Assert.AreEqual(1, sheet.GetCurrentAttackBonus(5));
+            sheet.Strength = 14;
+            sheet.Dexterity = 20;
+            Assert.AreEqual(2, sheet.GetCurrentAttackBonus(5));
+        }
+
+        [Test]
+        public void GetCurrentAttackBonusTest_Ranged()
+        {
+            var weapon = new Weapon() {IsRanged = true, RangeIncrement = 100};
+
+            // Test Dex
+            var sheet = new CharacterSheet();
+            sheet.Strength = 20;
+            sheet.Dexterity = 12;
+            sheet.EquipedWeapon = weapon;
+            Assert.AreEqual(1, sheet.GetCurrentAttackBonus(10));
+            sheet.Strength = 20;
+            sheet.Dexterity = 14;
+            Assert.AreEqual(2, sheet.GetCurrentAttackBonus(10));
+
+            // Test RangeIncrement
+            Assert.AreEqual(2, sheet.GetCurrentAttackBonus(99));
+            Assert.AreEqual(0, sheet.GetCurrentAttackBonus(100));
+            Assert.AreEqual(0, sheet.GetCurrentAttackBonus(199));
+            Assert.AreEqual(-2, sheet.GetCurrentAttackBonus(200));
+            Assert.AreEqual(-2, sheet.GetCurrentAttackBonus(299));
+            Assert.AreEqual(-4, sheet.GetCurrentAttackBonus(300));
         }
 
         [Test]
