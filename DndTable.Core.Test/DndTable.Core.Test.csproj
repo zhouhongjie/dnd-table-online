@@ -58,6 +58,7 @@
     <Compile Include="UnitTests\GameTest.cs" />
     <Compile Include="UnitTests\MoveTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserTests\EncounterHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

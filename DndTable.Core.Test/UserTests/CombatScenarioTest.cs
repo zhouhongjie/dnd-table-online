@@ -16,10 +16,10 @@ namespace DndTable.Core.Test.UserTests
         public void SimpleCombat()
         {
             var game = Factory.CreateGame(10, 10);
-            var tordek = PrepareCharacter(game, "Tordek", Position.Create(1, 1), WeaponFactory.CrossbowLight(), ArmorFactory.Leather());
-            //var regdar = PrepareCharacter(game, "Regdar", Position.Create(1, 5), WeaponFactory.CrossbowLight());
-            //var tordek = PrepareCharacter(game, "Tordek", Position.Create(1, 1), WeaponFactory.Dagger());
-            var regdar = PrepareCharacter(game, "Regdar", Position.Create(1, 2), WeaponFactory.Dagger(), null);
+            var tordek = EncounterHelper.PrepareCharacter(game, "Tordek", Position.Create(1, 1), WeaponFactory.CrossbowLight(), ArmorFactory.Leather());
+            //var regdar = EncounterHelper.PrepareCharacter(game, "Regdar", Position.Create(1, 5), WeaponFactory.CrossbowLight());
+            //var tordek = EncounterHelper.PrepareCharacter(game, "Tordek", Position.Create(1, 1), WeaponFactory.Dagger());
+            var regdar = EncounterHelper.PrepareCharacter(game, "Regdar", Position.Create(1, 2), WeaponFactory.Dagger(), null);
 
             Console.WriteLine("Start encounter");
             game.DiceMonitor.Clear();
@@ -34,7 +34,7 @@ namespace DndTable.Core.Test.UserTests
                 var possibleActions = encounter.GetPossibleActionsForCurrentCharacter();
 
                 game.DiceMonitor.Clear();
-                AttackOtherWhenPossible(possibleActions, currentPlayer, game.GetCharacters());
+                EncounterHelper.AttackOtherWhenPossible(possibleActions, currentPlayer, game.GetCharacters());
                 DiceMonitorToConsole(game);
 
                 SummaryToConsole(tordek, regdar);
@@ -49,30 +49,6 @@ namespace DndTable.Core.Test.UserTests
             Console.WriteLine("Winner: " + (PlayerOk(tordek) ? "Tordek" : "Regdar"));
         }
 
-        private static void AttackOtherWhenPossible(List<IAction> possibleActions, ICharacter current, List<ICharacter> allCharacters) 
-        {
-            {
-                var attackAction = possibleActions.FirstOrDefault(a => a is IAttackAction) as IAttackAction;
-                if (attackAction != null)
-                {
-                    var target = GetOtherCharacter(current, allCharacters);
-                    Console.WriteLine(string.Format("- {0} attacks {1}: ", current.CharacterSheet.Name, target.CharacterSheet.Name));
-
-                    attackAction.Target(target).Do();
-                }
-            }
-        }
-
-        private static ICharacter GetOtherCharacter(ICharacter current, List<ICharacter> all)
-        {
-            foreach (var character in all)
-            {
-                if (character != current)
-                    return character;
-            }
-            return null;
-        }
-
         private static void SummaryToConsole(ICharacter tordek, ICharacter regdar)
         {
             Console.WriteLine("- Summary: ");
@@ -80,24 +56,12 @@ namespace DndTable.Core.Test.UserTests
             Console.WriteLine("-- Regdar: " + regdar.CharacterSheet.HitPoints + "hp");
         }
 
-        private static void DiceMonitorToConsole(IGame game)
+        public static void DiceMonitorToConsole(IGame game)
         {
             foreach (var roll in game.DiceMonitor.GetAllRolls())
             {
                 Console.WriteLine(roll.Description);
             }
-        }
-
-        private static ICharacter PrepareCharacter(IGame game, string name, Position position, IWeapon weapon, IArmor armor)
-        {
-            var character = Factory.CreateCharacter(name);
-
-            game.EquipWeapon(character, weapon);
-            game.EquipArmor(character, armor);
-
-            game.AddCharacter(character, position);
-
-            return character;
         }
 
         private static bool PlayerOk(ICharacter player)
