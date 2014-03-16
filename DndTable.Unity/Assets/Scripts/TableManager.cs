@@ -121,40 +121,47 @@ public class TableManager : MonoBehaviour
 
     void OnGUI()
     {
-        if (!Application.isEditor)  // or check the app debug flag
-            return;
+        //if (!Application.isEditor)  // or check the app debug flag
+        //    return;
 
-        UpdateCharacterMonitorUI();
-        UpdateDiceMonitorUI();
+        // See: http://3dgep.com/?p=5169
+        GUILayout.Window(0, new Rect(0, 0, 150, 0), UpdateCharacterMonitorUI, "Character monitor");
+        GUILayout.Window(1, new Rect(Screen.width - 500, 0, 500, 0), UpdateDiceMonitorUI, "Dice monitor");
 
-        if (_mode == ModeEnum.Player) 
-            UpdatePossibleActionsUI();
-        else if (_mode == ModeEnum.MapEditor) 
-            UpdateMapEditorActionsUI();
+        if (_mode == ModeEnum.Player)
+            GUILayout.Window(2, new Rect(0, 150, 150, 0), UpdatePossibleActionsUI, "Actions");
+        else if (_mode == ModeEnum.MapEditor)
+            GUILayout.Window(3, new Rect(0, 150, 150, 0), UpdateMapEditorActionsUI, "Map editor");
     }
 
-    private void UpdateMapEditorActionsUI()
+    private void UpdateMapEditorActionsUI(int windowId)
     {
+        GUILayout.BeginVertical();
+
         var offset = 0;
         {
-            if (GUI.Button(new Rect(10, 70 + offset, 300, 30), "Walls"))
+            if (GUILayout.Button("Walls"))
             {
                 StopCurrentAction();
                 _currentActionUI = new MapEditorUI(Game);
             }
-        }     
+        }
+        GUILayout.EndVertical();
     }
 
-    private void UpdatePossibleActionsUI()
+    private void UpdatePossibleActionsUI(int windowId)
     {
+        GUILayout.BeginVertical();
+
         // Check for a Multi-step operation (needs to be stopped before chosing a new action)
         if (_currentActionUI != null && !_currentActionUI.IsDone && _currentActionUI.IsMultiStep)
         {
             GUI.color = Color.yellow;
-            if (GUI.Button(new Rect(10, 70, 300, 30), "Stop current action"))
+            if (GUILayout.Button("Stop current action"))
             {
                 _currentActionUI.Stop();
             }
+            GUILayout.EndVertical();
             return;
         }
 
@@ -162,7 +169,7 @@ public class TableManager : MonoBehaviour
         var offset = 0;
         foreach (var action in CurrentEncounter.GetPossibleActionsForCurrentCharacter())
         {
-            if (GUI.Button(new Rect(10, 70 + offset, 300, 30), action.Description))
+            if (GUILayout.Button(action.Description))
             {
                 StopCurrentAction();
 
@@ -186,11 +193,14 @@ public class TableManager : MonoBehaviour
 
             offset += 35;
         }
-        if (GUI.Button(new Rect(10, 70 + offset, 300, 30), "Next player"))
+        if (GUILayout.Button("Next player"))
             CurrentEncounter.GetNextCharacter();
+
+        
+        GUILayout.EndVertical();
     }
 
-    private void UpdateCharacterMonitorUI()
+    private void UpdateCharacterMonitorUI(int windowId)
     {
         var height = 0;
         var label = String.Empty;
@@ -200,10 +210,10 @@ public class TableManager : MonoBehaviour
             label += character.CharacterSheet.Name + ": " + character.CharacterSheet.HitPoints + "hp" + "\n";
             height += 20;
         }
-        GUI.Box(new Rect(0, 0, 200, height), label);
+        GUILayout.Box(label);
     }
 
-    private void UpdateDiceMonitorUI()
+    private void UpdateDiceMonitorUI(int windowId)
     {
         var height = 0;
         var label = String.Empty;
@@ -215,9 +225,9 @@ public class TableManager : MonoBehaviour
             height += 18;
         }
 
-        const int width = 500;
+        //const int width = 500;
 
-        GUI.Box(new Rect(Screen.width - width, 0, width, height), label);
+        GUILayout.Box(label);
     }
 
     private void UpdateFieldOfView()
