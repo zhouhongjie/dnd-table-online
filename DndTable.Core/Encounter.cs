@@ -6,6 +6,7 @@ using DndTable.Core.Actions;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 using DndTable.Core.Factories;
+using DndTable.Core.Log;
 
 namespace DndTable.Core
 {
@@ -22,6 +23,16 @@ namespace DndTable.Core
             StartPosition = character.Position;
             AttackBonus = 0;
             ArmorBonus = 0;
+        }
+
+        public int UseAttackBonus(Calculator.CalculatorPropertyContext context)
+        {
+            return context.Use(AttackBonus, "RoundInfo.AttackBonus");
+        }
+
+        public int UseArmorBonus(Calculator.CalculatorPropertyContext context)
+        {
+            return context.Use(ArmorBonus, "RoundInfo.ArmorBonus");
         }
     }
         
@@ -57,7 +68,7 @@ namespace DndTable.Core
             var initChecks = new List<KeyValuePair<ICharacter, int>>();
             foreach (var participant in participants)
             {
-                var initCheck = new KeyValuePair<ICharacter, int>(participant, diceRoller.Roll(participant, DiceRollEnum.InitiativeCheck, 20, participant.CharacterSheet.Initiative));
+                var initCheck = new KeyValuePair<ICharacter, int>(participant, diceRoller.Roll(participant, DiceRollEnum.InitiativeCheck, 20, participant.CharacterSheet.GetCurrentInitiative()));
                 initChecks.Add(initCheck);
             }
 

@@ -6,6 +6,7 @@ using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 using DndTable.Core.Entities;
 using DndTable.Core.Factories;
+using DndTable.Core.Log;
 
 namespace DndTable.Core
 {
@@ -16,6 +17,8 @@ namespace DndTable.Core
 
         public IDiceMonitor DiceMonitor { get { return _diceRoller; } }
         private IDiceRoller _diceRoller;
+
+        public ILogger Logger { get { return Log.Logger.Singleton; } }
 
         private List<ICharacter> _characters = new List<ICharacter>();
 

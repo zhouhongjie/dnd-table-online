@@ -49,6 +49,7 @@
     <Compile Include="Actions\MathHelper.cs" />
     <Compile Include="Actions\MoveAction.cs" />
     <Compile Include="Armor.cs" />
+    <Compile Include="Characters\Calculator.cs" />
     <Compile Include="Characters\CharacterRace.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Board.cs" />
@@ -78,6 +79,8 @@
     <Compile Include="IEncounter.cs" />
     <Compile Include="Entities\IEntity.cs" />
     <Compile Include="IGame.cs" />
+    <Compile Include="Log\ILogger.cs" />
+    <Compile Include="Log\Logger.cs" />
     <Compile Include="ShadowCaster.cs" />
     <Compile Include="Entities\Wall.cs" />
     <Compile Include="Weapons\IWeapon.cs" />

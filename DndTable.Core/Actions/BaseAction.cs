@@ -5,11 +5,19 @@ using System.Text;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 using DndTable.Core.Factories;
+using DndTable.Core.Log;
 
 namespace DndTable.Core.Actions
 {
     abstract class BaseAction : IAction
     {
+        public ICharacter Executer { get; private set; }
+
+        internal BaseAction(ICharacter executer)
+        {
+            Executer = executer;
+        }
+
         public abstract void Do();
         public abstract ActionTypeEnum Type { get; }
         public abstract string Description { get; }

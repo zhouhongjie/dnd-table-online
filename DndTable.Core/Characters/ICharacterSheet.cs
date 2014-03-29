@@ -17,8 +17,6 @@
         int Will { get; }
 
         int HitPoints { get; }
-        int ArmorClass { get; }
-        int Initiative { get; }
 
         int Speed { get; }
         int SizeModifier { get; }
@@ -34,5 +32,7 @@
         int GetCurrentAttackBonus(int range);
         int GetCurrentDamageBonus();
         int GetCurrentSpeed();
+        int GetCurrentArmorClass();
+        int GetCurrentInitiative();
     }
 }

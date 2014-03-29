@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DndTable.Core.Characters;
+using DndTable.Core.Log;
 
 namespace DndTable.Core.Dice
 {
@@ -18,6 +19,7 @@ namespace DndTable.Core.Dice
         public int Roll(ICharacter roller, DiceRollEnum type, int d, int bonus)
         {
             var roll = new DiceRoll(roller, type, d, bonus, _diceRandomizer.Roll(d));
+            Logger.Singleton.AddRoll(roll);
             _rolls.Add(roll);
             return roll.Result;
         }
@@ -30,6 +32,7 @@ namespace DndTable.Core.Dice
         public DiceCheck RollCheck(ICharacter roller, DiceRollEnum type, int d, int bonus, int dc)
         {
             var roll = new DiceCheck(roller, type, d, bonus, _diceRandomizer.Roll(d), dc);
+            Logger.Singleton.AddRoll(roll);
             _rolls.Add(roll);
             return roll;
         }
@@ -37,6 +40,7 @@ namespace DndTable.Core.Dice
         public AttackRoll RollAttack(ICharacter roller, DiceRollEnum type, int bonus, int dc, int threatRange)
         {
             var roll = new AttackRoll(roller, type, bonus, _diceRandomizer.Roll(20), dc, threatRange);
+            Logger.Singleton.AddRoll(roll);
             _rolls.Add(roll);
             return roll;
         }

@@ -11,6 +11,7 @@ namespace DndTable.Core.Actions
         private ICharacter _character;
 
         internal FiveFootStep(ICharacter character)
+            : base(character)
         {
             _character = character;
         }
@@ -29,6 +30,14 @@ namespace DndTable.Core.Actions
         public int MinRange { get { return 1; } }
 
         public override void Do()
+        {
+            using (var context = Calculator.CreateActionContext(this))
+            {
+                _Do();
+            }
+        }
+
+        private void _Do()
         {
             if (_targetPosition == null)
                 throw new InvalidOperationException("Position target expected");
