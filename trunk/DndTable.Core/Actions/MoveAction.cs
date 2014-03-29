@@ -17,6 +17,7 @@ namespace DndTable.Core.Actions
         private bool _isDone;
 
         internal MoveAction(ICharacter character)
+            : base(character)
         {
             _character = character;
             _maxNrOfSteps = character.CharacterSheet.GetCurrentSpeed()/ 5;
@@ -39,6 +40,14 @@ namespace DndTable.Core.Actions
         }
 
         public bool DoOneStep(Position newLocation)
+        {
+            using (var context = Calculator.CreateActionContext(this))
+            {
+                return _DoOneStep(newLocation);
+            }
+        }
+
+        private bool _DoOneStep(Position newLocation)
         {
             if (_isDone)
                 return false;

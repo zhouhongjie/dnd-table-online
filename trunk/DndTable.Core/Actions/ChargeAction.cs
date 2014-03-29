@@ -14,6 +14,7 @@ namespace DndTable.Core.Actions
         private readonly ICharacter _attacker;
 
         internal ChargeAction(ICharacter attacker)
+            : base(attacker)
         {
             _attacker = attacker;
         }
@@ -39,6 +40,14 @@ namespace DndTable.Core.Actions
         }
 
         public override void Do()
+        {
+            using (var context = Calculator.CreateActionContext(this))
+            {
+                _Do();
+            }
+        }
+
+        private void _Do()
         {
             if (_targetCharacter == null)
                 throw new InvalidOperationException("TargetCharacter required");

@@ -1,4 +1,5 @@
 ﻿using System;
+using DndTable.Core.Log;
 
 namespace DndTable.Core.Characters
 {
@@ -26,33 +27,6 @@ namespace DndTable.Core.Characters
 
         public int HitPoints { get; internal set; }
 
-        public int ArmorClass
-        {
-            get
-            {
-                // TODO ... armour, bonusses, touch, flatfooted, ...
-
-                var result = 10;
-
-                // Add dex (not flat footed, ...)
-                result += GetAbilityBonus(Dexterity);
-
-                // Add size modifier
-                result += SizeModifier;
-
-                // Add armor (not touch, ...)
-                if (EquipedArmor != null)
-                    result += EquipedArmor.ArmorBonus;
-
-                // RoundInfo
-                result += CurrentRoundInfo.ArmorBonus;
-
-                return result;
-            }
-        }
-
-        public int Initiative { get; internal set; }
-
         public int Speed { get; internal set; }
 
         public int SizeModifier { get; internal set; }
@@ -66,20 +40,26 @@ namespace DndTable.Core.Characters
 
         private int GetRangedAttackBonus(int range)
         {
-            var rangePenalty = 0;
-
-            if (range >= EquipedWeapon.RangeIncrement)
+            using (var context = Calculator.CreatePropertyContext("AttackBonus"))
             {
-                // TODO: MaxRange
-                // Difference between Thrown & Projectile
-                // * thrown = max range of 5 range increments
-                // * projectile = max range of 10 range increments
+                var rangePenalty = 0;
 
-                var nrOfRangeIncrements = (int)Math.Floor((double) range/(double) EquipedWeapon.RangeIncrement);
-                rangePenalty = nrOfRangeIncrements*-2;
+                if (range >= EquipedWeapon.RangeIncrement)
+                {
+                    // TODO: MaxRange
+                    // Difference between Thrown & Projectile
+                    // * thrown = max range of 5 range increments
+                    // * projectile = max range of 10 range increments
+
+                    var nrOfRangeIncrements = (int) Math.Floor((double) range/(double) EquipedWeapon.RangeIncrement);
+                    rangePenalty = nrOfRangeIncrements*-2;
+                }
+
+                return context.Use(BaseAttackBonus, "BaseAttackBonus") +
+                       context.Use(SizeModifier, "Size") +
+                       context.Use(GetAbilityBonus(Dexterity), "Dexterity") +
+                       context.Use(rangePenalty, "RangePenalty");
             }
-
-            return BaseAttackBonus + SizeModifier + GetAbilityBonus(Dexterity) + rangePenalty;
         }
 
 
@@ -100,48 +80,98 @@ namespace DndTable.Core.Characters
 
         public int GetCurrentAttackBonus(int range)
         {
-            // Unarmed
-            if (EquipedWeapon == null)
-                return MeleeAttackBonus + CurrentRoundInfo.AttackBonus;
-            // Ranged
-            if (EquipedWeapon.IsRanged)
-                return GetRangedAttackBonus(range) + CurrentRoundInfo.AttackBonus;
-            
-            // Melee
-            return MeleeAttackBonus + CurrentRoundInfo.AttackBonus;
+            using (var context = Calculator.CreatePropertyContext("AttackBonus"))
+            {
+                // Unarmed
+                if (EquipedWeapon == null)
+                {
+                    return context.Use(MeleeAttackBonus, "MeleeAttackBonus") +
+                           CurrentRoundInfo.UseAttackBonus(context);
+                }
+                // Ranged
+                if (EquipedWeapon.IsRanged)
+                {
+                    return GetRangedAttackBonus(range) + CurrentRoundInfo.UseAttackBonus(context);
+                }
+
+                // Melee
+                return context.Use(MeleeAttackBonus, "MeleeAttackBonus") +
+                       CurrentRoundInfo.UseAttackBonus(context);
+            }
         }
 
         public int GetCurrentDamageBonus()
         {
-            // TODO: weapon bonus
-            // TODO: weapon focus
-            // ...
+            using (var context = Calculator.CreatePropertyContext("DamageBonus"))
+            {
+                // TODO: weapon bonus
+                // TODO: weapon focus
+                // ...
 
-            // Unarmed
-            if (EquipedWeapon == null)
-                return GetAbilityBonus(Strength);
-            // Ranged
-            if (EquipedWeapon.IsRanged)
-                return 0;
+                // Unarmed
+                if (EquipedWeapon == null)
+                    return context.Use(GetAbilityBonus(Strength), "Strength");
+                // Ranged
+                if (EquipedWeapon.IsRanged)
+                    return 0;
 
-            // Melee
-            return GetAbilityBonus(Strength);
+                // Melee
+                return context.Use(GetAbilityBonus(Strength), "Strength");
+            }
         }
 
         public int GetCurrentSpeed()
         {
-            // TODO: encumbrance
+            using (var context = Calculator.CreatePropertyContext("Speed"))
+            {
+                // TODO: encumbrance
 
-            if (EquipedArmor == null)
-                return Speed;
+                if (EquipedArmor == null)
+                    return Speed;
 
-            return EquipedArmor.AdjustedSpeed(Speed);
+                return EquipedArmor.AdjustedSpeed(Speed);
+            }
         }
 
         private static int GetAbilityBonus(int baseAbiltyScore)
         {
             return (int)Math.Floor((baseAbiltyScore - 10) / 2.0);
         }
+
+        public int GetCurrentArmorClass()
+        {
+            using (var context = Calculator.CreatePropertyContext("ArmorClass"))
+            {
+                // TODO ... armour, bonusses, touch, flatfooted, ...
+
+                var result = 10;
+
+                // Add dex (not flat footed, ...)
+                result += context.Use(GetAbilityBonus(Dexterity), "Dexterity");
+
+                // Add size modifier
+                result += context.Use(SizeModifier, "Size");
+
+                // Add armor (not touch, ...)
+                if (EquipedArmor != null)
+                    result += context.Use(EquipedArmor.ArmorBonus, "ArmorBonus");
+
+                // RoundInfo
+                result += CurrentRoundInfo.UseArmorBonus(context);
+
+                return result;
+            }
+        }
+
+        public int GetCurrentInitiative()
+        {
+            using (var context = Calculator.CreatePropertyContext("Initiative"))
+            {
+                // TODO: modifiers
+                return context.Use(GetAbilityBonus(Dexterity), "Dexterity");
+            }
+        }
+
 
         private RoundInfo _currentRoundInfo = new RoundInfo();
         internal RoundInfo CurrentRoundInfo { get { return _currentRoundInfo; } }

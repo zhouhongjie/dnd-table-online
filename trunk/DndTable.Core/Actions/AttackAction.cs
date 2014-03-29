@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
+using DndTable.Core.Log;
 
 namespace DndTable.Core.Actions
 {
@@ -12,6 +13,7 @@ namespace DndTable.Core.Actions
         private ICharacter _attacker;
 
         internal AttackAction(ICharacter attacker)
+            : base(attacker)
         {
             _attacker = attacker;
         }
@@ -36,6 +38,14 @@ namespace DndTable.Core.Actions
 
         public override void Do()
         {
+            using (var context = Calculator.CreateActionContext(this))
+            {
+                _Do(context);
+            }
+        }
+
+        private void _Do(Calculator.CalculatorActionContext context)
+        {
             if (_targetCharacter == null)
                 throw new InvalidOperationException("Character target expected");
 
@@ -54,7 +64,7 @@ namespace DndTable.Core.Actions
             // Check counter AttackOfOpportunity
             if (ProvokesAttackOfOpportunity())
             {
-                HandleAttackOfOpportunity();
+                HandleAttackOfOpportunity(context);
 
                 // TODO: CharacterSheet function to check if a char can still act
                 if (_attacker.CharacterSheet.HitPoints <= 0)
@@ -67,7 +77,7 @@ namespace DndTable.Core.Actions
                 _attacker, 
                 DiceRollEnum.Attack,
                 _attacker.CharacterSheet.GetCurrentAttackBonus((int)rangeRounded * 5),  // Convert tiles to feet
-                _targetCharacter.CharacterSheet.ArmorClass,
+                _targetCharacter.CharacterSheet.GetCurrentArmorClass(),
                 20 - _attacker.CharacterSheet.EquipedWeapon.CriticalRange);
 
             if (!check.Success)
@@ -81,8 +91,8 @@ namespace DndTable.Core.Actions
                     _attacker, 
                     DiceRollEnum.CriticalAttack, 
                     20,
-                    _attacker.CharacterSheet.GetCurrentAttackBonus((int)rangeRounded * 5), 
-                    _targetCharacter.CharacterSheet.ArmorClass);
+                    _attacker.CharacterSheet.GetCurrentAttackBonus((int)rangeRounded * 5),
+                    _targetCharacter.CharacterSheet.GetCurrentArmorClass());
             }
 
 
@@ -103,7 +113,7 @@ namespace DndTable.Core.Actions
             }
         }
 
-        private void HandleAttackOfOpportunity()
+        private void HandleAttackOfOpportunity(Calculator.CalculatorActionContext context)
         {
             foreach (var participant in this.Encounter.Participants)
             {
@@ -126,6 +136,7 @@ namespace DndTable.Core.Actions
                     // TODO: requires UI interaction !!!!!! (for the moment auto attack)
 
                     // Note: AoO is always a MeleeAttack in the proper range (otherwise ThreatenedArea is wrong)
+                    context.AoO(participant, _attacker);
                     var attackOfOpportunity = ActionFactory.MeleeAttack(participant);
                     attackOfOpportunity.Target(_attacker);
                     attackOfOpportunity.Do();

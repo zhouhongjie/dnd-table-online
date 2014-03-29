@@ -5,6 +5,7 @@ using System.Text;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 using DndTable.Core.Factories;
+using DndTable.Core.Log;
 
 namespace DndTable.Core
 {
@@ -13,6 +14,7 @@ namespace DndTable.Core
         IBoard GameBoard { get; }
 
         IDiceMonitor DiceMonitor { get; }
+        ILogger Logger { get; }
 
         bool AddCharacter(ICharacter character, Position position);
         List<ICharacter> GetCharacters();

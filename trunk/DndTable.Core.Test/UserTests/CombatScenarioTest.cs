@@ -4,6 +4,7 @@ using DndTable.Core.Actions;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 using DndTable.Core.Factories;
+using DndTable.Core.Log;
 using NUnit.Framework;
 using System.Linq;
 
@@ -22,9 +23,12 @@ namespace DndTable.Core.Test.UserTests
             var regdar = EncounterHelper.PrepareCharacter(game, "Regdar", Position.Create(1, 2), WeaponFactory.Dagger(), null);
 
             Console.WriteLine("Start encounter");
+
+            game.Logger.Clear();
             game.DiceMonitor.Clear();
             var encounter = game.StartEncounter(new List<ICharacter>() { tordek, regdar });
-            DiceMonitorToConsole(game);
+            //DiceMonitorToConsole(game);
+            LoggerToConsole(game);
 
             var currentPlayer = encounter.GetCurrentCharacter();
             while (currentPlayer != null)
@@ -33,9 +37,11 @@ namespace DndTable.Core.Test.UserTests
 
                 var possibleActions = encounter.GetPossibleActionsForCurrentCharacter();
 
+                game.Logger.Clear();
                 game.DiceMonitor.Clear();
                 EncounterHelper.AttackOtherWhenPossible(possibleActions, currentPlayer, game.GetCharacters());
-                DiceMonitorToConsole(game);
+                //DiceMonitorToConsole(game);
+                LoggerToConsole(game);
 
                 SummaryToConsole(tordek, regdar);
 
@@ -61,6 +67,14 @@ namespace DndTable.Core.Test.UserTests
             foreach (var roll in game.DiceMonitor.GetAllRolls())
             {
                 Console.WriteLine(roll.Description);
+            }
+        }
+
+        public static void LoggerToConsole(IGame game)
+        {
+            foreach (var message in game.Logger.GetAllMessages())
+            {
+                Console.WriteLine(message);
             }
         }
 

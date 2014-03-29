@@ -18,11 +18,11 @@ namespace DndTable.Core.Test.UnitTests
 
             // Dexterity
             sheet.Dexterity = 0;
-            Assert.AreEqual(5, sheet.ArmorClass);
+            Assert.AreEqual(5, sheet.GetCurrentArmorClass());
             sheet.Dexterity = 10;
-            Assert.AreEqual(10, sheet.ArmorClass);
+            Assert.AreEqual(10, sheet.GetCurrentArmorClass());
             sheet.Dexterity = 20;
-            Assert.AreEqual(15, sheet.ArmorClass);
+            Assert.AreEqual(15, sheet.GetCurrentArmorClass());
         }
 
         [Test]
@@ -36,10 +36,10 @@ namespace DndTable.Core.Test.UnitTests
             sheet.EquipedArmor = armor;
 
             armor.ArmorBonus = 0;
-            Assert.AreEqual(10, sheet.ArmorClass);
+            Assert.AreEqual(10, sheet.GetCurrentArmorClass());
 
             armor.ArmorBonus = 5;
-            Assert.AreEqual(15, sheet.ArmorClass);
+            Assert.AreEqual(15, sheet.GetCurrentArmorClass());
         }
 
         [Test]
@@ -50,10 +50,10 @@ namespace DndTable.Core.Test.UnitTests
 
             // Size
             sheet.SizeModifier = 2;
-            Assert.AreEqual(12, sheet.ArmorClass);
+            Assert.AreEqual(12, sheet.GetCurrentArmorClass());
 
             sheet.SizeModifier = -2;
-            Assert.AreEqual(8, sheet.ArmorClass);
+            Assert.AreEqual(8, sheet.GetCurrentArmorClass());
         }
 
         [Test]
@@ -123,6 +123,20 @@ namespace DndTable.Core.Test.UnitTests
             sheet.Strength = 20;
             sheet.Dexterity = 14;
             Assert.AreEqual(0, sheet.GetCurrentDamageBonus());
+        }
+
+        [Test]
+        public void GetCurrentInitiativeTest()
+        {
+            var sheet = new CharacterSheet();
+            sheet.Dexterity = 0;
+            Assert.AreEqual(-5, sheet.GetCurrentInitiative());
+            sheet.Dexterity = 10;
+            Assert.AreEqual(0, sheet.GetCurrentInitiative());
+            sheet.Dexterity = 12;
+            Assert.AreEqual(1, sheet.GetCurrentInitiative());
+            sheet.Dexterity = 16;
+            Assert.AreEqual(3, sheet.GetCurrentInitiative());
         }
     }
 }
