@@ -51,7 +51,7 @@ namespace DndTable.Core.Actions
         {
             if (_isDone)
                 return false;
-            if (GetTilesDistance(newLocation, _character.Position) > 1)
+            if (MathHelper.GetTilesDistance(newLocation, _character.Position) > 1)
                 return false;
             if (_nrOfStepsCounter >= _maxNrOfSteps)
                 return false;

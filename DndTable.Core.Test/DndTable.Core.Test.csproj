@@ -52,8 +52,10 @@
     <Compile Include="UnitTests\AttackTest.cs" />
     <Compile Include="UnitTests\AttackOfOpportunityTest.cs" />
     <Compile Include="UnitTests\EncounterTest.cs" />
+    <Compile Include="UnitTests\FlankingTest.cs" />
     <Compile Include="UnitTests\MathHelperTest.cs" />
     <Compile Include="UnitTests\ShadowCasterTest.cs" />
+    <Compile Include="UnitTests\ThreatenedAreaTest.cs" />
     <Compile Include="UserTests\CombatScenarioTest.cs" />
     <Compile Include="UnitTests\GameTest.cs" />
     <Compile Include="UnitTests\MoveTest.cs" />

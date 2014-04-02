@@ -65,10 +65,10 @@ namespace DndTable.Core.Test.UnitTests
             sheet.Strength = 12;
             sheet.Dexterity = 20;
             sheet.EquipedWeapon = weapon;
-            Assert.AreEqual(1, sheet.GetCurrentAttackBonus(5));
+            Assert.AreEqual(1, sheet.GetCurrentAttackBonus(5, false));
             sheet.Strength = 14;
             sheet.Dexterity = 20;
-            Assert.AreEqual(2, sheet.GetCurrentAttackBonus(5));
+            Assert.AreEqual(2, sheet.GetCurrentAttackBonus(5, false));
         }
 
         [Test]
@@ -81,18 +81,38 @@ namespace DndTable.Core.Test.UnitTests
             sheet.Strength = 20;
             sheet.Dexterity = 12;
             sheet.EquipedWeapon = weapon;
-            Assert.AreEqual(1, sheet.GetCurrentAttackBonus(10));
+            Assert.AreEqual(1, sheet.GetCurrentAttackBonus(10, false));
             sheet.Strength = 20;
             sheet.Dexterity = 14;
-            Assert.AreEqual(2, sheet.GetCurrentAttackBonus(10));
+            Assert.AreEqual(2, sheet.GetCurrentAttackBonus(10, false));
 
             // Test RangeIncrement
-            Assert.AreEqual(2, sheet.GetCurrentAttackBonus(99));
-            Assert.AreEqual(0, sheet.GetCurrentAttackBonus(100));
-            Assert.AreEqual(0, sheet.GetCurrentAttackBonus(199));
-            Assert.AreEqual(-2, sheet.GetCurrentAttackBonus(200));
-            Assert.AreEqual(-2, sheet.GetCurrentAttackBonus(299));
-            Assert.AreEqual(-4, sheet.GetCurrentAttackBonus(300));
+            Assert.AreEqual(2, sheet.GetCurrentAttackBonus(99, false));
+            Assert.AreEqual(0, sheet.GetCurrentAttackBonus(100, false));
+            Assert.AreEqual(0, sheet.GetCurrentAttackBonus(199, false));
+            Assert.AreEqual(-2, sheet.GetCurrentAttackBonus(200, false));
+            Assert.AreEqual(-2, sheet.GetCurrentAttackBonus(299, false));
+            Assert.AreEqual(-4, sheet.GetCurrentAttackBonus(300, false));
+        }
+
+        [Test]
+        public void GetCurrentAttackBonusTest_Flanking()
+        {
+            var sheet = new CharacterSheet();
+            sheet.Strength = 10;
+            sheet.Dexterity = 10;
+
+            // Unarmed
+            Assert.AreEqual(0, sheet.GetCurrentAttackBonus(5, false));
+            Assert.AreEqual(2, sheet.GetCurrentAttackBonus(5, true));
+
+            // Melee weapon
+            sheet.EquipedWeapon = new Weapon() { IsRanged = false };
+            Assert.AreEqual(2, sheet.GetCurrentAttackBonus(5, true));
+
+            // Ranged weapon
+            sheet.EquipedWeapon = new Weapon() { IsRanged = true };
+            Assert.AreEqual(0, sheet.GetCurrentAttackBonus(5, true));
         }
 
         [Test]

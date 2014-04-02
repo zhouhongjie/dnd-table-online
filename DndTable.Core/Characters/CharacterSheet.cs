@@ -7,6 +7,7 @@ namespace DndTable.Core.Characters
     {
         public string Name { get; internal set; }
         public CharacterRace Race { get; internal set; }
+        public int FactionId { get; internal set; }
 
         public int Strength { get; internal set; }
         public int Dexterity { get; internal set; }
@@ -77,18 +78,19 @@ namespace DndTable.Core.Characters
             return HitPoints > 0;
         }
 
-        public int GetCurrentAttackBonus(int range)
+        public int GetCurrentAttackBonus(int range, bool isFlanking)
         {
             using (var context = Calculator.CreatePropertyContext("AttackBonus"))
             {
-                // Unarmed
-                if (EquipedWeapon == null)
-                {
-                    return GetMeleeAttackBonus(context) +
-                           CurrentRoundInfo.UseAttackBonus(context);
-                }
+                // TODO: Unarmed
+                //if (EquipedWeapon == null)
+                //{
+                //    return GetMeleeAttackBonus(context) +
+                //           CurrentRoundInfo.UseAttackBonus(context);
+                //}
+
                 // Ranged
-                if (EquipedWeapon.IsRanged)
+                if (EquipedWeapon != null && EquipedWeapon.IsRanged)
                 {
                     return GetRangedAttackBonus(range, context) +
                            CurrentRoundInfo.UseAttackBonus(context);
@@ -96,7 +98,8 @@ namespace DndTable.Core.Characters
 
                 // Melee
                 return GetMeleeAttackBonus(context) +
-                       CurrentRoundInfo.UseAttackBonus(context);
+                       CurrentRoundInfo.UseAttackBonus(context) +
+                       context.Use(isFlanking ? 2 : 0, "Flanking");
             }
         }
 

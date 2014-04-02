@@ -17,6 +17,19 @@ namespace DndTable.Core.Actions
             return Position.Create((int)newX, (int)newY);
         }
 
+        public static double GetDistance(Position position1, Position position2)
+        {
+            var dx = position1.X - position2.X;
+            var dy = position1.Y - position2.Y;
+
+            return Math.Sqrt(dx * dx + dy * dy);
+        }
+
+        public static int GetTilesDistance(Position position1, Position position2)
+        {
+            return (int)Math.Floor(GetDistance(position1, position2));
+        }
+
 
         //static private double LinearInterpolation(double x, double x0, double x1, double y0, double y1)
         //{

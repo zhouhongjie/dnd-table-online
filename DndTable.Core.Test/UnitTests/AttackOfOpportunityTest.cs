@@ -25,7 +25,7 @@ namespace DndTable.Core.Test.UnitTests
                 Position.Create(1, 1), 
                 Position.Create(1, 2), 
                 CreateDiceRoller(15, 3),        // 3 damage on the D4 roll 
-                3,                              // We expect a 3 damage done by AoO
+                3,                              // We expect 3 damage done by AoO
                 WeaponFactory.CrossbowLight(),  
                 WeaponFactory.Dagger());        // damage = D4
 
@@ -34,9 +34,19 @@ namespace DndTable.Core.Test.UnitTests
                 Position.Create(1, 1), 
                 Position.Create(1, 3), 
                 CreateDiceRoller(15, 3),        // 3 damage on the D4 roll 
-                0,                              // We expect a NO damage done by AoO
+                0,                              // We expect NO damage done by AoO
                 WeaponFactory.CrossbowLight(),  
                 WeaponFactory.Dagger());        // damage = D4
+
+            // Same faction
+            DoAttackWithAoO(
+                Position.Create(1, 1),
+                Position.Create(1, 2),
+                CreateDiceRoller(15, 3),        // 3 damage on the D4 roll 
+                0,                              // We expect NO damage done by AoO
+                WeaponFactory.CrossbowLight(),
+                WeaponFactory.Dagger(),         // damage = D4
+                true);
         }
 
         [Test]
@@ -92,7 +102,7 @@ namespace DndTable.Core.Test.UnitTests
 
         private static void DoAttackWithAoO(
             Position attackerPosition, Position targetPosition, IDiceRoller diceRoller, int expectedOpportunityDamage, 
-            IWeapon attackerWeapon, IWeapon opportunityWeapon)
+            IWeapon attackerWeapon, IWeapon opportunityWeapon, bool sameFaction = false)
         {
             var board = new Board(10, 10);
             var game = new Game(board, diceRoller);
@@ -103,7 +113,11 @@ namespace DndTable.Core.Test.UnitTests
 
             var char2 = Factory.CreateCharacter("dummy2");
             game.AddCharacter(char2, targetPosition);
-            game.EquipWeapon(char2, opportunityWeapon); 
+            game.EquipWeapon(char2, opportunityWeapon);
+
+            // Dirty downcasting
+            if (!sameFaction)
+                (char2.CharacterSheet as CharacterSheet).FactionId += 1;
 
             var encounter = new Encounter(board, diceRoller, new List<ICharacter>() { char1, char2 });
             var actionFactory = new AbstractActionFactory(encounter, board, diceRoller);

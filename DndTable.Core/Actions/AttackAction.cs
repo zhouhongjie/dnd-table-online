@@ -54,7 +54,7 @@ namespace DndTable.Core.Actions
                 throw new ArgumentException("attacker has no equiped weapon");
 
             // Check max range
-            var rangeRounded = GetTilesDistance(_attacker.Position, _targetCharacter.Position);
+            var rangeRounded = MathHelper.GetTilesDistance(_attacker.Position, _targetCharacter.Position);
             if (rangeRounded > MaxRange)
                 throw new InvalidOperationException("Out of range: should have been checked before calling this method");
 
@@ -76,7 +76,7 @@ namespace DndTable.Core.Actions
             var check = DiceRoller.RollAttack(
                 _attacker, 
                 DiceRollEnum.Attack,
-                _attacker.CharacterSheet.GetCurrentAttackBonus((int)rangeRounded * 5),  // Convert tiles to feet
+                _attacker.CharacterSheet.GetCurrentAttackBonus((int)rangeRounded * 5, IsFlanking()),  // Convert tiles to feet
                 _targetCharacter.CharacterSheet.GetCurrentArmorClass(),
                 20 - _attacker.CharacterSheet.EquipedWeapon.CriticalRange);
 
@@ -91,7 +91,7 @@ namespace DndTable.Core.Actions
                     _attacker, 
                     DiceRollEnum.CriticalAttack, 
                     20,
-                    _attacker.CharacterSheet.GetCurrentAttackBonus((int)rangeRounded * 5),
+                    _attacker.CharacterSheet.GetCurrentAttackBonus((int)rangeRounded * 5, IsFlanking()),
                     _targetCharacter.CharacterSheet.GetCurrentArmorClass());
             }
 
@@ -113,15 +113,20 @@ namespace DndTable.Core.Actions
             }
         }
 
+        private bool IsFlanking()
+        {
+            return ActionHelper.IsFlanking(_attacker, _targetCharacter, this.Encounter.Participants);
+        }
+
         private void HandleAttackOfOpportunity(Calculator.CalculatorActionContext context)
         {
             foreach (var participant in this.Encounter.Participants)
             {
-                // no self bashing
-                if (participant == _attacker)
+                // no ally bashing
+                if (participant.CharacterSheet.FactionId == _attacker.CharacterSheet.FactionId)
                     continue;
 
-                if (IsInThreatenedArea(_attacker, participant))
+                if (ActionHelper.IsInThreatenedArea(_attacker, participant))
                 {
                     // check participant already did an AoO
                     // TODO: possibly multiple AoO's (combat reflexes)
@@ -142,16 +147,6 @@ namespace DndTable.Core.Actions
                     attackOfOpportunity.Do();
                 }
             }
-        }
-
-        private bool IsInThreatenedArea(ICharacter attacker, ICharacter participant)
-        {
-            // No AoO when unarmed, or with range weapon
-            if (participant.CharacterSheet.EquipedWeapon == null || participant.CharacterSheet.EquipedWeapon.IsRanged)
-                return false;
-
-            // TODO: reach weapons, etc ...
-            return GetTilesDistance(attacker.Position, participant.Position) == 1;
         }
 
         private bool ProvokesAttackOfOpportunity()
