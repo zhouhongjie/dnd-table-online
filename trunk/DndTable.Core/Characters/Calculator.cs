@@ -7,6 +7,7 @@ namespace DndTable.Core.Characters
     static class Calculator
     {
         private static int _indentLevel = 0;
+        private static CalculatorActionContext _rootActionContext = null;
 
         public static CalculatorPropertyContext CreatePropertyContext(string description)
         {
@@ -15,7 +16,24 @@ namespace DndTable.Core.Characters
 
         public static CalculatorActionContext CreateActionContext(BaseAction action)
         {
-            return new CalculatorActionContext(action);
+            var newContext = new CalculatorActionContext(action);
+
+            if (_rootActionContext == null)
+                _rootActionContext = newContext;
+
+            return newContext;
+        }
+
+
+        private static bool HasActionContext()
+        {
+            return _rootActionContext != null;
+        }
+
+        private static void CloseActionContext(CalculatorActionContext context)
+        {
+            if (_rootActionContext == context)
+                _rootActionContext = null;
         }
 
         public class CalculatorPropertyContext : IDisposable
@@ -26,13 +44,23 @@ namespace DndTable.Core.Characters
             internal CalculatorPropertyContext(string contextDescription)
             {
                 _localIndentLevel = _indentLevel++;
-                Logger.Singleton.StartCharacterSheetProperty(_localIndentLevel++, contextDescription);
                 _contextDescription = contextDescription;
+
+                // Only log in context (avoid useless log entries)
+                if (HasActionContext())
+                {
+                    Logger.Singleton.StartCharacterSheetProperty(_localIndentLevel++, contextDescription);
+                }
             }
 
             public int Use(int value, string description)
             {
-                Logger.Singleton.AddCharacterSheetProperty(_localIndentLevel, description, value);
+                // Only log in context (avoid useless log entries)
+                if (HasActionContext())
+                {
+                    Logger.Singleton.AddCharacterSheetProperty(_localIndentLevel, description, value);
+                }
+
                 return value;
             }
 
@@ -65,6 +93,7 @@ namespace DndTable.Core.Characters
             {
                 //Logger.Singleton.EndAction(_localIndentLevel, _action);
                 _indentLevel--;
+                CloseActionContext(this);
             }
 
             public void AoO(ICharacter opportunist, ICharacter victim)

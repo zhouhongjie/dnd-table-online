@@ -26,6 +26,9 @@ public class TableManager : MonoBehaviour
     public IGame Game;
     public IEncounter CurrentEncounter;
 
+
+    private const int _calculatorWindowWidth = 400;
+
     public Transform GetCurrentCharacterTransform()
     {
         if (CurrentPlayer == null)
@@ -126,7 +129,8 @@ public class TableManager : MonoBehaviour
 
         // See: http://3dgep.com/?p=5169
         GUILayout.Window(0, new Rect(0, 0, 150, 0), UpdateCharacterMonitorUI, "Character monitor");
-        GUILayout.Window(1, new Rect(Screen.width - 500, 0, 500, 0), UpdateDiceMonitorUI, "Dice monitor");
+
+        GUILayout.Window(1, new Rect(Screen.width - _calculatorWindowWidth, 0, _calculatorWindowWidth, 0), UpdateDiceMonitorUI, "Calculator");
 
         if (_mode == ModeEnum.Player)
             GUILayout.Window(2, new Rect(0, 150, 150, 0), UpdatePossibleActionsUI, "Actions");
@@ -202,32 +206,26 @@ public class TableManager : MonoBehaviour
 
     private void UpdateCharacterMonitorUI(int windowId)
     {
-        var height = 0;
         var label = String.Empty;
         foreach (var character in Game.GetCharacters())
         {
             //GUI.Label(new Rect(0, start, Screen.width, Screen.height), character.CharacterSheet.Name + ": " + character.CharacterSheet.HitPoints + "hp");
             label += character.CharacterSheet.Name + ": " + character.CharacterSheet.HitPoints + "hp" + "\n";
-            height += 20;
         }
-        GUILayout.Box(label);
+        GUILayout.Label(label);
     }
 
     private void UpdateDiceMonitorUI(int windowId)
     {
-        var height = 0;
         var label = String.Empty;
-        foreach (var roll in Game.DiceMonitor.GetLastRolls(10))
+        foreach (var message in Game.Logger.GetLast(15))
         {
-            var currentLine = roll.Description;
-
-            label += currentLine + "\n";
-            height += 18;
+            label += message + "\n";
+            //GUILayout.Label(message, GUILayout.Height(15));
         }
 
-        //const int width = 500;
-
-        GUILayout.Box(label);
+        GUILayout.Label(label);
+        //GUILayout.Box(label);
     }
 
     private void UpdateFieldOfView()
