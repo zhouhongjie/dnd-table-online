@@ -18,6 +18,7 @@ namespace DndTable.Core.Factories
             var sheet = new CharacterSheet();
 
             sheet.Name = name;
+            sheet.FactionId = 1;
 
             //var diceRoller = new DiceRoller();
             sheet.Strength = 10;
@@ -39,6 +40,7 @@ namespace DndTable.Core.Factories
 
             sheet.Name = "Orc";
             sheet.Race = CharacterRace.Orc;
+            sheet.FactionId = 2;
 
             //var diceRoller = new DiceRoller();
             sheet.Strength = 15;

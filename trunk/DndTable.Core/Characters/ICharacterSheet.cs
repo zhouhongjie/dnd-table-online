@@ -4,6 +4,7 @@
     {
         string Name { get; }
         CharacterRace Race { get; }
+        int FactionId { get; }
 
         int Strength { get; }
         int Dexterity { get; }
@@ -29,7 +30,7 @@
 
 
         bool CanAct();
-        int GetCurrentAttackBonus(int range);
+        int GetCurrentAttackBonus(int range, bool isFlanking);
         int GetCurrentDamageBonus();
         int GetCurrentSpeed();
         int GetCurrentArmorClass();

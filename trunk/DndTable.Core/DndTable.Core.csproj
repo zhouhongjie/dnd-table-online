@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\ActionHelper.cs" />
     <Compile Include="Actions\BaseAction.cs" />
     <Compile Include="Actions\ChargeAction.cs" />
     <Compile Include="Actions\FiveFootStep.cs" />
