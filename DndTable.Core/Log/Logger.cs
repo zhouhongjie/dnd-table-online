@@ -22,6 +22,11 @@ namespace DndTable.Core.Log
             return _messages;
         }
 
+        public List<string> GetLast(int count)
+        {
+            return _messages.Skip(Math.Max(0, _messages.Count() - count)).ToList();
+        }
+
         public void Clear()
         {
             _messages.Clear();
@@ -61,17 +66,17 @@ namespace DndTable.Core.Log
 
         private static string GetPrefix(int indent)
         {
-            indent += 1;
+            //indent += 1;
 
             string prefix = string.Empty;
             for (var i=0; i < indent; i++)
             {
                 prefix += "\t";
             }
-            for (var i=0; i < indent; i++)
-            {
-                prefix += ">";
-            }
+            //for (var i=0; i < indent; i++)
+            //{
+            //    prefix += ">";
+            //}
 
             if (indent > 0)
                 prefix += " ";
@@ -82,7 +87,7 @@ namespace DndTable.Core.Log
 
         internal void AddRoll(DiceRoll roll)
         {
-            _messages.Add("\t" + roll.Description);
+            _messages.Add("#" + roll.Description);
         }
 
     }

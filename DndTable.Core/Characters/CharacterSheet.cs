@@ -33,33 +33,32 @@ namespace DndTable.Core.Characters
 
         public int BaseAttackBonus { get; internal set; }
 
-        private int MeleeAttackBonus
+        private int GetMeleeAttackBonus(Calculator.CalculatorPropertyContext context)
         {
-            get { return BaseAttackBonus + SizeModifier + GetAbilityBonus(Strength); }
+            return context.Use(BaseAttackBonus, "BaseAttackBonus") +
+                   context.Use(SizeModifier, "SizeModifier") +
+                   context.Use(GetAbilityBonus(Strength), "Strength");
         }
 
-        private int GetRangedAttackBonus(int range)
+        private int GetRangedAttackBonus(int range, Calculator.CalculatorPropertyContext context)
         {
-            using (var context = Calculator.CreatePropertyContext("AttackBonus"))
+            var rangePenalty = 0;
+
+            if (range >= EquipedWeapon.RangeIncrement)
             {
-                var rangePenalty = 0;
+                // TODO: MaxRange
+                // Difference between Thrown & Projectile
+                // * thrown = max range of 5 range increments
+                // * projectile = max range of 10 range increments
 
-                if (range >= EquipedWeapon.RangeIncrement)
-                {
-                    // TODO: MaxRange
-                    // Difference between Thrown & Projectile
-                    // * thrown = max range of 5 range increments
-                    // * projectile = max range of 10 range increments
-
-                    var nrOfRangeIncrements = (int) Math.Floor((double) range/(double) EquipedWeapon.RangeIncrement);
-                    rangePenalty = nrOfRangeIncrements*-2;
-                }
-
-                return context.Use(BaseAttackBonus, "BaseAttackBonus") +
-                       context.Use(SizeModifier, "Size") +
-                       context.Use(GetAbilityBonus(Dexterity), "Dexterity") +
-                       context.Use(rangePenalty, "RangePenalty");
+                var nrOfRangeIncrements = (int) Math.Floor((double) range/(double) EquipedWeapon.RangeIncrement);
+                rangePenalty = nrOfRangeIncrements*-2;
             }
+
+            return context.Use(BaseAttackBonus, "BaseAttackBonus") +
+                    context.Use(SizeModifier, "Size") +
+                    context.Use(GetAbilityBonus(Dexterity), "Dexterity") +
+                    context.Use(rangePenalty, "RangePenalty");
         }
 
 
@@ -85,17 +84,18 @@ namespace DndTable.Core.Characters
                 // Unarmed
                 if (EquipedWeapon == null)
                 {
-                    return context.Use(MeleeAttackBonus, "MeleeAttackBonus") +
+                    return GetMeleeAttackBonus(context) +
                            CurrentRoundInfo.UseAttackBonus(context);
                 }
                 // Ranged
                 if (EquipedWeapon.IsRanged)
                 {
-                    return GetRangedAttackBonus(range) + CurrentRoundInfo.UseAttackBonus(context);
+                    return GetRangedAttackBonus(range, context) +
+                           CurrentRoundInfo.UseAttackBonus(context);
                 }
 
                 // Melee
-                return context.Use(MeleeAttackBonus, "MeleeAttackBonus") +
+                return GetMeleeAttackBonus(context) +
                        CurrentRoundInfo.UseAttackBonus(context);
             }
         }
