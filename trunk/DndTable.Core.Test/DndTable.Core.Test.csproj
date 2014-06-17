@@ -61,6 +61,7 @@
     <Compile Include="UnitTests\MoveTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserTests\EncounterHelper.cs" />
+    <Compile Include="UserTests\RepositoryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

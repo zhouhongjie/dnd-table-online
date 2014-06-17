@@ -18,5 +18,8 @@ namespace DndTable.Core
         bool[,] GetFieldOfViewForCurrentPlayer();
 
         bool[,] GetFieldOfView(Position origin);
+
+        bool Save(string name);
+        bool Load(string name);
     }
 }

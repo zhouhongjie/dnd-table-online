@@ -82,6 +82,8 @@
     <Compile Include="IGame.cs" />
     <Compile Include="Log\ILogger.cs" />
     <Compile Include="Log\Logger.cs" />
+    <Compile Include="Persistence\BoardXml.cs" />
+    <Compile Include="Persistence\Repository.cs" />
     <Compile Include="ShadowCaster.cs" />
     <Compile Include="Entities\Wall.cs" />
     <Compile Include="Weapons\IWeapon.cs" />

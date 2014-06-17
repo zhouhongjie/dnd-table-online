@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DndTable.Core.Entities;
+using DndTable.Core.Persistence;
 using SilverlightShadowCasting;
 
 namespace DndTable.Core
@@ -21,6 +22,29 @@ namespace DndTable.Core
             MaxY = maxY;
 
             _cells = new BaseEntity[MaxX, MaxY];
+        }
+
+        public bool Save(string name)
+        {
+            var entityList = new List<BaseEntity>();
+            for (int i = 0; i < _cells.GetLength(0); i++)
+            {
+                for (int j=0; j < _cells.GetLength(1); j++)
+                {
+                    entityList.Add(_cells[i, j]);
+                }
+            }
+
+            return Repository.CreateRepository().SaveBoard(name, MaxX, MaxY, entityList);
+        }
+
+        public bool Load(string name)
+        {
+            return false;
+            //int maxX, maxY;
+
+
+            //return Repository.CreateRepository().LoadBoard(name);
         }
 
         private bool CheckBoundaries(Position position)
