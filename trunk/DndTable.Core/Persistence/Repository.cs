@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using DndTable.Core.Entities;
+using DndTable.Core.Factories;
 
 namespace DndTable.Core.Persistence
 {
@@ -15,7 +16,8 @@ namespace DndTable.Core.Persistence
         public static Repository CreateRepository()
         {
             // TODO check default Data folder path
-            return new Repository(@".\Data\");
+            //return new Repository(@".\Data\");
+            return new Repository(@"E:\Data\Projects\DndTableOnline\Data\");
         }
 
         internal Repository(string folder)
@@ -32,6 +34,9 @@ namespace DndTable.Core.Persistence
             boardXml.Entities = new List<EntityXml>();
             foreach (var entity in entities)
             {
+                if (entity == null)
+                    throw new ArgumentNullException();
+
                 // Don't save characters
                 if (entity.EntityType == EntityTypeEnum.Character)
                     continue;
@@ -55,9 +60,45 @@ namespace DndTable.Core.Persistence
             return true;
         }
 
-        //internal bool LoadBoard(Board board, string name)
-        //{
-        //    return false;
-        //}
+        internal bool LoadBoard(string name, out int maxX, out int maxY, out List<BaseEntity> entities)
+        {
+            // Init out params
+            maxX = 0;
+            maxY = 0;
+            entities = null;
+
+            // Check file
+            var filename = _folder + name + ".xml";
+            if (!File.Exists(filename))
+                return false;
+
+            // Read file
+            using (var readFileStream = new StreamReader(filename))
+            {
+                var serializer = new XmlSerializer(typeof(BoardXml));
+                var boardXml = serializer.Deserialize(readFileStream) as BoardXml;
+
+                if (boardXml == null)
+                {
+                    return false;
+                }
+
+                maxX = boardXml.MaxX;
+                maxY = boardXml.MaxY;
+
+                entities = new List<BaseEntity>();
+                foreach (var entityXml in boardXml.Entities)
+                {
+                    if (entityXml.EntityType != EntityTypeEnum.Wall)
+                        throw new NotSupportedException("EntityType not supported yet: " + entityXml.EntityType);
+
+                    var newEntity = Factory.CreateWall() as BaseEntity;
+                    newEntity.Position = Position.Create(entityXml.PositionX, entityXml.PositionY);
+                    entities.Add(newEntity);
+                }
+
+                return true;
+            }
+        }
     }
 }

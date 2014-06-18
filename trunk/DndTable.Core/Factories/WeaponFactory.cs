@@ -23,6 +23,22 @@ namespace DndTable.Core.Factories
             return weapon;
         }
 
+        public static IWeapon Longsword()
+        {
+            var weapon = new Weapon();
+
+            weapon.Proficiency = WeaponProficiencyEnum.Martial;
+            weapon.IsRanged = false;
+            weapon.DamageD = 8;
+            weapon.CriticalMultiplier = 2;
+            weapon.CriticalRange = 2;
+            weapon.RangeIncrement = 0;
+            weapon.Weight = 4;
+            weapon.DamageTypes.Add(WeaponDamageTypeEnum.Slashing);
+
+            return weapon;
+        }
+
         public static IWeapon CrossbowLight()
         {
             var weapon = new Weapon();
@@ -34,6 +50,22 @@ namespace DndTable.Core.Factories
             weapon.CriticalRange = 1;
             weapon.RangeIncrement = 80;
             weapon.Weight = 6;
+            weapon.DamageTypes.Add(WeaponDamageTypeEnum.Piercing);
+
+            return weapon;
+        }
+
+        public static IWeapon Longbow()
+        {
+            var weapon = new Weapon();
+
+            weapon.Proficiency = WeaponProficiencyEnum.Martial;
+            weapon.IsRanged = true;
+            weapon.DamageD = 8;
+            weapon.CriticalMultiplier = 3;
+            weapon.CriticalRange = 1;
+            weapon.RangeIncrement = 100;
+            weapon.Weight = 3;
             weapon.DamageTypes.Add(WeaponDamageTypeEnum.Piercing);
 
             return weapon;

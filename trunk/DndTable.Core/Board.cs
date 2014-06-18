@@ -13,10 +13,20 @@ namespace DndTable.Core
         public int MaxX { get; private set; }
         public int MaxY { get; private set; }
 
-        private readonly BaseEntity[,] _cells;
+        private BaseEntity[,] _cells;
         private bool[,] _currentFieldOfView;
 
+        private Repository _repository { get; set; }
+
         public Board(int maxX, int maxY)
+        {
+            Clear(maxX, maxY);
+            
+            // TODO: use dependency injection
+            _repository = Repository.CreateRepository();
+        }
+
+        private void Clear(int maxX, int maxY)
         {
             MaxX = maxX;
             MaxY = maxY;
@@ -31,20 +41,31 @@ namespace DndTable.Core
             {
                 for (int j=0; j < _cells.GetLength(1); j++)
                 {
-                    entityList.Add(_cells[i, j]);
+                    var entity = _cells[i, j];
+                    if (entity != null)
+                        entityList.Add(entity);
                 }
             }
 
-            return Repository.CreateRepository().SaveBoard(name, MaxX, MaxY, entityList);
+            return _repository.SaveBoard(name, MaxX, MaxY, entityList);
         }
 
         public bool Load(string name)
         {
-            return false;
-            //int maxX, maxY;
+            int maxX, maxY;
+            List<BaseEntity> entities;
 
+            if (!_repository.LoadBoard(name, out maxX, out maxY, out entities))
+                return false;
 
-            //return Repository.CreateRepository().LoadBoard(name);
+            Clear(maxX, maxY);
+
+            foreach (var entity in entities)
+            {
+                AddEntity(entity, entity.Position);
+            }
+
+            return true;
         }
 
         private bool CheckBoundaries(Position position)

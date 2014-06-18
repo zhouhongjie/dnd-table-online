@@ -12,15 +12,26 @@ namespace DndTable.Core.Test.UserTests
     public class RepositoryTest
     {
         [Test]
-        public void Save()
+        public void SaveAndLoad()
         {
             var repository = new Repository(@"E:\Data\Projects\DndTableOnline\Data\");
-            var entities = new List<BaseEntity>();
-            entities.Add(new Wall()
-                             {
-                                 Position = Position.Create(1, 2)
-                             });
-            repository.SaveBoard("test", 10, 20, entities);
+
+            // Save
+            {
+                var entities = new List<BaseEntity>();
+                entities.Add(new Wall()
+                                 {
+                                     Position = Position.Create(1, 2)
+                                 });
+                repository.SaveBoard("test", 10, 20, entities);
+            }
+
+            // Load
+            {
+                int maxX, maxY;
+                List<BaseEntity> entities;
+                repository.LoadBoard("test2", out maxX, out maxY, out entities);
+            }
         }
     }
 }
