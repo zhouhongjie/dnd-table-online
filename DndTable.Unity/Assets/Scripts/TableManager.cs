@@ -26,6 +26,8 @@ public class TableManager : MonoBehaviour
     public IGame Game;
     public IEncounter CurrentEncounter;
 
+    public string Dungeon = "Dungeon1";
+
 
     private const int _calculatorWindowWidth = 400;
 
@@ -55,25 +57,35 @@ public class TableManager : MonoBehaviour
 
         // Temp: manual board setup
         {
+            // Load dungeon
+            Game.GameBoard.Load(Dungeon);
+
             // Players
-            var regdar = Factory.CreateCharacter("Regdar");
-            var tordek = Factory.CreateCharacter("Tordek");
-            Game.EquipWeapon(regdar, WeaponFactory.CrossbowLight());
-            Game.EquipWeapon(tordek, WeaponFactory.Dagger());
-            Game.AddCharacter(regdar, Position.Create(10, 10));
-            Game.AddCharacter(tordek, Position.Create(10, 20));
+            //var regdar = Factory.CreateCharacter("Regdar");
+            //var tordek = Factory.CreateCharacter("Tordek");
+            var boris = Factory.CreateCharacter("Boris");
+            var maiko = Factory.CreateCharacter("Maiko");
+
+            Game.EquipWeapon(boris, WeaponFactory.Longsword());
+            Game.EquipWeapon(maiko, WeaponFactory.Longbow());
+            Game.EquipArmor(boris, ArmorFactory.Leather());
+            Game.EquipArmor(maiko, ArmorFactory.Leather());
+
+            Game.AddCharacter(boris, Position.Create(10, 10));
+            Game.AddCharacter(maiko, Position.Create(10, 12));
 
             // Orcs
             Game.AddCharacter(Factory.CreateOrc(), Position.Create(20, 20));
             Game.AddCharacter(Factory.CreateOrc(), Position.Create(20, 21));
             Game.AddCharacter(Factory.CreateOrc(), Position.Create(20, 22));
 
+            // Build dungeon
             // Walls
-            Game.AddWall(Position.Create(5, 5));
-            Game.AddWall(Position.Create(5, 6));
-            Game.AddWall(Position.Create(5, 7));
-            Game.AddWall(Position.Create(5, 9));
-            Game.AddWall(Position.Create(5, 10));
+            //Game.AddWall(Position.Create(5, 5));
+            //Game.AddWall(Position.Create(5, 6));
+            //Game.AddWall(Position.Create(5, 7));
+            //Game.AddWall(Position.Create(5, 9));
+            //Game.AddWall(Position.Create(5, 10));
 
             // Start encounter
 	        CurrentEncounter = Game.StartEncounter();
@@ -110,6 +122,7 @@ public class TableManager : MonoBehaviour
         {
             StopCurrentAction();
             _mode = ModeEnum.Player;
+            Game.GameBoard.Save(Dungeon);
         }
     }
 
