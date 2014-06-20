@@ -67,5 +67,37 @@ namespace DndTable.Core.Actions
                 throw new ArgumentException();
             return sheet;
         }
+
+        protected void HandleAttackOfOpportunity(Calculator.CalculatorActionContext context)
+        {
+            foreach (var participant in this.Encounter.Participants)
+            {
+                // no ally bashing
+                if (participant.CharacterSheet.FactionId == Executer.CharacterSheet.FactionId)
+                    continue;
+
+                if (ActionHelper.IsInThreatenedArea(Executer, participant))
+                {
+                    // check participant already did an AoO
+                    // TODO: possibly multiple AoO's (combat reflexes)
+                    var roundInfo = Encounter.GetRoundInfo(participant);
+                    if (roundInfo.AttackOfOpportunityCounter > 0)
+                        continue;
+
+                    // Increase counter
+                    roundInfo.AttackOfOpportunityCounter++;
+
+                    // handle AttackAction of participant
+                    // TODO: requires UI interaction !!!!!! (for the moment auto attack)
+
+                    // Note: AoO is always a MeleeAttack in the proper range (otherwise ThreatenedArea is wrong)
+                    context.AoO(participant, Executer);
+                    var attackOfOpportunity = ActionFactory.MeleeAttack(participant);
+                    attackOfOpportunity.Target(Executer);
+                    attackOfOpportunity.Do();
+                }
+            }
+        }
+
     }
 }

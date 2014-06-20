@@ -195,7 +195,7 @@ public class TableManager : MonoBehaviour
                 {
                     action.Do();
                 }
-                if (action is IMoveAction)
+                else if (action is IMoveAction)
                 {
                     _currentActionUI = new MoveActionUI(CurrentPlayer, action as IMoveAction);
                 }
