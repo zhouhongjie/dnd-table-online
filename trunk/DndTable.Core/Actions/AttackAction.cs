@@ -75,6 +75,9 @@ namespace DndTable.Core.Actions
                     return;
             }
 
+            // Use the weapon (Launch ammo is required)
+            var weapon = (_attacker.CharacterSheet.EquipedWeapon as Weapon);
+            weapon.Use();
 
             // Check hit
             var check = DiceRoller.RollAttack(

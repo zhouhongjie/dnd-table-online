@@ -97,5 +97,42 @@ namespace DndTable.Core.Test.UnitTests
 
             DoSimpleAttack(attackerPosition, targetPosition, CreateDiceRoller(15, 4), 4);
         }
+
+        [Test]
+        public void RangeAttackTest()
+        {
+            var diceRandomizer = new Mock<IDiceRandomizer>();
+            diceRandomizer.Setup(dr => dr.Roll(20)).Returns(15); // Hit!
+            diceRandomizer.Setup(dr => dr.Roll(8)).Returns(5); // Damage = 5
+
+            var diceRoller = new DiceRoller(diceRandomizer.Object);
+            var board = new Board(10, 10);
+            var game = new Game(board, diceRoller);
+
+            var char1 = Factory.CreateCharacter("dummy1");
+            game.AddCharacter(char1, Position.Create(1, 1));
+            game.EquipWeapon(char1, WeaponFactory.CrossbowLight());
+
+            var char2 = Factory.CreateCharacter("dummy2");
+            game.AddCharacter(char2, Position.Create(5, 5));
+
+            var encounter = new Encounter(board, diceRoller, new List<ICharacter>() { char1, char2 });
+            var actionFactory = new AbstractActionFactory(encounter, board, diceRoller);
+
+
+            // Preconditions
+            Assert.AreEqual(10, char2.CharacterSheet.HitPoints);
+            Assert.IsFalse(char1.CharacterSheet.EquipedWeapon.NeedsReload);
+
+
+            var rangeAttack = new AttackAction(char1);
+            rangeAttack.Initialize(actionFactory);
+
+            rangeAttack.Target(char2).Do();
+
+            // Test post conditions
+            Assert.AreEqual(5, char2.CharacterSheet.HitPoints, "Is hit");
+            Assert.IsTrue(char1.CharacterSheet.EquipedWeapon.NeedsReload, "needs reload");
+        }
     }
 }

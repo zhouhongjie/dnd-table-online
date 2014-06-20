@@ -26,6 +26,14 @@ namespace DndTable.Core
             Proficiency = WeaponProficiencyEnum.Simple;
             DamageTypes = new List<WeaponDamageTypeEnum>();
         }
+
+        internal void Use()
+        {
+            if (ReloadInfo != null)
+            {
+                ReloadInfo.IsLoaded = false;
+            }
+        }
     }
 
     internal class ReloadInfo

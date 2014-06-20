@@ -14,5 +14,7 @@ namespace DndTable.Core.Actions
         ActionTypeEnum Type { get; }
 
         string Description { get; }
+
+        bool RequiresUI { get; }
     }
 }
