@@ -119,6 +119,10 @@ namespace DndTable.Core
         {
             var actions = new List<IAction>();
 
+            // Temp possibility => example after death due to AoO
+            if (!GetCurrentCharacter().CharacterSheet.CanAct())
+                return actions;
+
             // Exceptional action: Check 5-foot-move
             // "If you move no actual distance in a round (commonly because you have swapped your move for one or more equivalent actions), you can take one 5-foot step either before, during, or after the action"
             if (GetRoundInfo(GetCurrentCharacter()).StartPosition == GetCurrentCharacter().Position)

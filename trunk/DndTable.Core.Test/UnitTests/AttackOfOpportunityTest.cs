@@ -50,6 +50,24 @@ namespace DndTable.Core.Test.UnitTests
         }
 
         [Test]
+        public void ReloadProvokesAoO()
+        {
+            // Unload x-bow
+            var xBow = WeaponFactory.CrossbowLight();
+            (xBow as Weapon).ReloadInfo.IsLoaded = false;
+
+            // Next to each other
+            DoReloadWithAoO(
+                Position.Create(1, 1),
+                Position.Create(1, 2),
+                CreateDiceRoller(15, 3), // 3 damage on the D4 roll 
+                3, // We expect 3 damage done by AoO
+                xBow,
+                WeaponFactory.Dagger()); // damage = D4
+
+        }
+
+        [Test]
         public void MeleeAttackDoesnNotProvokesAoO()
         {
             // Next to each other
@@ -104,12 +122,54 @@ namespace DndTable.Core.Test.UnitTests
             Position attackerPosition, Position targetPosition, IDiceRoller diceRoller, int expectedOpportunityDamage, 
             IWeapon attackerWeapon, IWeapon opportunityWeapon, bool sameFaction = false)
         {
+            var setup = PrepareBoard(diceRoller, attackerPosition, attackerWeapon, targetPosition, opportunityWeapon, sameFaction);
+
+            Assert.AreEqual(10, setup.ActionExecuter.CharacterSheet.HitPoints, "Precondition");
+
+
+            var attack = new AttackAction(setup.ActionExecuter);
+            attack.Initialize(setup.ActionFactory);
+
+
+            attack.Target(setup.AoOExecuter).Do();
+            Assert.AreEqual(10 - expectedOpportunityDamage, setup.ActionExecuter.CharacterSheet.HitPoints, "AoO failed");
+
+            // Only 1 AoO allowed in 1 round
+            attack.Target(setup.AoOExecuter).Do();
+            Assert.AreEqual(10 - expectedOpportunityDamage, setup.ActionExecuter.CharacterSheet.HitPoints, "double AoO");
+        }
+
+        private static void DoReloadWithAoO(
+            Position attackerPosition, Position targetPosition, IDiceRoller diceRoller, int expectedOpportunityDamage, 
+            IWeapon attackerWeapon, IWeapon opportunityWeapon, bool sameFaction = false)
+        {
+            var setup = PrepareBoard(diceRoller, attackerPosition, attackerWeapon, targetPosition, opportunityWeapon, sameFaction);
+
+            Assert.AreEqual(10, setup.ActionExecuter.CharacterSheet.HitPoints, "Precondition");
+
+
+            var reload = new ReloadAction(setup.ActionExecuter);
+            reload.Initialize(setup.ActionFactory);
+
+            reload.Do();
+            Assert.AreEqual(10 - expectedOpportunityDamage, setup.ActionExecuter.CharacterSheet.HitPoints, "AoO failed");
+        }
+
+        class PreparedSetup
+        {
+            public ICharacter ActionExecuter;
+            public ICharacter AoOExecuter;
+            public AbstractActionFactory ActionFactory;
+        }
+
+        private static PreparedSetup PrepareBoard(IDiceRoller diceRoller, Position attackerPosition, IWeapon attackerWeapon, Position targetPosition, IWeapon opportunityWeapon, bool sameFaction)
+        {
             var board = new Board(10, 10);
             var game = new Game(board, diceRoller);
 
             var char1 = Factory.CreateCharacter("dummy1");
             game.AddCharacter(char1, attackerPosition);
-            game.EquipWeapon(char1, attackerWeapon); 
+            game.EquipWeapon(char1, attackerWeapon);
 
             var char2 = Factory.CreateCharacter("dummy2");
             game.AddCharacter(char2, targetPosition);
@@ -122,20 +182,7 @@ namespace DndTable.Core.Test.UnitTests
             var encounter = new Encounter(board, diceRoller, new List<ICharacter>() { char1, char2 });
             var actionFactory = new AbstractActionFactory(encounter, board, diceRoller);
 
-            Assert.AreEqual(10, char2.CharacterSheet.HitPoints, "Precondition");
-
-
-            var attack = new AttackAction(char1);
-            attack.Initialize(actionFactory);
-
-
-            attack.Target(char2).Do();
-            Assert.AreEqual(10 - expectedOpportunityDamage, char1.CharacterSheet.HitPoints);
-
-            // Only 1 AoO allowed in 1 round
-            attack.Target(char2).Do();
-            Assert.AreEqual(10 - expectedOpportunityDamage, char1.CharacterSheet.HitPoints);
+            return new PreparedSetup { ActionExecuter = char1, AoOExecuter = char2, ActionFactory = actionFactory };
         }
-
     }
 }

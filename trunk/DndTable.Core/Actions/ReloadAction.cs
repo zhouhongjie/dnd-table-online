@@ -13,6 +13,14 @@ namespace DndTable.Core.Actions
 
         public override void Do()
         {
+            using (var context = Calculator.CreateActionContext(this))
+            {
+                _Do(context);
+            }
+        }
+
+        private void _Do(Calculator.CalculatorActionContext context)
+        {
             // Has weapon?
             if ((Executer.CharacterSheet.EquipedWeapon == null))
                 throw new InvalidOperationException("attacker has no equiped weapon");
@@ -23,10 +31,14 @@ namespace DndTable.Core.Actions
 
             Register();
 
+            // AoO
+            HandleAttackOfOpportunity(context);
+            if (!Executer.CharacterSheet.CanAct())
+                return;
+
             // TODO: limited nr of arrows
             var reloadInfo = GetReloadInfo();
             reloadInfo.IsLoaded = true;
-
         }
 
         public override ActionTypeEnum Type
