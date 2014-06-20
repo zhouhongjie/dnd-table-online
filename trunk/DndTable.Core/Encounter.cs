@@ -52,7 +52,7 @@ namespace DndTable.Core
         {
             _actionFactory = new AbstractActionFactory(this, gameBoard, diceRoller);
 
-            Participants = DoInitiaticeChecks(diceRoller, participants);
+            Participants = DoInitiativeChecks(diceRoller, participants);
 
             // Init roundInfo
             GetRoundInfo(GetCurrentCharacter()).Reset(GetCurrentCharacter());
@@ -63,7 +63,7 @@ namespace DndTable.Core
             _actionDoneByCurrentChar.Add(actionType);
         }
 
-        private static List<ICharacter> DoInitiaticeChecks(IDiceRoller diceRoller, List<ICharacter> participants)
+        private static List<ICharacter> DoInitiativeChecks(IDiceRoller diceRoller, List<ICharacter> participants)
         {
             var initChecks = new List<KeyValuePair<ICharacter, int>>();
             foreach (var participant in participants)
@@ -119,14 +119,21 @@ namespace DndTable.Core
         {
             var actions = new List<IAction>();
 
-            // 2 Standard actions done
-            if (_actionDoneByCurrentChar.Count(a => (a == ActionTypeEnum.MoveEquivalent) || (a == ActionTypeEnum.Standard)) >= 2)
+            // Exceptional action: Check 5-foot-move
+            // "If you move no actual distance in a round (commonly because you have swapped your move for one or more equivalent actions), you can take one 5-foot step either before, during, or after the action"
+            if (GetRoundInfo(GetCurrentCharacter()).StartPosition == GetCurrentCharacter().Position)
+            {
+                actions.Add(_actionFactory.FiveFootStep(GetCurrentCharacter()));
+            }
+
+            // CHECK ALL DONE
+            if (!CanDoMoveEquivalentAction())
                 return actions;
 
             // Check Standard actions
-            if (!_actionDoneByCurrentChar.Contains(ActionTypeEnum.Standard))
+            if (CanDoStandardAction())
             {
-                if (GetCurrentCharacter().CharacterSheet.EquipedWeapon != null)
+                if (GetCurrentCharacter().CharacterSheet.EquipedWeapon != null && !GetCurrentCharacter().CharacterSheet.EquipedWeapon.NeedsReload)
                 {
                     if (GetCurrentCharacter().CharacterSheet.EquipedWeapon.IsRanged)
                         actions.Add(_actionFactory.RangeAttack(GetCurrentCharacter()));
@@ -135,26 +142,56 @@ namespace DndTable.Core
                 }
             }
 
-            // Check MoveEquivalent actions
-            if (_actionDoneByCurrentChar.Count(a => a == ActionTypeEnum.MoveEquivalent || a == ActionTypeEnum.FiveFootStep) < 2)
+            if (CanDoMoveAction())
             {
                 actions.Add(_actionFactory.Move(GetCurrentCharacter()));
             }
 
-            // Check 5-foot-move
-            // "If you move no actual distance in a round (commonly because you have swapped your move for one or more equivalent actions), you can take one 5-foot step either before, during, or after the action"
-            if (GetRoundInfo(GetCurrentCharacter()).StartPosition == GetCurrentCharacter().Position)
-            {
-                actions.Add(_actionFactory.FiveFootStep(GetCurrentCharacter()));
-            }
-
             // Check charge (= Full-round action)
-            if (_actionDoneByCurrentChar.Count == 0)
+            if (CanDoMoveAction() && CanDoFullRoundAction())
             {
                 actions.Add(_actionFactory.Charge(GetCurrentCharacter()));
             }
 
+            // Check reload action (FullRound || MoveEquivalent => depending on )
+            if (GetCurrentCharacter().CharacterSheet.EquipedWeapon != null && GetCurrentCharacter().CharacterSheet.EquipedWeapon.NeedsReload)
+            {
+                var reloadAction = _actionFactory.Reload(GetCurrentCharacter());
+                if (reloadAction.Type == ActionTypeEnum.FullRound && CanDoFullRoundAction())
+                    actions.Add(reloadAction);
+                else if (reloadAction.Type == ActionTypeEnum.MoveEquivalent && CanDoMoveEquivalentAction())
+                    actions.Add(reloadAction);
+                else
+                {
+                    throw new NotSupportedException("Reload action type not supported yet: " + reloadAction.Type);
+                }
+            }
+
             return actions;
+        }
+
+        private bool CanDoMoveAction()
+        {
+            return CanDoMoveEquivalentAction() &&
+                   (_actionDoneByCurrentChar.Count(a => a == ActionTypeEnum.FiveFootStep) < 1);
+        }
+
+        private bool CanDoMoveEquivalentAction()
+        {
+            return (_actionDoneByCurrentChar.Count(a => a == ActionTypeEnum.MoveEquivalent || a == ActionTypeEnum.Standard) < 2) &&
+                   (_actionDoneByCurrentChar.Count(a => a == ActionTypeEnum.FullRound) < 1);
+        }
+
+        private bool CanDoStandardAction()
+        {
+            return CanDoMoveEquivalentAction() &&
+                   !_actionDoneByCurrentChar.Contains(ActionTypeEnum.Standard);
+        }
+
+        private bool CanDoFullRoundAction()
+        {
+            return (_actionDoneByCurrentChar.Count(a => a == ActionTypeEnum.MoveEquivalent || a == ActionTypeEnum.Standard) < 1) &&
+                   (_actionDoneByCurrentChar.Count(a => a == ActionTypeEnum.FullRound) < 1);
         }
 
         public RoundInfo GetRoundInfo(ICharacter participant)

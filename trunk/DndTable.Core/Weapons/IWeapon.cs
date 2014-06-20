@@ -17,6 +17,8 @@ namespace DndTable.Core
 
     public interface IWeapon
     {
+        #region Statistics
+
         WeaponProficiencyEnum Proficiency { get; }
         bool IsRanged { get; }
 
@@ -30,5 +32,13 @@ namespace DndTable.Core
         int Weight { get; }
 
         List<WeaponDamageTypeEnum> DamageTypes { get; }
+
+        #endregion
+
+        #region Operational status
+
+        bool NeedsReload { get; }
+
+        #endregion
     }
 }
