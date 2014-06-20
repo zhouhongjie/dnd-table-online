@@ -26,7 +26,7 @@ namespace DndTable.Core.Test.UnitTests
                 Position.Create(1, 2), 
                 CreateDiceRoller(15, 3),        // 3 damage on the D4 roll 
                 3,                              // We expect 3 damage done by AoO
-                WeaponFactory.CrossbowLight(),  
+                WeaponFactory.Longbow(),  
                 WeaponFactory.Dagger());        // damage = D4
 
             // Not Next to each other
@@ -35,7 +35,7 @@ namespace DndTable.Core.Test.UnitTests
                 Position.Create(1, 3), 
                 CreateDiceRoller(15, 3),        // 3 damage on the D4 roll 
                 0,                              // We expect NO damage done by AoO
-                WeaponFactory.CrossbowLight(),  
+                WeaponFactory.Longbow(),  
                 WeaponFactory.Dagger());        // damage = D4
 
             // Same faction
@@ -44,7 +44,7 @@ namespace DndTable.Core.Test.UnitTests
                 Position.Create(1, 2),
                 CreateDiceRoller(15, 3),        // 3 damage on the D4 roll 
                 0,                              // We expect NO damage done by AoO
-                WeaponFactory.CrossbowLight(),
+                WeaponFactory.Longbow(),
                 WeaponFactory.Dagger(),         // damage = D4
                 true);
         }
@@ -125,15 +125,15 @@ namespace DndTable.Core.Test.UnitTests
             Assert.AreEqual(10, char2.CharacterSheet.HitPoints, "Precondition");
 
 
-            var meleeAttack = new AttackAction(char1);
-            meleeAttack.Initialize(actionFactory);
+            var attack = new AttackAction(char1);
+            attack.Initialize(actionFactory);
 
 
-            meleeAttack.Target(char2).Do();
+            attack.Target(char2).Do();
             Assert.AreEqual(10 - expectedOpportunityDamage, char1.CharacterSheet.HitPoints);
 
             // Only 1 AoO allowed in 1 round
-            meleeAttack.Target(char2).Do();
+            attack.Target(char2).Do();
             Assert.AreEqual(10 - expectedOpportunityDamage, char1.CharacterSheet.HitPoints);
         }
 

@@ -64,11 +64,12 @@ public class TableManager : MonoBehaviour
             //var regdar = Factory.CreateCharacter("Regdar");
             //var tordek = Factory.CreateCharacter("Tordek");
             var boris = Factory.CreateCharacter("Boris");
-            var maiko = Factory.CreateCharacter("Maiko");
-
-            Game.EquipWeapon(boris, WeaponFactory.Longsword());
-            Game.EquipWeapon(maiko, WeaponFactory.Longbow());
+            //Game.EquipWeapon(boris, WeaponFactory.Longsword());
+            Game.EquipWeapon(boris, WeaponFactory.CrossbowLight());
             Game.EquipArmor(boris, ArmorFactory.Leather());
+
+            var maiko = Factory.CreateCharacter("Maiko");
+            Game.EquipWeapon(maiko, WeaponFactory.Longbow());
             Game.EquipArmor(maiko, ArmorFactory.Leather());
 
             Game.AddCharacter(boris, Position.Create(10, 10));
@@ -190,6 +191,10 @@ public class TableManager : MonoBehaviour
             {
                 StopCurrentAction();
 
+                if (!action.RequiresUI)
+                {
+                    action.Do();
+                }
                 if (action is IMoveAction)
                 {
                     _currentActionUI = new MoveActionUI(CurrentPlayer, action as IMoveAction);

@@ -9,8 +9,7 @@ namespace DndTable.Core.Actions
     class ReloadAction : BaseAction
     {
         internal ReloadAction(ICharacter executer) : base(executer)
-        {
-        }
+        {}
 
         public override void Do()
         {
@@ -38,6 +37,11 @@ namespace DndTable.Core.Actions
         public override string Description
         {
             get { return "Reload"; } // Add nr of partials to reload?
+        }
+
+        public override bool RequiresUI
+        {
+            get { return false; }
         }
 
         private ReloadInfo GetReloadInfo()

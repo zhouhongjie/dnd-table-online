@@ -41,6 +41,9 @@ namespace DndTable.Core.Actions
         protected Board Board { get; private set; }
         protected AbstractActionFactory ActionFactory { get; private set; }
 
+        public virtual bool RequiresUI { get { return true; } }
+
+
         internal void Initialize(AbstractActionFactory actionFactory)
         {
             ActionFactory = actionFactory;
