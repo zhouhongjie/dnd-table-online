@@ -29,7 +29,7 @@ namespace DndTable.UnityUI
             // Add/Remove wall
             if (Input.GetMouseButtonDown(0))
             {
-                var target = _game.GameBoard.GetEntity(selectedPosition);
+                var target = _game.GameBoard.GetEntity(selectedPosition, EntityTypeEnum.Wall);
                 if (target == null)
                 {
                     _game.AddWall(selectedPosition);

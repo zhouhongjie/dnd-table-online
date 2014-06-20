@@ -293,37 +293,30 @@ public class TableManager : MonoBehaviour
     {
         var currentEntities = new HashSet<int>();
 
-        for (int i=0; i < Game.GameBoard.MaxX; i++)
+        foreach (var entity in Game.GameBoard.GetEntities())
         {
-            for (int j=0; j < Game.GameBoard.MaxY; j++)
+            currentEntities.Add(entity.Id);
+
+            // Add new
+            if (_entityIdToTransformMap.ContainsKey(entity.Id))
+                continue;
+
+            Transform newTransform = null;
+
+            if (entity.EntityType == EntityTypeEnum.Character)
             {
-                var entity = Game.GameBoard.GetEntity(Position.Create(i, j));
-                if (entity != null)
-                {
-                    currentEntities.Add(entity.Id);
-
-                    // Add new
-                    if (_entityIdToTransformMap.ContainsKey(entity.Id))
-                        continue;
-
-                    Transform newTransform = null;
-
-                    if (entity.EntityType == EntityTypeEnum.Character)
-                    {
-                        newTransform = CreateEntity(PlayerTemplate, i, j, entity);
-                    }
-                    else if (entity.EntityType == EntityTypeEnum.Wall)
-                    {
-                        newTransform = CreateEntity(WallTemplate, i, j, entity);
-                    }
-                    else
-                    {
-                        throw new NotSupportedException("EntityType does not have a template Transform: " + entity.EntityType);
-                    }
-
-                    _entityIdToTransformMap.Add(entity.Id, newTransform);
-                }
+                newTransform = CreateEntity(PlayerTemplate, entity);
             }
+            else if (entity.EntityType == EntityTypeEnum.Wall)
+            {
+                newTransform = CreateEntity(WallTemplate, entity);
+            }
+            else
+            {
+                throw new NotSupportedException("EntityType does not have a template Transform: " + entity.EntityType);
+            }
+
+            _entityIdToTransformMap.Add(entity.Id, newTransform);
         }
 
         // Delete no longer existing
@@ -380,9 +373,9 @@ public class TableManager : MonoBehaviour
         newObj.transform.parent = transform;
     }
 
-    private Transform CreateEntity(Transform template, int i, int j, IEntity entity)
+    private Transform CreateEntity(Transform template, IEntity entity)
     {
-        Vector3 position = new Vector3(i, 0, j);
+        Vector3 position = new Vector3(entity.Position.X, 0, entity.Position.Y);
         Transform newObj = (Transform)Instantiate(template, position, Quaternion.identity);
 
         // Set as child

@@ -1,5 +1,6 @@
 ﻿using DndTable.Core.Actions;
 using DndTable.Core.Characters;
+using DndTable.Core.Entities;
 using DndTable.Core.Factories;
 using NUnit.Framework;
 
@@ -86,7 +87,7 @@ namespace DndTable.Core.Test.UnitTests
             var char1 = Factory.CreateCharacter("dummy", sheet);
 
             game.AddCharacter(char1, Position.Create(1, 1));
-            Assert.AreEqual(char1, game.GameBoard.GetEntity(Position.Create(1, 1)));
+            Assert.AreEqual(char1, game.GameBoard.GetEntity(Position.Create(1, 1), EntityTypeEnum.Character));
 
             var moveAction = new MoveAction(char1);
             moveAction.Initialize(actionFactory);
@@ -105,7 +106,7 @@ namespace DndTable.Core.Test.UnitTests
 
         private void AssertCharMoved(Game game, ICharacter char1, Position position)
         {
-            Assert.AreEqual(char1, game.GameBoard.GetEntity(position));
+            Assert.AreEqual(char1, game.GameBoard.GetEntity(position, EntityTypeEnum.Character));
             Assert.AreEqual(position.X, char1.Position.X);
             Assert.AreEqual(position.Y, char1.Position.Y);
         }

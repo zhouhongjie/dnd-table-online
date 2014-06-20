@@ -1,6 +1,7 @@
 ﻿using DndTable.Core;
 using DndTable.Core.Actions;
 using DndTable.Core.Characters;
+using DndTable.Core.Entities;
 using UnityEngine;
 
 namespace DndTable.UnityUI
@@ -34,7 +35,7 @@ namespace DndTable.UnityUI
                 // Attack
                 if (Input.GetMouseButtonDown(0))
                 {
-                    var target = _game.GameBoard.GetEntity(_selectedPosition) as ICharacter;
+                    var target = _game.GameBoard.GetEntity(_selectedPosition, EntityTypeEnum.Character) as ICharacter;
                     if (target != null)
                     {
                         _attackAction.Target(target).Do();

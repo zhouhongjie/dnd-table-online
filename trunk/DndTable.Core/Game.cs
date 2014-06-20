@@ -47,11 +47,11 @@ namespace DndTable.Core
 
         public bool RemoveWall(Position selectedPosition)
         {
-            var entity = _gameBoard.GetEntity(selectedPosition);
+            var entity = _gameBoard.GetEntity(selectedPosition, EntityTypeEnum.Wall);
             if (entity == null || entity.EntityType != EntityTypeEnum.Wall)
                 return false;
 
-            return _gameBoard.RemoveEntity(selectedPosition);
+            return _gameBoard.RemoveEntity(entity);
         }
 
         public List<ICharacter> GetCharacters()

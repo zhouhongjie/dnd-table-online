@@ -59,7 +59,7 @@ namespace DndTable.Core.Actions
             // TODO: Can move? (paralysed, disabled, ...)
 
             // Can move to this point? (wall, other player, ...)
-            if (!Board.MoveEntity(_character.Position, newLocation))
+            if (!Board.MoveEntity(_character, newLocation))
                 return false;
 
 

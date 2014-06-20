@@ -72,7 +72,7 @@ namespace DndTable.Core.Actions
             // TODO: step-by-step move? to check AoO
 
             // Move
-            if (!Board.MoveEntity(_attacker.Position, newPosition))
+            if (!Board.MoveEntity(_attacker, newPosition))
                 return;
 
             // Register move
