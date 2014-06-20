@@ -13,7 +13,10 @@ namespace DndTable.Core
         public int MaxX { get; private set; }
         public int MaxY { get; private set; }
 
-        private BaseEntity[,] _cells;
+        private List<BaseEntity>[,] _cells;
+        private bool _rebuildCells;
+
+        private List<BaseEntity> _entities;
         private bool[,] _currentFieldOfView;
 
         private Repository _repository { get; set; }
@@ -26,28 +29,24 @@ namespace DndTable.Core
             _repository = Repository.CreateRepository();
         }
 
+        public List<IEntity> GetEntities()
+        {
+            return _entities.Cast<IEntity>().ToList();
+        }
+
         private void Clear(int maxX, int maxY)
         {
             MaxX = maxX;
             MaxY = maxY;
 
-            _cells = new BaseEntity[MaxX, MaxY];
+            _entities = new List<BaseEntity>();
+
+            _rebuildCells = true;
         }
 
         public bool Save(string name)
         {
-            var entityList = new List<BaseEntity>();
-            for (int i = 0; i < _cells.GetLength(0); i++)
-            {
-                for (int j=0; j < _cells.GetLength(1); j++)
-                {
-                    var entity = _cells[i, j];
-                    if (entity != null)
-                        entityList.Add(entity);
-                }
-            }
-
-            return _repository.SaveBoard(name, MaxX, MaxY, entityList);
+            return _repository.SaveBoard(name, MaxX, MaxY, _entities);
         }
 
         public bool Load(string name)
@@ -77,32 +76,52 @@ namespace DndTable.Core
             return true;
         }
 
-        public IEntity GetEntity(Position position)
+        public IEntity GetEntity(Position position, EntityTypeEnum type)
         {
-            if (!CheckBoundaries(position))
+            if (_rebuildCells)
+                RebuildOptimizedCells();
+
+            var cell = _cells[position.X, position.Y];
+            if (cell == null)
                 return null;
 
-            return _cells[position.X, position.Y];
+            // TODO: possibly multiple entities that should be returned
+            if (cell.Count(e => e.EntityType == type && e.Position == position) > 1)
+                throw new NotSupportedException("multiple entities that should be returned");
+
+            return cell.FirstOrDefault(e => e.EntityType == type && e.Position == position);
         }
 
-        public bool MoveEntity(Position from, Position to)
+        private void RebuildOptimizedCells()
         {
-            if (!CheckBoundaries(from))
-                return false;
+            _cells = new List<BaseEntity>[MaxX, MaxY];
+
+            foreach (var entity in _entities)
+            {
+                if (_cells[entity.Position.X, entity.Position.Y] == null)
+                    _cells[entity.Position.X, entity.Position.Y] = new List<BaseEntity>();
+
+                _cells[entity.Position.X, entity.Position.Y].Add(entity);
+            }
+
+            _rebuildCells = false;
+        }
+
+        public bool MoveEntity(IEntity entity, Position to)
+        {
             if (!CheckBoundaries(to))
                 return false;
 
-            if (GetEntity(to) != null)
-                return false;
+            var baseEntity = entity as BaseEntity;
+            if (baseEntity == null)
+                throw new ArgumentException("Unsupported entity type");
 
-            var entity = _cells[from.X, from.Y];
-            if (entity == null)
-                return false;
+            if (!_entities.Contains(baseEntity))
+                throw new ArgumentException("Entity is not present on board");
 
-            _cells[from.X, from.Y] = null;
-            _cells[to.X, to.Y] = entity;
+            baseEntity.Position = to;
 
-            entity.Position = to;
+            _rebuildCells = true;
 
             return true;
         }
@@ -149,14 +168,10 @@ namespace DndTable.Core
                 map[MaxX - 1, i] = true;
             }
 
-            // Add walls
-            for (var i = 0; i < _cells.GetLength(0); i++)
+            foreach (var entity in _entities)
             {
-                for (var j = 0; j < _cells.GetLength(1); j++)
-                {
-                    if (_cells[i, j] != null)
-                        map[i, j] = _cells[i, j].EntityType == EntityTypeEnum.Wall;
-                }
+                if (entity.EntityType == EntityTypeEnum.Wall)
+                    map[entity.Position.X, entity.Position.Y] = true;
             }
 
             // Calculate FoV
@@ -175,28 +190,30 @@ namespace DndTable.Core
             if (!CheckBoundaries(position))
                 return false;
 
-            if (_cells[position.X, position.Y] != null)
-                return false;
-
             var baseEntity = entity as BaseEntity;
             if (baseEntity == null)
                 throw new ArgumentException();
 
-            _cells[position.X, position.Y] = baseEntity;
+            _entities.Add(baseEntity);
             baseEntity.Position = position;
+
+            _rebuildCells = true;
 
             return true;
         }
 
-        internal bool RemoveEntity(Position position)
+        internal bool RemoveEntity(IEntity entity)
         {
-            if (!CheckBoundaries(position))
+            var baseEntity = entity as BaseEntity;
+            if (baseEntity == null)
+                throw new ArgumentException();
+
+            if (!_entities.Contains(baseEntity))
                 return false;
 
-            if (_cells[position.X, position.Y] == null)
-                return false;
+            _entities.Remove(baseEntity);
 
-            _cells[position.X, position.Y] = null;
+            _rebuildCells = true;
 
             return true;
         }

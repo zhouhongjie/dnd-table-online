@@ -11,8 +11,10 @@ namespace DndTable.Core
         int MaxX { get; }
         int MaxY { get; }
 
-        IEntity GetEntity(Position position);
-        bool MoveEntity(Position from, Position to);
+        List<IEntity> GetEntities();
+
+        IEntity GetEntity(Position position, EntityTypeEnum type);
+        bool MoveEntity(IEntity entity, Position to);
 
         bool IsVisibleForCurrentPlayer(Position origin);
         bool[,] GetFieldOfViewForCurrentPlayer();

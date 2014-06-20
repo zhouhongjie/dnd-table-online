@@ -38,11 +38,11 @@ namespace DndTable.Core.Test.UnitTests
         {
             var game = CreateGame();
 
-            Assert.IsNull(game.GameBoard.GetEntity(Position.Create(x, y)));
+            Assert.IsNull(game.GameBoard.GetEntity(Position.Create(x, y), EntityTypeEnum.Character));
             Assert.AreEqual(0, game.GetCharacters().Count);
 
             game.AddCharacter(Factory.CreateCharacter("dummy"), Position.Create(x, y));
-            var player = game.GameBoard.GetEntity(Position.Create(x, y));
+            var player = game.GameBoard.GetEntity(Position.Create(x, y), EntityTypeEnum.Character);
             Assert.IsNotNull(player);
             Assert.AreEqual(EntityTypeEnum.Character, player.EntityType);
             Assert.AreEqual(1, game.GetCharacters().Count);

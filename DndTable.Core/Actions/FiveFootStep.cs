@@ -44,7 +44,7 @@ namespace DndTable.Core.Actions
             if (MathHelper.GetTilesDistance(_targetPosition, _character.Position) > 1)
                 throw new InvalidOperationException("That was more then 5 foot!");
 
-            if (!Board.MoveEntity(_character.Position, _targetPosition))
+            if (!Board.MoveEntity(_character, _targetPosition))
                 return;
 
             Register();
