@@ -28,7 +28,7 @@ namespace DndTable.Core.Actions
             get
             {
                 if (_attacker.CharacterSheet.EquipedWeapon == null)
-                    return "Unarmed attack";
+                    return "Unarmed attack NOT SUPPORTED YET";
                 if (_attacker.CharacterSheet.EquipedWeapon.IsRanged)
                     return "Ranged attack";
 
@@ -49,9 +49,13 @@ namespace DndTable.Core.Actions
             if (_targetCharacter == null)
                 throw new InvalidOperationException("Character target expected");
 
-            // Has melee weapon?
+            // Has weapon?
             if ((_attacker.CharacterSheet.EquipedWeapon == null))
-                throw new ArgumentException("attacker has no equiped weapon");
+                throw new InvalidOperationException("attacker has no equiped weapon");
+
+            // Needs reload?
+            if (_attacker.CharacterSheet.EquipedWeapon.NeedsReload)
+                throw new InvalidOperationException("attacker's equiped weapon needs reload");
 
             // Check max range
             var rangeRounded = MathHelper.GetTilesDistance(_attacker.Position, _targetCharacter.Position);

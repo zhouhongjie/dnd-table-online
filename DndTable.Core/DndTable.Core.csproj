@@ -49,6 +49,7 @@
     <Compile Include="Actions\IStraightLineMove.cs" />
     <Compile Include="Actions\MathHelper.cs" />
     <Compile Include="Actions\MoveAction.cs" />
+    <Compile Include="Actions\ReloadAction.cs" />
     <Compile Include="Armor.cs" />
     <Compile Include="Characters\Calculator.cs" />
     <Compile Include="Characters\CharacterRace.cs" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DndTable.Core.Actions;
 
 namespace DndTable.Core.Factories
 {
@@ -51,6 +52,12 @@ namespace DndTable.Core.Factories
             weapon.RangeIncrement = 80;
             weapon.Weight = 6;
             weapon.DamageTypes.Add(WeaponDamageTypeEnum.Piercing);
+
+            weapon.ReloadInfo = new ReloadInfo()
+                                {
+                                    IsLoaded = true,
+                                    ActionType = ActionTypeEnum.MoveEquivalent
+                                };
 
             return weapon;
         }

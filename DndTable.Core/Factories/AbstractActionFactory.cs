@@ -53,5 +53,12 @@ namespace DndTable.Core.Factories
             action.Initialize(this);
             return action;
         }
+
+        public IAction Reload(ICharacter character)
+        {
+            var action = new ReloadAction(character);
+            action.Initialize(this);
+            return action;
+        }
     }
 }

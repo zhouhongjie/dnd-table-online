@@ -28,7 +28,6 @@
         IWeapon EquipedWeapon { get; }
 
 
-
         bool CanAct();
         int GetCurrentAttackBonus(int range, bool isFlanking);
         int GetCurrentDamageBonus();

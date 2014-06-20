@@ -82,16 +82,99 @@ namespace DndTable.Core.Test.UnitTests
             AssertActionPossible(ActionTypeEnum.FiveFootStep);
         }
 
+        [Test]
+        public void ReloadEnabled()
+        {
+            var current = _encounter.GetCurrentCharacter();
+
+            // No reload needed on weapon
+            {
+                Assert.IsFalse(current.CharacterSheet.EquipedWeapon.NeedsReload);
+                AssertActionPossible<AttackAction>();
+                AssertActionNotPossible<ReloadAction>();
+            }
+
+            var reloadInfo = new ReloadInfo()
+                                 {
+                                     IsLoaded = true
+                                 };
+            (current.CharacterSheet.EquipedWeapon as Weapon).ReloadInfo = reloadInfo;
+
+            // Load enabled weapon is loaded
+            {
+                Assert.IsFalse(current.CharacterSheet.EquipedWeapon.NeedsReload);
+                AssertActionNotPossible<ReloadAction>();
+            }
+        }
+
+        [Test]
+        public void ReloadMoveEquivalent()
+        {
+            var current = _encounter.GetCurrentCharacter();
+            var reloadInfo = new ReloadInfo()
+                                 {
+                                     IsLoaded = false,
+                                     ActionType = ActionTypeEnum.MoveEquivalent
+                                 };
+            (current.CharacterSheet.EquipedWeapon as Weapon).ReloadInfo = reloadInfo;
+
+            // Test reload 1 partial
+            {
+                AssertActionNotPossible<AttackAction>();
+                AssertActionPossible<ReloadAction>();
+
+                AssertDoReload();
+
+                AssertActionPossible<AttackAction>();
+                AssertActionNotPossible<ReloadAction>();
+            }
+        }
+
+        [Test]
+        public void ReloadFullRound()
+        {
+            var current = _encounter.GetCurrentCharacter();
+            var reloadInfo = new ReloadInfo()
+                                 {
+                                     IsLoaded = false,
+                                     ActionType = ActionTypeEnum.FullRound
+                                 };
+            (current.CharacterSheet.EquipedWeapon as Weapon).ReloadInfo = reloadInfo;
+
+            // Test reload 2 partials
+            {
+                AssertActionNotPossible<AttackAction>();
+                AssertActionPossible<ReloadAction>();
+
+                AssertDoReload();
+
+                AssertActionNotPossible<AttackAction>(); // no more partial actions left
+                AssertActionNotPossible<ReloadAction>();
+            }
+        }
+
         private void AssertActionPossible(ActionTypeEnum actionType)
         {
             var possibleActions = _encounter.GetPossibleActionsForCurrentCharacter();
             Assert.NotNull(possibleActions.FirstOrDefault(a => a.Type == actionType));
         }
 
+        private void AssertActionPossible<T>() where T : BaseAction
+        {
+            var possibleActions = _encounter.GetPossibleActionsForCurrentCharacter();
+            Assert.NotNull(possibleActions.FirstOrDefault(a => a is T));
+        }
+
         private void AssertActionNotPossible(ActionTypeEnum actionType)
         {
             var possibleActions = _encounter.GetPossibleActionsForCurrentCharacter();
             Assert.Null(possibleActions.FirstOrDefault(a => a.Type == actionType));
+        }
+
+        private void AssertActionNotPossible<T>() where T : BaseAction
+        {
+            var possibleActions = _encounter.GetPossibleActionsForCurrentCharacter();
+            Assert.Null(possibleActions.FirstOrDefault(a => a is T));
         }
 
         private void AssertDoAttack()
@@ -101,6 +184,14 @@ namespace DndTable.Core.Test.UnitTests
             var attack = possibleActions.FirstOrDefault(a => a is IAttackAction) as IAttackAction;
             Assert.NotNull(attack);
             attack.Target(EncounterHelper.GetOtherCharacter(current, _allCharacters)).Do();
+        }
+
+        private void AssertDoReload()
+        {
+            var possibleActions = _encounter.GetPossibleActionsForCurrentCharacter();
+            var action = possibleActions.FirstOrDefault(a => a is ReloadAction) as ReloadAction;
+            Assert.NotNull(action);
+            action.Do();
         }
 
         private void AssertDoMove()
