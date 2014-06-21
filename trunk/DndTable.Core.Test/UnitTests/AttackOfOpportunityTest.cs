@@ -6,6 +6,7 @@ using DndTable.Core.Actions;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 using DndTable.Core.Factories;
+using DndTable.Core.Weapons;
 using Moq;
 using NUnit.Framework;
 
@@ -126,6 +127,13 @@ namespace DndTable.Core.Test.UnitTests
             attack.Target(setup.AoOExecuter).Do();
             Assert.AreEqual(10, setup.ActionExecuter.CharacterSheet.HitPoints, "AoO should not have been done: executer can't act");
         }
+
+        [Test]
+        public void DrinkPotionProvokesAoO()
+        {
+            throw new NotImplementedException("TODO");
+        }
+
 
         private DiceRoller CreateDiceRoller(int d20Roll, int d4Roll)
         {

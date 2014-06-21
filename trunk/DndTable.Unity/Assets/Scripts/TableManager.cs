@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using DndTable.Core;
 using DndTable.Core.Actions;
+using DndTable.Core.Armors;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 using DndTable.Core.Entities;
 using DndTable.Core.Factories;
+using DndTable.Core.Items;
+using DndTable.Core.Weapons;
 using DndTable.UnityUI;
 using UnityEngine;
 using System.Collections;
@@ -67,10 +70,12 @@ public class TableManager : MonoBehaviour
             Game.EquipWeapon(boris, WeaponFactory.Longsword());
             //Game.EquipWeapon(boris, WeaponFactory.CrossbowLight());
             Game.EquipArmor(boris, ArmorFactory.FullPlate());
+            Game.GivePotion(boris, PotionFactory.CreatePotionOfCureLightWound());
 
             var maiko = Factory.CreateCharacter("Maiko", 12, 16);
             Game.EquipWeapon(maiko, WeaponFactory.Longbow());
             Game.EquipArmor(maiko, ArmorFactory.Leather());
+            Game.GivePotion(maiko, PotionFactory.CreatePotionOfCureLightWound());
 
             Game.AddCharacter(boris, Position.Create(10, 10));
             Game.AddCharacter(maiko, Position.Create(10, 12));

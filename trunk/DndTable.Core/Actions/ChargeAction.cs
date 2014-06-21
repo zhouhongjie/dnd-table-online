@@ -31,6 +31,7 @@ namespace DndTable.Core.Actions
 
         public override ActionTypeEnum Type
         {
+            // As a follow-up, this action triggers an attack = Move + Attack = FullRound
             get { return ActionTypeEnum.MoveEquivalent; }
         }
 

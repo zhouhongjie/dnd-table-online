@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DndTable.Core.Actions;
+﻿using DndTable.Core.Actions;
 
-namespace DndTable.Core.Factories
+namespace DndTable.Core.Weapons
 {
     public static class WeaponFactory
     {

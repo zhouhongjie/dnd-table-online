@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-namespace SilverlightShadowCasting
+
+namespace DndTable.Core
 {
     public static class ShadowCaster
     {

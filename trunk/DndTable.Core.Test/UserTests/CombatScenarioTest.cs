@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using DndTable.Core.Actions;
+using DndTable.Core.Armors;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 using DndTable.Core.Factories;
 using DndTable.Core.Log;
+using DndTable.Core.Weapons;
 using NUnit.Framework;
 using System.Linq;
 

@@ -1,6 +1,8 @@
-﻿using DndTable.Core.Characters;
+﻿using DndTable.Core.Armors;
+using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 using DndTable.Core.Entities;
+using DndTable.Core.Weapons;
 
 namespace DndTable.Core.Factories
 {
@@ -29,6 +31,7 @@ namespace DndTable.Core.Factories
             sheet.Charisma = 10;
 
             sheet.HitPoints = 10;
+            sheet.MaxHitPoints = 10;
             sheet.Speed = 30;
 
             return new Character(sheet);
@@ -50,6 +53,7 @@ namespace DndTable.Core.Factories
             sheet.Charisma = 10;
 
             sheet.HitPoints = 10;
+            sheet.MaxHitPoints = 10;
             sheet.Speed = 30;
 
             return new Character(sheet);
@@ -72,6 +76,7 @@ namespace DndTable.Core.Factories
             sheet.Charisma = 8;
 
             sheet.HitPoints = 4;
+            sheet.MaxHitPoints = 4;
             sheet.Speed = 30;
 
             sheet.EquipedWeapon = WeaponFactory.Club();
@@ -97,6 +102,7 @@ namespace DndTable.Core.Factories
             sheet.Charisma = 8;
 
             sheet.HitPoints = 9;
+            sheet.MaxHitPoints = 9;
             sheet.Speed = 30;
 
             sheet.EquipedWeapon = WeaponFactory.BattleAxe();

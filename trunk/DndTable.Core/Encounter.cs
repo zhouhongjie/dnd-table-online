@@ -173,6 +173,15 @@ namespace DndTable.Core
                 }
             }
 
+            // DrinkPotion actions
+            if (CanDoStandardAction())
+            {
+                foreach (var potion in GetCurrentCharacter().CharacterSheet.Potions)
+                {
+                    actions.Add(_actionFactory.DrinkPotion(GetCurrentCharacter(), potion));
+                }
+            }
+
             return actions;
         }
 

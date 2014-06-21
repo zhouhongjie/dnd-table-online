@@ -5,6 +5,7 @@ using System.Text;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 using DndTable.Core.Log;
+using DndTable.Core.Weapons;
 
 namespace DndTable.Core.Actions
 {
@@ -111,7 +112,7 @@ namespace DndTable.Core.Actions
                 if (damage < 1)
                     damage = 1;
 
-                GetEditableSheet(_targetCharacter).HitPoints -= damage;
+                CharacterSheet.GetEditableSheet(_targetCharacter).HitPoints -= damage;
             }
         }
 

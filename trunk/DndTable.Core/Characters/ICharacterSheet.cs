@@ -1,4 +1,9 @@
-﻿namespace DndTable.Core.Characters
+﻿using System.Collections.Generic;
+using DndTable.Core.Armors;
+using DndTable.Core.Items;
+using DndTable.Core.Weapons;
+
+namespace DndTable.Core.Characters
 {
     public interface ICharacterSheet
     {
@@ -18,6 +23,7 @@
         int Will { get; }
 
         int HitPoints { get; }
+        int MaxHitPoints { get; }
 
         int Speed { get; }
         int SizeModifier { get; }
@@ -27,8 +33,10 @@
         IArmor EquipedArmor { get; }
         IWeapon EquipedWeapon { get; }
 
+        List<IPotion> Potions { get; }
 
-        bool CanAct();
+
+            bool CanAct();
         int GetCurrentAttackBonus(int range, bool isFlanking);
         int GetCurrentDamageBonus();
         int GetCurrentSpeed();
