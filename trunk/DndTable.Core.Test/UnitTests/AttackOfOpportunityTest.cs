@@ -89,7 +89,7 @@ namespace DndTable.Core.Test.UnitTests
                 Position.Create(1, 2),
                 CreateDiceRoller(15, 3),        // 3 damage on the D4 roll 
                 0,                              // We expect a NO damage done by AoO
-                WeaponFactory.Dagger(),
+                WeaponFactory.Longbow(),
                 null);                          // damage = ??
         }
 
@@ -102,8 +102,29 @@ namespace DndTable.Core.Test.UnitTests
                 Position.Create(1, 2),
                 CreateDiceRoller(15, 3),                        // 3 damage on the D4 roll 
                 0,                                              // We expect a NO damage done by AoO
-                WeaponFactory.Dagger(),
-                new Weapon() {IsRanged = true, DamageD = 4});   // damage = 4
+                WeaponFactory.Longbow(),
+                new Weapon() { IsRanged = true, DamageD = 4 });   // damage = 4
+        }
+
+        [Test]
+        public void NoAoA_WhenIncapacitated()
+        {
+            var setup = PrepareBoard(
+                CreateDiceRoller(15, 3),
+                Position.Create(1, 1), 
+                WeaponFactory.Longbow(),
+                Position.Create(1, 2),
+                WeaponFactory.Dagger(), 
+                false);
+
+            // Incapacitate AoO executer
+            (setup.AoOExecuter.CharacterSheet as CharacterSheet).HitPoints = 0;
+
+            var attack = new AttackAction(setup.ActionExecuter);
+            attack.Initialize(setup.ActionFactory);
+
+            attack.Target(setup.AoOExecuter).Do();
+            Assert.AreEqual(10, setup.ActionExecuter.CharacterSheet.HitPoints, "AoO should not have been done: executer can't act");
         }
 
         private DiceRoller CreateDiceRoller(int d20Roll, int d4Roll)

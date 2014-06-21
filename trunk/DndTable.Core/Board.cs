@@ -92,6 +92,18 @@ namespace DndTable.Core
             return cell.FirstOrDefault(e => e.EntityType == type && e.Position == position);
         }
 
+        public List<IEntity> GetEntities(Position position)
+        {
+            if (_rebuildCells)
+                RebuildOptimizedCells();
+
+            var cell = _cells[position.X, position.Y];
+            if (cell == null)
+                return null;
+
+            return cell.Cast<IEntity>().ToList();
+        }
+
         private void RebuildOptimizedCells()
         {
             _cells = new List<BaseEntity>[MaxX, MaxY];
@@ -119,11 +131,24 @@ namespace DndTable.Core
             if (!_entities.Contains(baseEntity))
                 throw new ArgumentException("Entity is not present on board");
 
+            if (IsBlocked(to))
+                return false;
+
             baseEntity.Position = to;
 
             _rebuildCells = true;
 
             return true;
+        }
+
+        // Is something blocking the way?
+        private bool IsBlocked(Position to)
+        {
+            var entitiesOnTo = GetEntities(to);
+            if (entitiesOnTo != null && entitiesOnTo.FirstOrDefault(e => e.IsBlocking) != null)
+                return true;
+
+            return false;
         }
 
         public bool IsVisibleForCurrentPlayer(Position position)
@@ -193,6 +218,9 @@ namespace DndTable.Core
             var baseEntity = entity as BaseEntity;
             if (baseEntity == null)
                 throw new ArgumentException();
+
+            if (IsBlocked(position))
+                return false;
 
             _entities.Add(baseEntity);
             baseEntity.Position = position;
