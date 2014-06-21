@@ -5,6 +5,7 @@ using System.Text;
 using DndTable.Core.Actions;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
+using DndTable.Core.Items;
 
 namespace DndTable.Core.Factories
 {
@@ -57,6 +58,13 @@ namespace DndTable.Core.Factories
         public IAction Reload(ICharacter character)
         {
             var action = new ReloadAction(character);
+            action.Initialize(this);
+            return action;
+        }
+
+        public IAction DrinkPotion(ICharacter character, IPotion potion)
+        {
+            var action = new UsePotionAction(character, potion);
             action.Initialize(this);
             return action;
         }

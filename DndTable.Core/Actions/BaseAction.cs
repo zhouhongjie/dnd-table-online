@@ -5,6 +5,7 @@ using System.Text;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 using DndTable.Core.Factories;
+using DndTable.Core.Items;
 using DndTable.Core.Log;
 
 namespace DndTable.Core.Actions
@@ -52,20 +53,18 @@ namespace DndTable.Core.Actions
             Board = actionFactory.Board;
         }
 
+        // For unit tests
+        internal void Initialize(IDiceRoller diceRoller)
+        {
+            DiceRoller = diceRoller;
+        }
+
         protected void Register()
         {
             if (Encounter == null)
                 return;
 
             Encounter.RegisterAction(Type);
-        }
-
-        protected static CharacterSheet GetEditableSheet(ICharacter character)
-        {
-            var sheet = character.CharacterSheet as CharacterSheet;
-            if (sheet == null)
-                throw new ArgumentException();
-            return sheet;
         }
 
         protected void HandleAttackOfOpportunity(Calculator.CalculatorActionContext context)

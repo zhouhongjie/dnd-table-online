@@ -1,38 +1,48 @@
 ﻿using System;
+using System.Collections.Generic;
+using DndTable.Core.Armors;
+using DndTable.Core.Items;
 using DndTable.Core.Log;
+using DndTable.Core.Weapons;
 
 namespace DndTable.Core.Characters
 {
     public class CharacterSheet : ICharacterSheet
     {
+        internal static CharacterSheet GetEditableSheet(ICharacter character)
+        {
+            var sheet = character.CharacterSheet as CharacterSheet;
+            if (sheet == null)
+                throw new ArgumentException();
+            return sheet;
+        }
+
+
         public string Name { get; internal set; }
         public CharacterRace Race { get; internal set; }
         public int FactionId { get; internal set; }
 
         public int Strength { get; internal set; }
         public int Dexterity { get; internal set; }
-
         public int Constitution { get; internal set; }
-
         public int Intelligent { get; internal set; }
-
         public int Wisdom { get; internal set; }
-
         public int Charisma { get; internal set; }
 
         public int Fortitude { get; internal set; }
-
         public int Reflex { get; internal set; }
-
         public int Will { get; internal set; }
 
         public int HitPoints { get; internal set; }
+        public int MaxHitPoints { get; internal set;  }
 
         public int Speed { get; internal set; }
-
         public int SizeModifier { get; internal set; }
 
         public int BaseAttackBonus { get; internal set; }
+
+        private readonly List<IPotion> _potions = new List<IPotion>();
+        public List<IPotion> Potions { get { return _potions; } }
 
         private int GetMeleeAttackBonus(Calculator.CalculatorPropertyContext context)
         {
@@ -178,5 +188,7 @@ namespace DndTable.Core.Characters
 
         private RoundInfo _currentRoundInfo = new RoundInfo();
         internal RoundInfo CurrentRoundInfo { get { return _currentRoundInfo; } }
+
+
     }
 }

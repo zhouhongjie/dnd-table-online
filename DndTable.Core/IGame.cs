@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DndTable.Core.Armors;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 using DndTable.Core.Factories;
+using DndTable.Core.Items;
 using DndTable.Core.Log;
+using DndTable.Core.Weapons;
 
 namespace DndTable.Core
 {
@@ -29,5 +32,6 @@ namespace DndTable.Core
         // Actions
         void EquipWeapon(ICharacter character, IWeapon weapon);
         void EquipArmor(ICharacter character, IArmor armor);
+        void GivePotion(ICharacter character, IPotion potion);
     }
 }

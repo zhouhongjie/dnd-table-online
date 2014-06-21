@@ -50,7 +50,8 @@
     <Compile Include="Actions\MathHelper.cs" />
     <Compile Include="Actions\MoveAction.cs" />
     <Compile Include="Actions\ReloadAction.cs" />
-    <Compile Include="Armor.cs" />
+    <Compile Include="Actions\UsePotionAction.cs" />
+    <Compile Include="Armors\Armor.cs" />
     <Compile Include="Characters\Calculator.cs" />
     <Compile Include="Characters\CharacterRace.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
@@ -64,12 +65,14 @@
     <Compile Include="Dice\AttackRoll.cs" />
     <Compile Include="Encounter.cs" />
     <Compile Include="Factories\AbstractActionFactory.cs" />
-    <Compile Include="Factories\ArmorFactory.cs" />
+    <Compile Include="Armors\ArmorFactory.cs" />
     <Compile Include="Factories\Factory.cs" />
-    <Compile Include="Factories\WeaponFactory.cs" />
+    <Compile Include="Items\PotionFactory.cs" />
+    <Compile Include="Items\PotionOfCureLightWound.cs" />
+    <Compile Include="Weapons\WeaponFactory.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Actions\IAction.cs" />
-    <Compile Include="IArmor.cs" />
+    <Compile Include="Armors\IArmor.cs" />
     <Compile Include="IBoard.cs" />
     <Compile Include="Characters\ICharacter.cs" />
     <Compile Include="Characters\ICharacterSheet.cs" />
@@ -81,6 +84,8 @@
     <Compile Include="IEncounter.cs" />
     <Compile Include="Entities\IEntity.cs" />
     <Compile Include="IGame.cs" />
+    <Compile Include="Items\BasePotion.cs" />
+    <Compile Include="Items\IPotion.cs" />
     <Compile Include="Log\ILogger.cs" />
     <Compile Include="Log\Logger.cs" />
     <Compile Include="Persistence\BoardXml.cs" />

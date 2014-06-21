@@ -6,6 +6,7 @@ using DndTable.Core.Actions;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 using DndTable.Core.Factories;
+using DndTable.Core.Weapons;
 using Moq;
 using NUnit.Framework;
 

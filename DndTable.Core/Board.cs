@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using DndTable.Core.Entities;
 using DndTable.Core.Persistence;
-using SilverlightShadowCasting;
 
 namespace DndTable.Core
 {

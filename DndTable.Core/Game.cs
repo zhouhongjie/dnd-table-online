@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DndTable.Core.Armors;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 using DndTable.Core.Entities;
 using DndTable.Core.Factories;
+using DndTable.Core.Items;
 using DndTable.Core.Log;
+using DndTable.Core.Weapons;
 
 namespace DndTable.Core
 {
@@ -76,21 +79,17 @@ namespace DndTable.Core
 
         public void EquipWeapon(ICharacter character, IWeapon weapon)
         {
-            GetEditableSheet(character).EquipedWeapon = weapon;
+            CharacterSheet.GetEditableSheet(character).EquipedWeapon = weapon;
         }
 
         public void EquipArmor(ICharacter character, IArmor armor)
         {
-            GetEditableSheet(character).EquipedArmor = armor;
+            CharacterSheet.GetEditableSheet(character).EquipedArmor = armor;
         }
 
-        protected static CharacterSheet GetEditableSheet(ICharacter character)
+        public void GivePotion(ICharacter character, IPotion potion)
         {
-            var sheet = character.CharacterSheet as CharacterSheet;
-            if (sheet == null)
-                throw new ArgumentException();
-            return sheet;
+            CharacterSheet.GetEditableSheet(character).Potions.Add(potion);
         }
-
     }
 }
