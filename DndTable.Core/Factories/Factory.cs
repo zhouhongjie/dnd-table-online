@@ -55,11 +55,11 @@ namespace DndTable.Core.Factories
             return new Character(sheet);
         }
 
-        public static ICharacter CreateOrc()
+        public static ICharacter CreateOrc(string name = "Orc")
         {
             var sheet = new CharacterSheet();
 
-            sheet.Name = "Orc";
+            sheet.Name = name;
             sheet.Race = CharacterRace.Orc;
             sheet.FactionId = 2;
 
@@ -75,6 +75,31 @@ namespace DndTable.Core.Factories
             sheet.Speed = 30;
 
             sheet.EquipedWeapon = WeaponFactory.Club();
+            sheet.EquipedArmor = ArmorFactory.ScaleMail();
+
+            return new Character(sheet);
+        }
+
+        public static ICharacter CreateOrcChief(string name = "Orc Chief")
+        {
+            var sheet = new CharacterSheet();
+
+            sheet.Name = name;
+            sheet.Race = CharacterRace.Orc;
+            sheet.FactionId = 2;
+
+            //var diceRoller = new DiceRoller();
+            sheet.Strength = 16;
+            sheet.Dexterity = 10;
+            sheet.Constitution = 12;
+            sheet.Intelligent = 9;
+            sheet.Wisdom = 8;
+            sheet.Charisma = 8;
+
+            sheet.HitPoints = 9;
+            sheet.Speed = 30;
+
+            sheet.EquipedWeapon = WeaponFactory.BattleAxe();
             sheet.EquipedArmor = ArmorFactory.ScaleMail();
 
             return new Character(sheet);

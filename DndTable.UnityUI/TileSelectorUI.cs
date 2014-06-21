@@ -41,16 +41,20 @@ namespace DndTable.UnityUI
             if (currentTransform != null)
             {
                 MarkTarget(currentTransform);
-                _lastTransform = currentTransform;
-                // _currentTarget = GetCharacter from transform
             }
+            _lastTransform = currentTransform;
         }
 
         public Position GetCurrentPosition()
         {
-            if (_lastTransform == null)
+            return GetPosition(_lastTransform);
+        }
+
+        private static Position GetPosition(Transform transform)
+        {
+            if (transform == null)
                 return null;
-            return Position.Create((int)_lastTransform.position.x, (int)_lastTransform.position.z);
+            return Position.Create((int)transform.position.x, (int)transform.position.z);
         }
 
         public bool IsCurrentPositionValid()
@@ -80,8 +84,18 @@ namespace DndTable.UnityUI
         {
             RaycastHit hit; // cast a ray from mouse pointer:
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit) && hit.transform.CompareTag("Tile"))
+
+            if (!Physics.Raycast(ray, out hit))
+                return null;
+
+            // Hit is a tile
+            if (hit.transform.CompareTag("Tile"))
                 return hit.transform;
+
+            // Hit is another object => find tile
+            //var position = GetPosition(hit.transform);
+            //var tile = FindTileOnPosition(position);
+            //return tile;
             return null;
         }
 

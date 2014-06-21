@@ -32,9 +32,25 @@ namespace DndTable.Core.Factories
             weapon.IsRanged = false;
             weapon.DamageD = 8;
             weapon.CriticalMultiplier = 2;
-            weapon.CriticalRange = 2;
+            weapon.CriticalRange = 1;
             weapon.RangeIncrement = 0;
             weapon.Weight = 4;
+            weapon.DamageTypes.Add(WeaponDamageTypeEnum.Slashing);
+
+            return weapon;
+        }
+
+        public static IWeapon BattleAxe()
+        {
+            var weapon = new Weapon();
+
+            weapon.Proficiency = WeaponProficiencyEnum.Martial;
+            weapon.IsRanged = false;
+            weapon.DamageD = 8;
+            weapon.CriticalMultiplier = 3;
+            weapon.CriticalRange = 1;
+            weapon.RangeIncrement = 0;
+            weapon.Weight = 7;
             weapon.DamageTypes.Add(WeaponDamageTypeEnum.Slashing);
 
             return weapon;
@@ -70,7 +86,7 @@ namespace DndTable.Core.Factories
             weapon.IsRanged = true;
             weapon.DamageD = 8;
             weapon.CriticalMultiplier = 3;
-            weapon.CriticalRange = 1;
+            weapon.CriticalRange = 0;
             weapon.RangeIncrement = 100;
             weapon.Weight = 3;
             weapon.DamageTypes.Add(WeaponDamageTypeEnum.Piercing);
