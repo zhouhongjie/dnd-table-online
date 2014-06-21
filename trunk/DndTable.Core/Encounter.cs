@@ -154,7 +154,9 @@ namespace DndTable.Core
             // Check charge (= Full-round action)
             if (CanDoMoveAction() && CanDoFullRoundAction())
             {
-                actions.Add(_actionFactory.Charge(GetCurrentCharacter()));
+                // Cannot charge with ranged weapon
+                if (GetCurrentCharacter().CharacterSheet.EquipedWeapon == null || !GetCurrentCharacter().CharacterSheet.EquipedWeapon.IsRanged)
+                    actions.Add(_actionFactory.Charge(GetCurrentCharacter()));
             }
 
             // Check reload action (FullRound || MoveEquivalent => depending on )

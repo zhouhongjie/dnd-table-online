@@ -15,16 +15,17 @@ namespace DndTable.Core.Test.UnitTests
     {
         private List<ICharacter> _allCharacters;
         private IEncounter _encounter;
+        private IGame _game;
 
         [SetUp]
         public void Setup()
         {
-            var game = Factory.CreateGame(10, 10);
-            var char1 = EncounterHelper.PrepareCharacter(game, "char1", Position.Create(1, 1), new Weapon() { DamageD = 4 }, null);
-            var char2 = EncounterHelper.PrepareCharacter(game, "char2", Position.Create(1, 2), new Weapon() { DamageD = 4 }, null);
+            _game = Factory.CreateGame(10, 10);
+            var char1 = EncounterHelper.PrepareCharacter(_game, "char1", Position.Create(1, 1), new Weapon() { DamageD = 4 }, null);
+            var char2 = EncounterHelper.PrepareCharacter(_game, "char2", Position.Create(1, 2), new Weapon() { DamageD = 4 }, null);
 
             _allCharacters = new List<ICharacter>() {char1, char2};
-            _encounter = game.StartEncounter(_allCharacters);   
+            _encounter = _game.StartEncounter(_allCharacters);   
         }
 
         [Test]
@@ -151,6 +152,24 @@ namespace DndTable.Core.Test.UnitTests
                 AssertActionNotPossible<AttackAction>(); // no more partial actions left
                 AssertActionNotPossible<ReloadAction>();
             }
+        }
+
+        [Test]
+        public void Charge()
+        {
+            var current = _encounter.GetCurrentCharacter();
+
+            // Cannot charge with ranged weapon
+            _game.EquipWeapon(current, new Weapon() { IsRanged = true } );
+            AssertActionNotPossible<ChargeAction>();
+            _game.EquipWeapon(current, null);
+            AssertActionPossible<ChargeAction>();
+            _game.EquipWeapon(current, new Weapon() { IsRanged = false } );
+            AssertActionPossible<ChargeAction>();
+
+            // Charge is FullRound action with move
+            AssertDoMove();
+            AssertActionNotPossible<ChargeAction>();
         }
 
         private void AssertActionPossible(ActionTypeEnum actionType)

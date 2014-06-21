@@ -79,6 +79,7 @@ public class TableManager : MonoBehaviour
             Game.AddCharacter(Factory.CreateOrc(), Position.Create(20, 20));
             Game.AddCharacter(Factory.CreateOrc(), Position.Create(20, 21));
             Game.AddCharacter(Factory.CreateOrc(), Position.Create(20, 22));
+            Game.AddCharacter(Factory.CreateOrcChief(), Position.Create(19, 21));
 
             // Build dungeon
             // Walls
