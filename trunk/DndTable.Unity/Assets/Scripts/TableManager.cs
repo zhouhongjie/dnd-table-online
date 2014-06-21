@@ -63,12 +63,12 @@ public class TableManager : MonoBehaviour
             // Players
             //var regdar = Factory.CreateCharacter("Regdar");
             //var tordek = Factory.CreateCharacter("Tordek");
-            var boris = Factory.CreateCharacter("Boris");
-            //Game.EquipWeapon(boris, WeaponFactory.Longsword());
-            Game.EquipWeapon(boris, WeaponFactory.CrossbowLight());
-            Game.EquipArmor(boris, ArmorFactory.Leather());
+            var boris = Factory.CreateCharacter("Boris", 14, 12);
+            Game.EquipWeapon(boris, WeaponFactory.Longsword());
+            //Game.EquipWeapon(boris, WeaponFactory.CrossbowLight());
+            Game.EquipArmor(boris, ArmorFactory.FullPlate());
 
-            var maiko = Factory.CreateCharacter("Maiko");
+            var maiko = Factory.CreateCharacter("Maiko", 12, 16);
             Game.EquipWeapon(maiko, WeaponFactory.Longbow());
             Game.EquipArmor(maiko, ArmorFactory.Leather());
 
@@ -100,16 +100,24 @@ public class TableManager : MonoBehaviour
     // Update is called once per frame
 	void Update ()
 	{
+        // Show all = reset renderers for UpdateFieldOfView
+        // This gameObject should be handled first
+	    ShowAllRecursive(transform);
+
         UpdateEntities();
 	    UpdateEditorMode();
 
         //ProcessUserInput();
-        UpdateFieldOfView();
 
 
         if (_currentActionUI != null && !_currentActionUI.IsDone)
             _currentActionUI.Update();
 
+    }
+
+    void LateUpdate()
+    {
+        UpdateFieldOfView();
     }
 
     private void UpdateEditorMode()
@@ -248,7 +256,6 @@ public class TableManager : MonoBehaviour
 
     private void UpdateFieldOfView()
     {
-        //var fieldOfView = Game.GameBoard.GetFieldOfViewForCurrentPlayer();
         var fieldOfView = Game.GameBoard.GetFieldOfView(CurrentPlayer.Position);
 
         for (var i=0; i < transform.childCount; i++)
@@ -262,14 +269,40 @@ public class TableManager : MonoBehaviour
 
             bool isVisible = fieldOfView[(int)child.position.x, (int)child.position.z];
 
-            SetColorRecursive(child.transform, isVisible ? Color.white : Color.gray);
+            //SetColorRecursive(child.transform, isVisible ? Color.white : Color.gray);
+            if (!isVisible)
+                HideAllRecursive(child.transform);
+        }
+    }
+
+    private static void ShowAllRecursive(Transform currentTransform)
+    {
+        if (currentTransform.renderer != null)
+            currentTransform.renderer.enabled = true;
+
+        for (var i = 0; i < currentTransform.childCount; i++)
+        {
+            var child = currentTransform.GetChild(i);
+            ShowAllRecursive(child);
+        }
+    }
+
+    private static void HideAllRecursive(Transform currentTransform)
+    {
+        if (currentTransform.renderer != null)
+            currentTransform.renderer.enabled = false;
+
+        for (var i = 0; i < currentTransform.childCount; i++)
+        {
+            var child = currentTransform.GetChild(i);
+            HideAllRecursive(child);
         }
     }
 
     private static void SetColorRecursive(Transform currentTransform, Color color)
     {
         if (currentTransform.renderer != null)
-            currentTransform.renderer.material.color = color;
+            currentTransform.renderer.material.color = color;            
 
         for (var i = 0; i < currentTransform.childCount; i++)
         {

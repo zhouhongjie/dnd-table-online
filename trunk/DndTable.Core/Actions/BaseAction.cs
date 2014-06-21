@@ -72,6 +72,10 @@ namespace DndTable.Core.Actions
         {
             foreach (var participant in this.Encounter.Participants)
             {
+                // No AoO of dead enemies
+                if (participant.CharacterSheet.CanAct())
+                    continue;
+
                 // no ally bashing
                 if (participant.CharacterSheet.FactionId == Executer.CharacterSheet.FactionId)
                     continue;
