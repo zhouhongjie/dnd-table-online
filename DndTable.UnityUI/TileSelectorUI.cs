@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using DndTable.Core;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace DndTable.UnityUI
 {
@@ -93,9 +94,26 @@ namespace DndTable.UnityUI
                 return hit.transform;
 
             // Hit is another object => find tile
-            //var position = GetPosition(hit.transform);
-            //var tile = FindTileOnPosition(position);
-            //return tile;
+            var position = GetPosition(hit.transform);
+            var tile = FindTileOnPosition(position);
+            return tile;
+        }
+
+        private Transform FindTileOnPosition(Position position)
+        {
+            var objs = Object.FindObjectsOfType<GameObject>();
+            GameObject myObject = null;
+            foreach (GameObject go in objs)
+            {
+                if (go.CompareTag(("Tile")))
+                {
+                    var currentPosition = Position.Create((int)go.transform.position.x, (int)go.transform.position.z);
+                    if (position == currentPosition)
+                    {
+                        return go.transform;
+                    }
+                }
+            }
             return null;
         }
 

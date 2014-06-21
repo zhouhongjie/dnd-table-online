@@ -13,6 +13,8 @@ namespace DndTable.Core.Entities
 
         public abstract EntityTypeEnum EntityType { get; }
 
+        public virtual bool IsBlocking { get { return true; } } 
+
         public Position Position { get; internal set; }
 
         // Dummy implement
