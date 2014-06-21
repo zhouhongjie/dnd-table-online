@@ -32,5 +32,18 @@ namespace DndTable.Core.Factories
 
             return armour;
         }
+
+        public static IArmor FullPlate()
+        {
+            var armour = new Armor();
+
+            armour.Proficiency = ArmorProficiencyEnum.Heavy;
+            armour.ArmorBonus = 8;
+            armour.MaxDexBonus = 1;
+            armour.ArmorCheckPenalty = 6;
+            armour.ArcaneSpellFailure = 35;
+
+            return armour;
+        }
     }
 }

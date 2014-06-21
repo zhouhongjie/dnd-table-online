@@ -18,7 +18,7 @@ public class WallScript : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-	    Pillar.renderer.enabled = true;
+        Pillar.renderer.enabled = true;
 
         Left.renderer.enabled = IsWall(Position.Create(Wall.Position.X - 1, Wall.Position.Y));
         Right.renderer.enabled = IsWall(Position.Create(Wall.Position.X + 1, Wall.Position.Y));

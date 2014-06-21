@@ -34,6 +34,27 @@ namespace DndTable.Core.Factories
             return new Character(sheet);
         }
 
+        public static ICharacter CreateCharacter(string name, int strength, int dexterity)
+        {
+            var sheet = new CharacterSheet();
+
+            sheet.Name = name;
+            sheet.FactionId = 1;
+
+            //var diceRoller = new DiceRoller();
+            sheet.Strength = strength;
+            sheet.Dexterity = dexterity;
+            sheet.Constitution = 10;
+            sheet.Intelligent = 10;
+            sheet.Wisdom = 10;
+            sheet.Charisma = 10;
+
+            sheet.HitPoints = 10;
+            sheet.Speed = 30;
+
+            return new Character(sheet);
+        }
+
         public static ICharacter CreateOrc()
         {
             var sheet = new CharacterSheet();
