@@ -51,7 +51,6 @@ namespace DndTable.Core.Actions
             Register();
 
             HandleAttackOfOpportunity(context);
-
             if (!Executer.CharacterSheet.CanAct())
                 return;
 

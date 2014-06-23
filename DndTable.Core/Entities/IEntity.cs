@@ -10,11 +10,11 @@
         /// <summary>
         /// Is this entity blocking the way for other entities?
         /// </summary>
-        bool IsBlocking { get; } 
+        bool IsBlocking { get; }
     }
 
     public enum EntityTypeEnum
     {
-        Character, Wall
+        Character, Wall, Chest
     }
 }

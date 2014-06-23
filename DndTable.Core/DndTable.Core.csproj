@@ -49,6 +49,7 @@
     <Compile Include="Actions\IStraightLineMove.cs" />
     <Compile Include="Actions\MathHelper.cs" />
     <Compile Include="Actions\MoveAction.cs" />
+    <Compile Include="Actions\OpenChest.cs" />
     <Compile Include="Actions\ReloadAction.cs" />
     <Compile Include="Actions\UsePotionAction.cs" />
     <Compile Include="Armors\Armor.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Dice\DiceRoller.cs" />
     <Compile Include="Dice\AttackRoll.cs" />
     <Compile Include="Encounter.cs" />
+    <Compile Include="Entities\Chest.cs" />
     <Compile Include="Factories\AbstractActionFactory.cs" />
     <Compile Include="Armors\ArmorFactory.cs" />
     <Compile Include="Factories\Factory.cs" />

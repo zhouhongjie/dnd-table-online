@@ -25,6 +25,9 @@ namespace DndTable.Core
         bool AddWall(Position position);
         bool RemoveWall(Position selectedPosition);
 
+        bool AddChest(Position position);
+        bool RemoveChest(Position selectedPosition);
+
         IEncounter StartEncounter();
         IEncounter StartEncounter(List<ICharacter> characters);
         IEncounter CurrentEncounter { get; }

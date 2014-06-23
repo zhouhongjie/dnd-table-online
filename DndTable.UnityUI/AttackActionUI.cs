@@ -11,7 +11,6 @@ namespace DndTable.UnityUI
         private IGame _game;
         private IAttackAction _attackAction;
 
-        private Position _selectedPosition;
         private TileSelectorUI _selector;
 
         public AttackActionUI(IGame game, IAttackAction attackAction, ICharacter attacker)
@@ -30,12 +29,12 @@ namespace DndTable.UnityUI
             // Can attack?
             if (_selector.IsCurrentPositionValid())
             {
-                _selectedPosition = _selector.GetCurrentPosition();
+                var selectedPosition = _selector.GetCurrentPosition();
 
                 // Attack
                 if (Input.GetMouseButtonDown(0))
                 {
-                    var target = _game.GameBoard.GetEntity(_selectedPosition, EntityTypeEnum.Character) as ICharacter;
+                    var target = _game.GameBoard.GetEntity(selectedPosition, EntityTypeEnum.Character) as ICharacter;
                     if (target != null)
                     {
                         _attackAction.Target(target).Do();

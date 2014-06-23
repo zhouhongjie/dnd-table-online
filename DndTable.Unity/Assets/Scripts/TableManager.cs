@@ -21,6 +21,7 @@ public class TableManager : MonoBehaviour
     public Transform TileTemplate;
     public Transform PlayerTemplate;
     public Transform WallTemplate;
+    public Transform ChestTemplate;
 
     public Camera PlayerCameraTemplate;
     public Transform IndicatorTemplate;
@@ -85,6 +86,9 @@ public class TableManager : MonoBehaviour
             Game.AddCharacter(Factory.CreateOrc(), Position.Create(20, 21));
             Game.AddCharacter(Factory.CreateOrc(), Position.Create(20, 22));
             Game.AddCharacter(Factory.CreateOrcChief(), Position.Create(19, 21));
+
+            // Loot
+            Game.AddChest(Position.Create(22, 22));
 
             // Build dungeon
             // Walls
@@ -229,6 +233,8 @@ public class TableManager : MonoBehaviour
 
             offset += 35;
         }
+        if (GUILayout.Button("Select"))
+            _currentActionUI = new SelectEntityUI(Game, CurrentEncounter, CurrentPlayer);
         if (GUILayout.Button("Next player"))
             CurrentEncounter.GetNextCharacter();
 
@@ -349,6 +355,10 @@ public class TableManager : MonoBehaviour
             else if (entity.EntityType == EntityTypeEnum.Wall)
             {
                 newTransform = CreateEntity(WallTemplate, entity);
+            }
+            else if (entity.EntityType == EntityTypeEnum.Chest)
+            {
+                newTransform = CreateEntity(ChestTemplate, entity);
             }
             else
             {
