@@ -4,7 +4,7 @@ namespace DndTable.Core.Dice
 {
     public enum DiceRollEnum
     {
-        Attack, CriticalAttack, Damage, InitiativeCheck, PotionEffect
+        Attack, CriticalAttack, Damage, InitiativeCheck, PotionEffect, Loot
     }
 
     public interface IDiceRoll

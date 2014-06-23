@@ -5,6 +5,7 @@ using System.Text;
 using DndTable.Core.Actions;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
+using DndTable.Core.Entities;
 using DndTable.Core.Factories;
 using DndTable.Core.Log;
 
@@ -47,6 +48,7 @@ namespace DndTable.Core
         private int _currentRound = 0;
 
         private List<ActionTypeEnum> _actionDoneByCurrentChar = new List<ActionTypeEnum>();
+        private List<IAction> _contextActions = null;
 
         internal Encounter(Board gameBoard, IDiceRoller diceRoller, List<ICharacter> participants)
         {
@@ -115,6 +117,18 @@ namespace DndTable.Core
             return _currentRound;
         }
 
+        public bool SetEntityContext(IEntity entity)
+        {
+            var baseEntity = entity as BaseEntity;
+            var contextActions = baseEntity.GetUseActions(GetCurrentCharacter(), _actionFactory);
+
+            if (contextActions == null)
+                return false;
+
+            _contextActions = contextActions;
+            return true;
+        }
+
         public List<IAction> GetPossibleActionsForCurrentCharacter()
         {
             var actions = new List<IAction>();
@@ -179,6 +193,23 @@ namespace DndTable.Core
                 foreach (var potion in GetCurrentCharacter().CharacterSheet.Potions)
                 {
                     actions.Add(_actionFactory.DrinkPotion(GetCurrentCharacter(), potion));
+                }
+            }
+
+            // Add entity context actions
+            if (_contextActions != null)
+            {
+                foreach (var contextAction in _contextActions)
+                {
+                    if (contextAction.Type == ActionTypeEnum.FullRound)
+                    {
+                        if (CanDoFullRoundAction())
+                            actions.Add(contextAction);
+                    }
+                    else
+                    {
+                        throw new NotImplementedException();
+                    }
                 }
             }
 

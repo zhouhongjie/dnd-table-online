@@ -1,4 +1,5 @@
-﻿using DndTable.Core.Armors;
+﻿using System;
+using DndTable.Core.Armors;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 using DndTable.Core.Entities;
@@ -119,6 +120,11 @@ namespace DndTable.Core.Factories
         public static IEntity CreateWall()
         {
             return new Wall();
+        }
+
+        public static IEntity CreateChest()
+        {
+            return new Chest();
         }
     }
 }

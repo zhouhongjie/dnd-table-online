@@ -5,6 +5,7 @@ using System.Text;
 using DndTable.Core.Actions;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
+using DndTable.Core.Entities;
 using DndTable.Core.Items;
 
 namespace DndTable.Core.Factories
@@ -22,49 +23,56 @@ namespace DndTable.Core.Factories
             DiceRoller = diceRoller;
         }
 
-        public IAttackAction MeleeAttack(ICharacter attacker)
+        internal IAttackAction MeleeAttack(ICharacter attacker)
         {
             var action = new AttackAction(attacker);
             action.Initialize(this);
             return action;
         }
 
-        public IAttackAction RangeAttack(ICharacter attacker)
+        internal IAttackAction RangeAttack(ICharacter attacker)
         {
             return MeleeAttack(attacker);
         }
 
-        public IMoveAction Move(ICharacter character)
+        internal IMoveAction Move(ICharacter character)
         {
             var action = new MoveAction(character);
             action.Initialize(this);
             return action;
         }
 
-        public IStraightLineMove FiveFootStep(ICharacter character)
+        internal IStraightLineMove FiveFootStep(ICharacter character)
         {
             var action = new FiveFootStep(character);
             action.Initialize(this);
             return action;
         }
 
-        public IAttackAction Charge(ICharacter character)
+        internal IAttackAction Charge(ICharacter character)
         {
             var action = new ChargeAction(character);
             action.Initialize(this);
             return action;
         }
 
-        public IAction Reload(ICharacter character)
+        internal IAction Reload(ICharacter character)
         {
             var action = new ReloadAction(character);
             action.Initialize(this);
             return action;
         }
 
-        public IAction DrinkPotion(ICharacter character, IPotion potion)
+        internal IAction DrinkPotion(ICharacter character, IPotion potion)
         {
             var action = new UsePotionAction(character, potion);
+            action.Initialize(this);
+            return action;
+        }
+
+        internal IAction OpenChest(ICharacter character, Chest chest)
+        {
+            var action = new OpenChest(character, chest);
             action.Initialize(this);
             return action;
         }

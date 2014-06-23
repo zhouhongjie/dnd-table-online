@@ -51,7 +51,21 @@ namespace DndTable.Core
         public bool RemoveWall(Position selectedPosition)
         {
             var entity = _gameBoard.GetEntity(selectedPosition, EntityTypeEnum.Wall);
-            if (entity == null || entity.EntityType != EntityTypeEnum.Wall)
+            if (entity == null)
+                return false;
+
+            return _gameBoard.RemoveEntity(entity);
+        }
+
+        public bool AddChest(Position position)
+        {
+            return _gameBoard.AddEntity(Factory.CreateChest(), position);
+        }
+
+        public bool RemoveChest(Position selectedPosition)
+        {
+            var entity = _gameBoard.GetEntity(selectedPosition, EntityTypeEnum.Chest);
+            if (entity == null)
                 return false;
 
             return _gameBoard.RemoveEntity(entity);

@@ -14,6 +14,7 @@ namespace DndTable.Core
         List<IEntity> GetEntities();
 
         IEntity GetEntity(Position position, EntityTypeEnum type);
+        List<IEntity> GetEntities(Position position);
         bool MoveEntity(IEntity entity, Position to);
 
         bool IsVisibleForCurrentPlayer(Position origin);

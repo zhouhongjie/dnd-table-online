@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DndTable.Core.Actions;
 using DndTable.Core.Characters;
+using DndTable.Core.Entities;
 
 namespace DndTable.Core
 {
@@ -17,5 +18,7 @@ namespace DndTable.Core
         int GetRound();
 
         List<IAction> GetPossibleActionsForCurrentCharacter();
+
+        bool SetEntityContext(IEntity entity);
     }
 }
