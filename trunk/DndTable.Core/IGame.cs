@@ -21,6 +21,7 @@ namespace DndTable.Core
 
         bool AddCharacter(ICharacter character, Position position);
         List<ICharacter> GetCharacters();
+        bool RemoveCharacter(ICharacter character);
 
         bool AddWall(Position position);
         bool RemoveWall(Position selectedPosition);

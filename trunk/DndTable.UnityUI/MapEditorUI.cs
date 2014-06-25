@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DndTable.Core;
+using DndTable.Core.Characters;
 using DndTable.Core.Entities;
+using DndTable.Core.Factories;
 using UnityEngine;
 
 namespace DndTable.UnityUI
@@ -13,11 +15,20 @@ namespace DndTable.UnityUI
         private IGame _game;
         private TileSelectorUI _selector;
         private EntityTypeEnum _entityType;
+        private CharacterTypeEnum _npcType;
 
         public MapEditorUI(IGame game, EntityTypeEnum entityType)
         {
             _game = game;
             _entityType = entityType;
+            _selector = new TileSelectorUI();
+        }
+
+        public MapEditorUI(IGame game, CharacterTypeEnum characterType)
+        {
+            _game = game;
+            _entityType = EntityTypeEnum.Character;
+            _npcType = characterType;
             _selector = new TileSelectorUI();
         }
 
@@ -38,6 +49,8 @@ namespace DndTable.UnityUI
                         _game.AddWall(selectedPosition);
                     if (_entityType == EntityTypeEnum.Chest)
                         _game.AddChest(selectedPosition);
+                    if (_entityType == EntityTypeEnum.Character)
+                        _game.AddCharacter(Factory.CreateNpc(_npcType), selectedPosition);
                 }
                 else
                 {
@@ -45,6 +58,8 @@ namespace DndTable.UnityUI
                         _game.RemoveWall(selectedPosition);
                     if (target.EntityType == EntityTypeEnum.Chest)
                         _game.RemoveChest(selectedPosition);
+                    if (_entityType == EntityTypeEnum.Character)
+                        _game.RemoveCharacter(target as ICharacter);
                 }
             }
         }

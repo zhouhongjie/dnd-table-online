@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using DndTable.Core.Characters;
 using DndTable.Core.Entities;
 using DndTable.Core.Factories;
 
@@ -37,9 +38,6 @@ namespace DndTable.Core.Persistence
                 if (entity == null)
                     throw new ArgumentNullException();
 
-                // Don't save characters
-                if (entity.EntityType == EntityTypeEnum.Character)
-                    continue;
 
                 var newEntityXml = new EntityXml()
                                        {
@@ -47,7 +45,18 @@ namespace DndTable.Core.Persistence
                                            PositionX = entity.Position.X,
                                            PositionY = entity.Position.Y
                                        };
-                boardXml.Entities.Add(newEntityXml);
+
+                var character = entity as ICharacter;
+                if (character != null)
+                {
+                    // Don't save hero characters
+                    if (character.CharacterType == CharacterTypeEnum.Hero)
+                        continue;
+
+                    newEntityXml.CharacterType = character.CharacterType;
+                }
+
+               boardXml.Entities.Add(newEntityXml);
             }
 
 
@@ -98,6 +107,10 @@ namespace DndTable.Core.Persistence
                     else if (entityXml.EntityType == EntityTypeEnum.Chest)
                     {
                         newEntity = Factory.CreateChest() as BaseEntity;
+                    }
+                    else if (entityXml.EntityType == EntityTypeEnum.Character)
+                    {
+                        newEntity = Factory.CreateNpc(entityXml.CharacterType) as BaseEntity;
                     }
                     else
                     {

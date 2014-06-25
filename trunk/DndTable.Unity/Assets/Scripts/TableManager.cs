@@ -72,22 +72,22 @@ public class TableManager : MonoBehaviour
             Game.EquipWeapon(boris, WeaponFactory.Longsword());
             //Game.EquipWeapon(boris, WeaponFactory.CrossbowLight());
             Game.EquipArmor(boris, ArmorFactory.FullPlate());
-            Game.GivePotion(boris, PotionFactory.CreatePotionOfCureLightWound());
+            //Game.GivePotion(boris, PotionFactory.CreatePotionOfCureLightWound());
             Game.GiveWeapon(boris, WeaponFactory.CrossbowLight());
 
             var maiko = Factory.CreateCharacter("Maiko", 12, 16);
             Game.EquipWeapon(maiko, WeaponFactory.Longbow());
             Game.EquipArmor(maiko, ArmorFactory.Leather());
-            Game.GivePotion(maiko, PotionFactory.CreatePotionOfCureLightWound());
+            //Game.GivePotion(maiko, PotionFactory.CreatePotionOfCureLightWound());
 
-            Game.AddCharacter(boris, Position.Create(10, 10));
-            Game.AddCharacter(maiko, Position.Create(10, 12));
+            Game.AddCharacter(boris, Position.Create(3, 3));
+            Game.AddCharacter(maiko, Position.Create(3, 4));
 
             // Orcs
-            Game.AddCharacter(Factory.CreateOrc(), Position.Create(20, 20));
-            Game.AddCharacter(Factory.CreateOrc(), Position.Create(20, 21));
-            Game.AddCharacter(Factory.CreateOrc(), Position.Create(20, 22));
-            Game.AddCharacter(Factory.CreateOrcChief(), Position.Create(19, 21));
+            //Game.AddCharacter(Factory.CreateOrc(), Position.Create(20, 20));
+            //Game.AddCharacter(Factory.CreateOrc(), Position.Create(20, 21));
+            //Game.AddCharacter(Factory.CreateOrc(), Position.Create(20, 22));
+            //Game.AddCharacter(Factory.CreateOrcChief(), Position.Create(19, 21));
 
             // Loot
             //Game.AddChest(Position.Create(22, 22));
@@ -190,16 +190,6 @@ public class TableManager : MonoBehaviour
 
         var offset = 0;
         {
-            if (GUILayout.Button("Walls"))
-            {
-                StopCurrentAction();
-                _currentActionUI = new MapEditorUI(Game, EntityTypeEnum.Wall);
-            }
-            if (GUILayout.Button("Chests"))
-            {
-                StopCurrentAction();
-                _currentActionUI = new MapEditorUI(Game, EntityTypeEnum.Chest);
-            }
             if (GUILayout.Button("Start encounter"))
             {
                 StopCurrentAction();
@@ -211,6 +201,26 @@ public class TableManager : MonoBehaviour
                                                                                 CurrentEncounter = Game.StartEncounter(selectedChars);
                                                                                 return true;
                                                                             });
+            }
+            if (GUILayout.Button("Walls"))
+            {
+                StopCurrentAction();
+                _currentActionUI = new MapEditorUI(Game, EntityTypeEnum.Wall);
+            }
+            if (GUILayout.Button("Chests"))
+            {
+                StopCurrentAction();
+                _currentActionUI = new MapEditorUI(Game, EntityTypeEnum.Chest);
+            }
+            if (GUILayout.Button("Orc"))
+            {
+                StopCurrentAction();
+                _currentActionUI = new MapEditorUI(Game, CharacterTypeEnum.Orc);
+            }
+            if (GUILayout.Button("Orc chief"))
+            {
+                StopCurrentAction();
+                _currentActionUI = new MapEditorUI(Game, CharacterTypeEnum.OrcChief);
             }
         }
         GUILayout.EndVertical();

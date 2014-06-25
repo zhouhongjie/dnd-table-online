@@ -8,7 +8,7 @@ namespace DndTable.Core.Dice
 
         public int Roll(int d)
         {
-            return _randomizer.Next(d - 1) + 1;
+            return _randomizer.Next(d) + 1;
         }
     }
 }

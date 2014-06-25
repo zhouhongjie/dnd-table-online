@@ -36,16 +36,30 @@ namespace DndTable.Core.Actions
             if (!Executer.CharacterSheet.CanAct())
                 return;
 
+            if (_chest.IsUsed)
+                return;
 
-            // TODO: depend on chest properties
+            // TODO: depend on chest properties (ex. chest quality?) or .. prefill chest manually?
             {
                 var nrOfPotions = DiceRoller.Roll(Executer, DiceRollEnum.Loot, 3, 0);
 
                 for (var i = 0; i < nrOfPotions; i++)
                 {
-                    CharacterSheet.GetEditableSheet(Executer).Potions.Add(PotionFactory.CreatePotionOfCureLightWound());
+                    var potionChoice = DiceRoller.Roll(Executer, DiceRollEnum.Loot, 3, 0);
+                    IPotion currentPotion = null;
+                    if (potionChoice == 1)
+                        currentPotion = PotionFactory.CreatePotionOfCureLightWound();
+                    else if (potionChoice == 2)
+                        currentPotion = PotionFactory.CreatePotionOfCatsGrace();
+                    else if (potionChoice == 3)
+                        currentPotion = PotionFactory.CreatePotionOfBullsStrength();
+
+                    CharacterSheet.GetEditableSheet(Executer).Potions.Add(currentPotion);
                 }
             }
+
+            // make chest empty!
+            _chest.IsUsed = true;
         }
 
         public override ActionTypeEnum Type

@@ -48,11 +48,27 @@ namespace DndTable.Core.Characters
         public List<IWeapon> Weapons { get { return _weapons; } }
         #endregion
 
+        #region buffs // TODO: list of buff/debuff objects to incorporate duration & type (enhancement, luck, ...)
+        public int StrengthBuff { get; internal set; }
+        public int DexterityBuff { get; internal set; }
+        public int ConstitutionBuff { get; internal set; }
+        public int IntelligentBuff { get; internal set; }
+        public int WisdomBuff { get; internal set; }
+        public int CharismaBuff { get; internal set; }
+        #endregion
+
+        private int GetTotalStrength() { return Strength + StrengthBuff; }
+        private int GetTotalDexterity() { return Dexterity + DexterityBuff; }
+        private int GetTotalConstitution() { return Constitution + ConstitutionBuff; }
+        private int GetTotalIntelligent() { return Intelligent + IntelligentBuff; }
+        private int GetTotalWisdom() { return Wisdom + WisdomBuff; }
+        private int GetTotalCharisma() { return Charisma + CharismaBuff; }
+
         private int GetMeleeAttackBonus(Calculator.CalculatorPropertyContext context)
         {
             return context.Use(BaseAttackBonus, "BaseAttackBonus") +
                    context.Use(SizeModifier, "SizeModifier") +
-                   context.Use(GetAbilityBonus(Strength), "Strength");
+                   context.Use(GetAbilityBonus(GetTotalStrength()), "Strength");
         }
 
         private int GetRangedAttackBonus(int range, Calculator.CalculatorPropertyContext context)
@@ -72,7 +88,7 @@ namespace DndTable.Core.Characters
 
             return context.Use(BaseAttackBonus, "BaseAttackBonus") +
                     context.Use(SizeModifier, "Size") +
-                    context.Use(GetAbilityBonus(Dexterity), "Dexterity") +
+                    context.Use(GetAbilityBonus(GetTotalDexterity()), "Dexterity") +
                     context.Use(rangePenalty, "RangePenalty");
         }
 
@@ -127,13 +143,13 @@ namespace DndTable.Core.Characters
 
                 // Unarmed
                 if (EquipedWeapon == null)
-                    return context.Use(GetAbilityBonus(Strength), "Strength");
+                    return context.Use(GetAbilityBonus(GetTotalStrength()), "Strength");
                 // Ranged
                 if (EquipedWeapon.IsRanged)
                     return 0;
 
                 // Melee
-                return context.Use(GetAbilityBonus(Strength), "Strength");
+                return context.Use(GetAbilityBonus(GetTotalStrength()), "Strength");
             }
         }
 
@@ -164,7 +180,7 @@ namespace DndTable.Core.Characters
                 var result = 10;
 
                 // Add dex (not flat footed, ...)
-                result += context.Use(GetAbilityBonus(Dexterity), "Dexterity");
+                result += context.Use(GetAbilityBonus(GetTotalDexterity()), "Dexterity");
 
                 // Add size modifier
                 result += context.Use(SizeModifier, "Size");
@@ -185,7 +201,7 @@ namespace DndTable.Core.Characters
             using (var context = Calculator.CreatePropertyContext("Initiative"))
             {
                 // TODO: modifiers
-                return context.Use(GetAbilityBonus(Dexterity), "Dexterity");
+                return context.Use(GetAbilityBonus(GetTotalDexterity()), "Dexterity");
             }
         }
 
