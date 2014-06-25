@@ -89,12 +89,24 @@ namespace DndTable.Core.Persistence
                 entities = new List<BaseEntity>();
                 foreach (var entityXml in boardXml.Entities)
                 {
-                    if (entityXml.EntityType != EntityTypeEnum.Wall)
-                        throw new NotSupportedException("EntityType not supported yet: " + entityXml.EntityType);
+                    BaseEntity newEntity;
 
-                    var newEntity = Factory.CreateWall() as BaseEntity;
+                    if (entityXml.EntityType == EntityTypeEnum.Wall)
+                    {
+                        newEntity = Factory.CreateWall() as BaseEntity;
+                    }
+                    else if (entityXml.EntityType == EntityTypeEnum.Chest)
+                    {
+                        newEntity = Factory.CreateChest() as BaseEntity;
+                    }
+                    else
+                    {
+                        throw new NotSupportedException("EntityType not supported yet: " + entityXml.EntityType);
+                    }
+
                     newEntity.Position = Position.Create(entityXml.PositionX, entityXml.PositionY);
                     entities.Add(newEntity);
+
                 }
 
                 return true;
