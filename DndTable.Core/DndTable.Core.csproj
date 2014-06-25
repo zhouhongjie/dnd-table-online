@@ -71,6 +71,8 @@
     <Compile Include="Armors\ArmorFactory.cs" />
     <Compile Include="Factories\Factory.cs" />
     <Compile Include="Items\PotionFactory.cs" />
+    <Compile Include="Items\PotionOfBullsStrength.cs" />
+    <Compile Include="Items\PotionOfCatsGrace.cs" />
     <Compile Include="Items\PotionOfCureLightWound.cs" />
     <Compile Include="Weapons\WeaponFactory.cs" />
     <Compile Include="Game.cs" />

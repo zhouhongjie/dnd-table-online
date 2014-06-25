@@ -7,11 +7,13 @@ namespace DndTable.Core.Characters
     internal class Character : BaseEntity, ICharacter
     {
         public ICharacterSheet CharacterSheet { get; private set; }
+        public CharacterTypeEnum CharacterType { get; private set; }
         public override EntityTypeEnum EntityType { get { return EntityTypeEnum.Character; } }
 
-        public Character(ICharacterSheet sheet)
+        public Character(ICharacterSheet sheet, CharacterTypeEnum charType = CharacterTypeEnum.Unknown)
         {
             CharacterSheet = sheet;
+            CharacterType = charType;
         }
     }
 }

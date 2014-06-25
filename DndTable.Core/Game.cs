@@ -43,6 +43,22 @@ namespace DndTable.Core
             return true;
         }
 
+        public bool RemoveCharacter(ICharacter character)
+        {
+            if (!_characters.Contains(character))
+                return false;
+
+            if (CurrentEncounter.Participants.Contains(character))
+                throw new NotSupportedException("Character cannot be removed: part of current encounter");
+
+            if (!_gameBoard.RemoveEntity(character))
+                return false;
+
+            _characters.Remove(character);
+
+            return true;
+        }
+
         public bool AddWall(Position position)
         {
             return _gameBoard.AddEntity(Factory.CreateWall(), position);

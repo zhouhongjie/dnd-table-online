@@ -65,7 +65,7 @@ namespace DndTable.Core.Test.UnitTests
 
             // 2 steps max
             var sheet = new CharacterSheet { Speed = speed };
-            var char1 = Factory.CreateCharacter("dummy", sheet);
+            var char1 = new Character(sheet);
 
             game.AddCharacter(char1, Position.Create(1, 1));
 
@@ -83,8 +83,8 @@ namespace DndTable.Core.Test.UnitTests
             var actionFactory = new AbstractActionFactory(null, board, null);
 
             // 2 steps max
-            var sheet = new CharacterSheet {Speed = 10}; 
-            var char1 = Factory.CreateCharacter("dummy", sheet);
+            var sheet = new CharacterSheet {Speed = 10};
+            var char1 = new Character(sheet);
 
             game.AddCharacter(char1, Position.Create(1, 1));
             Assert.AreEqual(char1, game.GameBoard.GetEntity(Position.Create(1, 1), EntityTypeEnum.Character));
@@ -120,7 +120,7 @@ namespace DndTable.Core.Test.UnitTests
 
             // 2 steps max
             var sheet = new CharacterSheet {Speed = 10};
-            var char1 = Factory.CreateCharacter("dummy", sheet);
+            var char1 = new Character(sheet);
             game.AddCharacter(char1, Position.Create(1, 1));
 
             // Add obstacles

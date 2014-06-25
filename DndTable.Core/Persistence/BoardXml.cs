@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DndTable.Core.Characters;
 using DndTable.Core.Entities;
+using DndTable.Core.Factories;
 
 namespace DndTable.Core.Persistence
 {
@@ -19,6 +21,7 @@ namespace DndTable.Core.Persistence
     public class EntityXml
     {
         public EntityTypeEnum EntityType { get; set; }
+        public CharacterTypeEnum CharacterType { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
     }

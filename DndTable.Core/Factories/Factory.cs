@@ -35,7 +35,7 @@ namespace DndTable.Core.Factories
             sheet.MaxHitPoints = 10;
             sheet.Speed = 30;
 
-            return new Character(sheet);
+            return new Character(sheet, CharacterTypeEnum.Hero);
         }
 
         public static ICharacter CreateCharacter(string name, int strength, int dexterity)
@@ -57,7 +57,17 @@ namespace DndTable.Core.Factories
             sheet.MaxHitPoints = 10;
             sheet.Speed = 30;
 
-            return new Character(sheet);
+            return new Character(sheet, CharacterTypeEnum.Hero);
+        }
+
+        public static ICharacter CreateNpc(CharacterTypeEnum npcType)
+        {
+            if (npcType == CharacterTypeEnum.Orc)
+                return CreateOrc();
+            if (npcType == CharacterTypeEnum.OrcChief)
+                return CreateOrcChief();
+
+            throw new NotImplementedException();
         }
 
         public static ICharacter CreateOrc(string name = "Orc")
@@ -83,7 +93,7 @@ namespace DndTable.Core.Factories
             sheet.EquipedWeapon = WeaponFactory.Club();
             sheet.EquipedArmor = ArmorFactory.ScaleMail();
 
-            return new Character(sheet);
+            return new Character(sheet, CharacterTypeEnum.Orc);
         }
 
         public static ICharacter CreateOrcChief(string name = "Orc Chief")
@@ -109,12 +119,7 @@ namespace DndTable.Core.Factories
             sheet.EquipedWeapon = WeaponFactory.BattleAxe();
             sheet.EquipedArmor = ArmorFactory.ScaleMail();
 
-            return new Character(sheet);
-        }
-
-        public static ICharacter CreateCharacter(string name, ICharacterSheet sheet)
-        {
-            return new Character(sheet);
+            return new Character(sheet, CharacterTypeEnum.OrcChief);
         }
 
         public static IEntity CreateWall()

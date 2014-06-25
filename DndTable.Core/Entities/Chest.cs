@@ -23,5 +23,6 @@ namespace DndTable.Core.Entities
                        };
         }
 
+        internal bool IsUsed { get; set; }
     }
 }

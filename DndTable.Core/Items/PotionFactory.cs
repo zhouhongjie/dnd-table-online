@@ -11,5 +11,15 @@ namespace DndTable.Core.Items
         {
             return new PotionOfCureLightWound();
         }
+
+        public static IPotion CreatePotionOfCatsGrace()
+        {
+            return new PotionOfCatsGrace();
+        }
+
+        public static IPotion CreatePotionOfBullsStrength()
+        {
+            return new PotionOfBullsStrength();
+        }
     }
 }
