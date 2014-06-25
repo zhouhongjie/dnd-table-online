@@ -105,5 +105,10 @@ namespace DndTable.Core
         {
             CharacterSheet.GetEditableSheet(character).Potions.Add(potion);
         }
+
+        public void GiveWeapon(ICharacter character, IWeapon weapon)
+        {
+            CharacterSheet.GetEditableSheet(character).Weapons.Add(weapon);
+        }
     }
 }

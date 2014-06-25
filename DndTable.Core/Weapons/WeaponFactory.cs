@@ -8,6 +8,7 @@ namespace DndTable.Core.Weapons
         {
             var weapon = new Weapon();
 
+            weapon.Description = "Dagger";
             weapon.Proficiency = WeaponProficiencyEnum.Simple;
             weapon.IsRanged = false;
             weapon.DamageD = 4;
@@ -24,6 +25,7 @@ namespace DndTable.Core.Weapons
         {
             var weapon = new Weapon();
 
+            weapon.Description = "Longsword";
             weapon.Proficiency = WeaponProficiencyEnum.Martial;
             weapon.IsRanged = false;
             weapon.DamageD = 8;
@@ -40,6 +42,7 @@ namespace DndTable.Core.Weapons
         {
             var weapon = new Weapon();
 
+            weapon.Description = "Battle axe";
             weapon.Proficiency = WeaponProficiencyEnum.Martial;
             weapon.IsRanged = false;
             weapon.DamageD = 8;
@@ -56,6 +59,7 @@ namespace DndTable.Core.Weapons
         {
             var weapon = new Weapon();
 
+            weapon.Description = "Light crossbow";
             weapon.Proficiency = WeaponProficiencyEnum.Simple;
             weapon.IsRanged = true;
             weapon.DamageD = 8;
@@ -78,6 +82,7 @@ namespace DndTable.Core.Weapons
         {
             var weapon = new Weapon();
 
+            weapon.Description = "Longbow";
             weapon.Proficiency = WeaponProficiencyEnum.Martial;
             weapon.IsRanged = true;
             weapon.DamageD = 8;
@@ -94,6 +99,7 @@ namespace DndTable.Core.Weapons
         {
             var weapon = new Weapon();
 
+            weapon.Description = "Club";
             weapon.Proficiency = WeaponProficiencyEnum.Simple;
             weapon.IsRanged = false;
             weapon.DamageD = 6;

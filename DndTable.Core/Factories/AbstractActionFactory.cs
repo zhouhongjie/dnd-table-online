@@ -7,6 +7,7 @@ using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 using DndTable.Core.Entities;
 using DndTable.Core.Items;
+using DndTable.Core.Weapons;
 
 namespace DndTable.Core.Factories
 {
@@ -73,6 +74,13 @@ namespace DndTable.Core.Factories
         internal IAction OpenChest(ICharacter character, Chest chest)
         {
             var action = new OpenChest(character, chest);
+            action.Initialize(this);
+            return action;
+        }
+
+        public IAction SwitchWeapon(ICharacter character, IWeapon weapon)
+        {
+            var action = new SwitchWeaponAction(character, weapon);
             action.Initialize(this);
             return action;
         }

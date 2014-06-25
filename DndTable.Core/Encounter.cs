@@ -199,6 +199,15 @@ namespace DndTable.Core
                 }
             }
 
+            // Switch weapon action
+            if (CanDoFullRoundAction())
+            {
+                foreach (var weapon in GetCurrentCharacter().CharacterSheet.Weapons)
+                {
+                    actions.Add(_actionFactory.SwitchWeapon(GetCurrentCharacter(), weapon));
+                }
+            }
+
             // Add entity context actions
             if (_contextActions != null)
             {

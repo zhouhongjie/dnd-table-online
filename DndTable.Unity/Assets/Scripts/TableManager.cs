@@ -73,6 +73,7 @@ public class TableManager : MonoBehaviour
             //Game.EquipWeapon(boris, WeaponFactory.CrossbowLight());
             Game.EquipArmor(boris, ArmorFactory.FullPlate());
             Game.GivePotion(boris, PotionFactory.CreatePotionOfCureLightWound());
+            Game.GiveWeapon(boris, WeaponFactory.CrossbowLight());
 
             var maiko = Factory.CreateCharacter("Maiko", 12, 16);
             Game.EquipWeapon(maiko, WeaponFactory.Longbow());
@@ -100,6 +101,7 @@ public class TableManager : MonoBehaviour
             //Game.AddWall(Position.Create(5, 10));
 
             // Start encounter
+	        //CurrentEncounter = Game.StartEncounter(new List<ICharacter>() { boris, maiko });
 	        CurrentEncounter = Game.StartEncounter();
         }
 

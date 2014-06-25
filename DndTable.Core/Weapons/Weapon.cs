@@ -5,6 +5,7 @@ namespace DndTable.Core.Weapons
 {
     internal class Weapon : IWeapon
     {
+        public string Description { get; internal set; }
         public int DamageD { get; internal set; }
         public WeaponProficiencyEnum Proficiency { get; internal set; }
         public bool IsRanged { get; internal set; }

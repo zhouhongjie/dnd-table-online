@@ -36,5 +36,6 @@ namespace DndTable.Core
         void EquipWeapon(ICharacter character, IWeapon weapon);
         void EquipArmor(ICharacter character, IArmor armor);
         void GivePotion(ICharacter character, IPotion potion);
+        void GiveWeapon(ICharacter character, IWeapon weapon);
     }
 }

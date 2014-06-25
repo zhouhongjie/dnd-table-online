@@ -51,6 +51,7 @@
     <Compile Include="Actions\MoveAction.cs" />
     <Compile Include="Actions\OpenChest.cs" />
     <Compile Include="Actions\ReloadAction.cs" />
+    <Compile Include="Actions\SwitchWeaponAction.cs" />
     <Compile Include="Actions\UsePotionAction.cs" />
     <Compile Include="Armors\Armor.cs" />
     <Compile Include="Characters\Calculator.cs" />

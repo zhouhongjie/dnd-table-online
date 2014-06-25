@@ -34,6 +34,7 @@ namespace DndTable.Core.Characters
         IWeapon EquipedWeapon { get; }
 
         List<IPotion> Potions { get; }
+        List<IWeapon> Weapons { get; }
 
 
             bool CanAct();
