@@ -28,6 +28,11 @@ namespace DndTable.Core.Actions
             get { return ActionTypeEnum.MoveEquivalent; }
         }
 
+        public override ActionCategoryEnum Category
+        {
+            get { return ActionCategoryEnum.Move; }
+        }
+
         public override string Description { get { return "Move"; } }
 
         public override void Do()

@@ -43,6 +43,7 @@ namespace DndTable.Core.Actions
         protected AbstractActionFactory ActionFactory { get; private set; }
 
         public virtual bool RequiresUI { get { return true; } }
+        public virtual ActionCategoryEnum Category { get { return ActionCategoryEnum.Other; } }
 
 
         internal void Initialize(AbstractActionFactory actionFactory)

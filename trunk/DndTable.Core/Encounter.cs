@@ -63,6 +63,7 @@ namespace DndTable.Core
         internal void RegisterAction(ActionTypeEnum actionType)
         {
             _actionDoneByCurrentChar.Add(actionType);
+            _contextActions = null;
         }
 
         private static List<ICharacter> DoInitiativeChecks(IDiceRoller diceRoller, List<ICharacter> participants)
@@ -100,6 +101,8 @@ namespace DndTable.Core
             var current = GetCurrentCharacter();
 
             _actionDoneByCurrentChar.Clear();
+            _contextActions = null;
+
             GetRoundInfo(current).Reset(current);
 
             // TODO: Handle dying

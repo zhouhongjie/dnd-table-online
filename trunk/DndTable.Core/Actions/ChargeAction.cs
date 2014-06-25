@@ -35,6 +35,11 @@ namespace DndTable.Core.Actions
             get { return ActionTypeEnum.MoveEquivalent; }
         }
 
+        public override ActionCategoryEnum Category
+        {
+            get { return ActionCategoryEnum.Combat; }
+        }
+
         public override string Description
         {
             get { return "Charge"; }

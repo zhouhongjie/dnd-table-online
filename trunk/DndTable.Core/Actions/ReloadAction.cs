@@ -47,6 +47,11 @@ namespace DndTable.Core.Actions
             get { return GetReloadInfo().ActionType; }
         }
 
+        public override ActionCategoryEnum Category
+        {
+            get { return ActionCategoryEnum.Combat; }
+        }
+
         public override string Description
         {
             get { return "Reload"; } // Add nr of partials to reload?
