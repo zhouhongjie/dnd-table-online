@@ -7,11 +7,17 @@ namespace DndTable.Core.Actions
         Standard, MoveEquivalent, FiveFootStep, FullRound
     }
 
+    public enum ActionCategoryEnum
+    {
+        Other, Combat, Move, FullRound
+    }
+
     public interface IAction
     {
         void Do();
 
         ActionTypeEnum Type { get; }
+        ActionCategoryEnum Category { get; }
 
         string Description { get; }
 

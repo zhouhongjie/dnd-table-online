@@ -34,6 +34,7 @@ public class TableManager : MonoBehaviour
 
 
     private const int _calculatorWindowWidth = 400;
+    private const int _characterMonitorWindowWidth = 150;
 
     public Transform GetCurrentCharacterTransform()
     {
@@ -160,14 +161,14 @@ public class TableManager : MonoBehaviour
         //    return;
 
         // See: http://3dgep.com/?p=5169
-        GUILayout.Window(0, new Rect(0, 0, 150, 0), UpdateCharacterMonitorUI, "Character monitor");
+        GUILayout.Window(0, new Rect(Screen.width - _calculatorWindowWidth - _characterMonitorWindowWidth, 0, 150, 0), UpdateCharacterMonitorUI, "Character monitor");
 
         GUILayout.Window(1, new Rect(Screen.width - _calculatorWindowWidth, 0, _calculatorWindowWidth, 0), UpdateDiceMonitorUI, "Calculator");
 
         if (_mode == ModeEnum.Player)
-            GUILayout.Window(2, new Rect(0, 150, 150, 0), UpdatePossibleActionsUI, "Actions");
+            GUILayout.Window(2, new Rect(0, 0, 150, 0), UpdatePossibleActionsUI, "Actions");
         else if (_mode == ModeEnum.MapEditor)
-            GUILayout.Window(3, new Rect(0, 150, 150, 0), UpdateMapEditorActionsUI, "Map editor");
+            GUILayout.Window(3, new Rect(0, 0, 150, 0), UpdateMapEditorActionsUI, "Map editor");
     }
 
     private void UpdateMapEditorActionsUI(int windowId)
@@ -187,11 +188,10 @@ public class TableManager : MonoBehaviour
 
     private void UpdatePossibleActionsUI(int windowId)
     {
-        GUILayout.BeginVertical();
-
         // Check for a Multi-step operation (needs to be stopped before chosing a new action)
         if (_currentActionUI != null && !_currentActionUI.IsDone && _currentActionUI.IsMultiStep)
         {
+            GUILayout.BeginVertical();
             GUI.color = Color.yellow;
             if (GUILayout.Button("Stop current action"))
             {
@@ -201,10 +201,56 @@ public class TableManager : MonoBehaviour
             return;
         }
 
+        GUILayout.BeginHorizontal();
 
-        var offset = 0;
-        foreach (var action in CurrentEncounter.GetPossibleActionsForCurrentCharacter())
+        // Add control buttons
         {
+            GUILayout.BeginVertical();
+
+            // Title
+            GUILayout.Label(CurrentPlayer.CharacterSheet.Name);
+
+            if (GUILayout.Button("Select"))
+            {
+                StopCurrentAction();
+                _currentActionUI = new SelectEntityUI(Game, CurrentEncounter, CurrentPlayer);
+            }
+            if (GUILayout.Button("Next player"))
+            {
+                StopCurrentAction();
+                CurrentEncounter.GetNextCharacter();
+            }
+            GUILayout.EndVertical();
+        }
+        
+        // Add character actions
+        {
+            var actionsRemaining = CurrentEncounter.GetPossibleActionsForCurrentCharacter();
+            AddButtonsForCategory(ActionCategoryEnum.Combat, ref actionsRemaining);
+            AddButtonsForCategory(ActionCategoryEnum.Move, ref actionsRemaining);
+            AddButtonsForCategory(ActionCategoryEnum.Other, ref actionsRemaining);
+        }
+
+        GUILayout.EndHorizontal();
+    }
+
+    private void AddButtonsForCategory(ActionCategoryEnum category, ref List<IAction> actions)
+    {
+        var allActions = new List<IAction>(actions);
+
+        GUILayout.BeginVertical();
+
+        // Title
+        GUILayout.Label(Enum.Format(typeof(ActionCategoryEnum), category, "g"));
+
+        foreach (var action in allActions)
+        {
+            if (action.Category != category && category != ActionCategoryEnum.Other)
+                continue;
+
+            // Action handled => remove from list
+            actions.Remove(action);
+
             if (GUILayout.Button(action.Description))
             {
                 StopCurrentAction();
@@ -230,15 +276,8 @@ public class TableManager : MonoBehaviour
                     throw new NotSupportedException("TODO: UI for " + action);
                 }
             }
-
-            offset += 35;
         }
-        if (GUILayout.Button("Select"))
-            _currentActionUI = new SelectEntityUI(Game, CurrentEncounter, CurrentPlayer);
-        if (GUILayout.Button("Next player"))
-            CurrentEncounter.GetNextCharacter();
 
-        
         GUILayout.EndVertical();
     }
 

@@ -21,6 +21,11 @@ namespace DndTable.Core.Actions
             get { return ActionTypeEnum.FiveFootStep; }
         }
 
+        public override ActionCategoryEnum Category
+        {
+            get { return ActionCategoryEnum.Move; }
+        }
+
         public override string Description
         {
             get { return "5 foot step"; }
