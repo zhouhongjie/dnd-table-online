@@ -16,6 +16,8 @@ namespace DndTable.Core.Weapons
     {
         #region Statistics
 
+        string Description { get; }
+
         WeaponProficiencyEnum Proficiency { get; }
         bool IsRanged { get; }
 

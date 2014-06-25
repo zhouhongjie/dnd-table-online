@@ -41,8 +41,12 @@ namespace DndTable.Core.Characters
 
         public int BaseAttackBonus { get; internal set; }
 
+        #region inventory
         private readonly List<IPotion> _potions = new List<IPotion>();
+        private readonly List<IWeapon> _weapons = new List<IWeapon>();
         public List<IPotion> Potions { get { return _potions; } }
+        public List<IWeapon> Weapons { get { return _weapons; } }
+        #endregion
 
         private int GetMeleeAttackBonus(Calculator.CalculatorPropertyContext context)
         {
