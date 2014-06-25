@@ -48,6 +48,7 @@
     <Compile Include="AttackActionUI.cs" />
     <Compile Include="BaseActionUI.cs" />
     <Compile Include="SelectEntityUI.cs" />
+    <Compile Include="SelectMultipleCharactersUI.cs" />
     <Compile Include="StraightLineMoveUI.cs" />
     <Compile Include="MoveActionUI.cs" />
     <Compile Include="MapEditorUI.cs" />

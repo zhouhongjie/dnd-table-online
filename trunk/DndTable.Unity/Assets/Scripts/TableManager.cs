@@ -90,7 +90,7 @@ public class TableManager : MonoBehaviour
             Game.AddCharacter(Factory.CreateOrcChief(), Position.Create(19, 21));
 
             // Loot
-            Game.AddChest(Position.Create(22, 22));
+            //Game.AddChest(Position.Create(22, 22));
 
             // Build dungeon
             // Walls
@@ -101,8 +101,8 @@ public class TableManager : MonoBehaviour
             //Game.AddWall(Position.Create(5, 10));
 
             // Start encounter
-	        //CurrentEncounter = Game.StartEncounter(new List<ICharacter>() { boris, maiko });
-	        CurrentEncounter = Game.StartEncounter();
+	        CurrentEncounter = Game.StartEncounter(new List<ICharacter>() { boris, maiko });
+	        //CurrentEncounter = Game.StartEncounter();
         }
 
 	    CreateSupportObjects();
@@ -155,7 +155,15 @@ public class TableManager : MonoBehaviour
         _currentActionUI = null;
     }
 
-    public ICharacter CurrentPlayer { get { return CurrentEncounter.GetCurrentCharacter(); } }
+    public ICharacter CurrentPlayer
+    {
+        get
+        {
+            if (CurrentEncounter == null)
+                return null;
+            return CurrentEncounter.GetCurrentCharacter();
+        }
+    }
 
     void OnGUI()
     {
@@ -167,10 +175,13 @@ public class TableManager : MonoBehaviour
 
         GUILayout.Window(1, new Rect(Screen.width - _calculatorWindowWidth, 0, _calculatorWindowWidth, 0), UpdateDiceMonitorUI, "Calculator");
 
-        if (_mode == ModeEnum.Player)
-            GUILayout.Window(2, new Rect(0, 0, 150, 0), UpdatePossibleActionsUI, "Actions");
-        else if (_mode == ModeEnum.MapEditor)
-            GUILayout.Window(3, new Rect(0, 0, 150, 0), UpdateMapEditorActionsUI, "Map editor");
+        if (!UpdateMultistepOperation())
+        {
+            if (_mode == ModeEnum.Player)
+                GUILayout.Window(2, new Rect(0, 0, 150, 0), UpdatePossibleActionsUI, "Actions");
+            else if (_mode == ModeEnum.MapEditor)
+                GUILayout.Window(3, new Rect(0, 0, 150, 0), UpdateMapEditorActionsUI, "Map editor");
+        }
     }
 
     private void UpdateMapEditorActionsUI(int windowId)
@@ -182,13 +193,30 @@ public class TableManager : MonoBehaviour
             if (GUILayout.Button("Walls"))
             {
                 StopCurrentAction();
-                _currentActionUI = new MapEditorUI(Game);
+                _currentActionUI = new MapEditorUI(Game, EntityTypeEnum.Wall);
+            }
+            if (GUILayout.Button("Chests"))
+            {
+                StopCurrentAction();
+                _currentActionUI = new MapEditorUI(Game, EntityTypeEnum.Chest);
+            }
+            if (GUILayout.Button("Start encounter"))
+            {
+                StopCurrentAction();
+                _currentActionUI = new SelectMultipleCharactersUI(Game, (selectedChars) =>
+                                                                            {
+                                                                                if (selectedChars.Count == 0)
+                                                                                    return false;
+
+                                                                                CurrentEncounter = Game.StartEncounter(selectedChars);
+                                                                                return true;
+                                                                            });
             }
         }
         GUILayout.EndVertical();
     }
 
-    private void UpdatePossibleActionsUI(int windowId)
+    private bool UpdateMultistepOperation()
     {
         // Check for a Multi-step operation (needs to be stopped before chosing a new action)
         if (_currentActionUI != null && !_currentActionUI.IsDone && _currentActionUI.IsMultiStep)
@@ -200,8 +228,17 @@ public class TableManager : MonoBehaviour
                 _currentActionUI.Stop();
             }
             GUILayout.EndVertical();
-            return;
+            return true;
         }
+
+        return false;
+    }
+
+    private void UpdatePossibleActionsUI(int windowId)
+    {
+        if (CurrentPlayer == null)
+            return;
+
 
         GUILayout.BeginHorizontal();
 
@@ -309,6 +346,13 @@ public class TableManager : MonoBehaviour
 
     private void UpdateFieldOfView()
     {
+        // TEMP disable in DM mode
+        if (_mode == ModeEnum.MapEditor)
+            return;
+
+        if (CurrentPlayer == null)
+            return;
+
         var fieldOfView = Game.GameBoard.GetFieldOfView(CurrentPlayer.Position);
 
         for (var i=0; i < transform.childCount; i++)
@@ -322,9 +366,15 @@ public class TableManager : MonoBehaviour
 
             bool isVisible = fieldOfView[(int)child.position.x, (int)child.position.z];
 
-            //SetColorRecursive(child.transform, isVisible ? Color.white : Color.gray);
-            if (!isVisible)
-                HideAllRecursive(child.transform);
+            if (_mode == ModeEnum.Player)
+            {
+                if (!isVisible)
+                    HideAllRecursive(child.transform);
+            }
+            //if (_mode == ModeEnum.MapEditor)
+            //{
+            //    SetColorRecursive(child.transform, isVisible ? Color.white : Color.gray);
+            //}
         }
     }
 
