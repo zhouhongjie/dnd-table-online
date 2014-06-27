@@ -41,9 +41,11 @@
   <ItemGroup>
     <Compile Include="Actions\ActionHelper.cs" />
     <Compile Include="Actions\BaseAction.cs" />
+    <Compile Include="Actions\CastSpellAction.cs" />
     <Compile Include="Actions\ChargeAction.cs" />
     <Compile Include="Actions\FiveFootStep.cs" />
     <Compile Include="Actions\IAttackAction.cs" />
+    <Compile Include="Actions\ICastSpellAction.cs" />
     <Compile Include="Actions\IMoveAction.cs" />
     <Compile Include="Actions\AttackAction.cs" />
     <Compile Include="Actions\IStraightLineMove.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="Items\PotionOfCatsGrace.cs" />
     <Compile Include="Items\PotionOfCureLightWound.cs" />
     <Compile Include="Spells\BaseSpell.cs" />
+    <Compile Include="Spells\SpellFactory.cs" />
     <Compile Include="Spells\ISpell.cs" />
     <Compile Include="Spells\MagicMissile.cs" />
     <Compile Include="Weapons\WeaponFactory.cs" />

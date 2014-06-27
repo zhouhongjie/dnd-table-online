@@ -3,23 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DndTable.Core.Characters;
+using DndTable.Core.Dice;
 
 namespace DndTable.Core.Spells
 {
     internal class MagicMissile : BaseSpell
     {
-        internal MagicMissile(ICharacter caster)
-            : base(caster)
-        {}
-
         public override string Description { get { return "Magic missile"; } }
 
         // Medium (100 ft. + 10 ft./level)
         public override int MaxRange { get { return 100; } }
 
-        public override bool CastOn(Characters.ICharacter target)
+        public override bool CastOn(ICharacter target, IDiceRoller diceRoller)
         {
-            throw new NotImplementedException();
+            // TODO: evolve by lvl
+
+            var damage = diceRoller.Roll(target, DiceRollEnum.SpellEffect, 4, 1);
+
+            // TODO: spell resistance => here or in CastSpell action?
+
+            CharacterSheet.GetEditableSheet(target).HitPoints -= damage;
+
+            return true;
         }
     }
 }

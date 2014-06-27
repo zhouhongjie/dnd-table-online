@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using DndTable.Core.Armors;
 using DndTable.Core.Items;
+using DndTable.Core.Spells;
 using DndTable.Core.Weapons;
 
 namespace DndTable.Core.Characters
@@ -35,6 +36,7 @@ namespace DndTable.Core.Characters
 
         List<IPotion> Potions { get; }
         List<IWeapon> Weapons { get; }
+        List<ISpell> Spells { get; }
 
 
             bool CanAct();
