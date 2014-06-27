@@ -106,25 +106,5 @@ namespace DndTable.Core
         }
 
         public IEncounter CurrentEncounter { get; private set; }
-
-        public void EquipWeapon(ICharacter character, IWeapon weapon)
-        {
-            CharacterSheet.GetEditableSheet(character).EquipedWeapon = weapon;
-        }
-
-        public void EquipArmor(ICharacter character, IArmor armor)
-        {
-            CharacterSheet.GetEditableSheet(character).EquipedArmor = armor;
-        }
-
-        public void GivePotion(ICharacter character, IPotion potion)
-        {
-            CharacterSheet.GetEditableSheet(character).Potions.Add(potion);
-        }
-
-        public void GiveWeapon(ICharacter character, IWeapon weapon)
-        {
-            CharacterSheet.GetEditableSheet(character).Weapons.Add(weapon);
-        }
     }
 }

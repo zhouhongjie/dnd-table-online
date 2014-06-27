@@ -1,6 +1,9 @@
 ﻿using System;
+using DndTable.Core.Armors;
 using DndTable.Core.Dice;
 using DndTable.Core.Entities;
+using DndTable.Core.Items;
+using DndTable.Core.Weapons;
 
 namespace DndTable.Core.Characters
 {
@@ -15,5 +18,26 @@ namespace DndTable.Core.Characters
             CharacterSheet = sheet;
             CharacterType = charType;
         }
+
+        public void EquipWeapon(IWeapon weapon)
+        {
+            Characters.CharacterSheet.GetEditableSheet(this).EquipedWeapon = weapon;
+        }
+
+        public void EquipArmor(IArmor armor)
+        {
+            Characters.CharacterSheet.GetEditableSheet(this).EquipedArmor = armor;
+        }
+
+        public void GivePotion(IPotion potion)
+        {
+            Characters.CharacterSheet.GetEditableSheet(this).Potions.Add(potion);
+        }
+
+        public void GiveWeapon(IWeapon weapon)
+        {
+            Characters.CharacterSheet.GetEditableSheet(this).Weapons.Add(weapon);
+        }
+
     }
 }

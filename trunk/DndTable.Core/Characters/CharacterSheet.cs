@@ -22,12 +22,12 @@ namespace DndTable.Core.Characters
         public CharacterRace Race { get; internal set; }
         public int FactionId { get; internal set; }
 
-        public int Strength { get; internal set; }
-        public int Dexterity { get; internal set; }
-        public int Constitution { get; internal set; }
-        public int Intelligent { get; internal set; }
-        public int Wisdom { get; internal set; }
-        public int Charisma { get; internal set; }
+        public int Strength { get { return StrengthAttribute.GetValue(); } set { StrengthAttribute.SetValue(value); } }
+        public int Dexterity { get { return DexterityAttribute.GetValue(); } set { DexterityAttribute.SetValue(value); } }
+        public int Constitution { get { return ConstitutionAttribute.GetValue(); } set { ConstitutionAttribute.SetValue(value); } }
+        public int Intelligence { get { return IntelligenceAttribute.GetValue(); } set { IntelligenceAttribute.SetValue(value); } }
+        public int Wisdom { get { return WisdomAttribute.GetValue(); } set { WisdomAttribute.SetValue(value); } }
+        public int Charisma { get { return CharismaAttribute.GetValue(); } set { CharismaAttribute.SetValue(value); } }
 
         public int Fortitude { get; internal set; }
         public int Reflex { get; internal set; }
@@ -49,26 +49,20 @@ namespace DndTable.Core.Characters
         #endregion
 
         #region buffs // TODO: list of buff/debuff objects to incorporate duration & type (enhancement, luck, ...)
-        public int StrengthBuff { get; internal set; }
-        public int DexterityBuff { get; internal set; }
-        public int ConstitutionBuff { get; internal set; }
-        public int IntelligentBuff { get; internal set; }
-        public int WisdomBuff { get; internal set; }
-        public int CharismaBuff { get; internal set; }
+        internal Attribute StrengthAttribute = new Attribute("Strength");
+        internal Attribute DexterityAttribute = new Attribute("Dexterity");
+        internal Attribute ConstitutionAttribute = new Attribute("Constitution");
+        internal Attribute IntelligenceAttribute = new Attribute("Intelligence");
+        internal Attribute WisdomAttribute = new Attribute("Wisdom");
+        internal Attribute CharismaAttribute = new Attribute("Charisma");
         #endregion
 
-        private int GetTotalStrength() { return Strength + StrengthBuff; }
-        private int GetTotalDexterity() { return Dexterity + DexterityBuff; }
-        private int GetTotalConstitution() { return Constitution + ConstitutionBuff; }
-        private int GetTotalIntelligent() { return Intelligent + IntelligentBuff; }
-        private int GetTotalWisdom() { return Wisdom + WisdomBuff; }
-        private int GetTotalCharisma() { return Charisma + CharismaBuff; }
-
+        
         private int GetMeleeAttackBonus(Calculator.CalculatorPropertyContext context)
         {
             return context.Use(BaseAttackBonus, "BaseAttackBonus") +
                    context.Use(SizeModifier, "SizeModifier") +
-                   context.Use(GetAbilityBonus(GetTotalStrength()), "Strength");
+                   context.UseAbilityBonus(StrengthAttribute);
         }
 
         private int GetRangedAttackBonus(int range, Calculator.CalculatorPropertyContext context)
@@ -88,7 +82,7 @@ namespace DndTable.Core.Characters
 
             return context.Use(BaseAttackBonus, "BaseAttackBonus") +
                     context.Use(SizeModifier, "Size") +
-                    context.Use(GetAbilityBonus(GetTotalDexterity()), "Dexterity") +
+                    context.UseAbilityBonus(DexterityAttribute) +
                     context.Use(rangePenalty, "RangePenalty");
         }
 
@@ -143,13 +137,13 @@ namespace DndTable.Core.Characters
 
                 // Unarmed
                 if (EquipedWeapon == null)
-                    return context.Use(GetAbilityBonus(GetTotalStrength()), "Strength");
+                    return context.UseAbilityBonus(StrengthAttribute);
                 // Ranged
                 if (EquipedWeapon.IsRanged)
                     return 0;
 
                 // Melee
-                return context.Use(GetAbilityBonus(GetTotalStrength()), "Strength");
+                return context.UseAbilityBonus(StrengthAttribute);
             }
         }
 
@@ -166,11 +160,6 @@ namespace DndTable.Core.Characters
             }
         }
 
-        private static int GetAbilityBonus(int baseAbiltyScore)
-        {
-            return (int)Math.Floor((baseAbiltyScore - 10) / 2.0);
-        }
-
         public int GetCurrentArmorClass()
         {
             using (var context = Calculator.CreatePropertyContext("ArmorClass"))
@@ -180,7 +169,7 @@ namespace DndTable.Core.Characters
                 var result = 10;
 
                 // Add dex (not flat footed, ...)
-                result += context.Use(GetAbilityBonus(GetTotalDexterity()), "Dexterity");
+                result += context.UseAbilityBonus(DexterityAttribute);
 
                 // Add size modifier
                 result += context.Use(SizeModifier, "Size");
@@ -201,7 +190,7 @@ namespace DndTable.Core.Characters
             using (var context = Calculator.CreatePropertyContext("Initiative"))
             {
                 // TODO: modifiers
-                return context.Use(GetAbilityBonus(GetTotalDexterity()), "Dexterity");
+                return context.UseAbilityBonus(DexterityAttribute);
             }
         }
 

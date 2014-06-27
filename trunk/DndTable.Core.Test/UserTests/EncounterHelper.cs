@@ -40,8 +40,8 @@ namespace DndTable.Core.Test.UserTests
         {
             var character = Factory.CreateCharacter(name);
 
-            game.EquipWeapon(character, weapon);
-            game.EquipArmor(character, armor);
+            character.EquipWeapon(weapon);
+            character.EquipArmor(armor);
 
             game.AddCharacter(character, position);
 

@@ -27,7 +27,7 @@ namespace DndTable.Core.Factories
             sheet.Strength = 10;
             sheet.Dexterity = 10;
             sheet.Constitution = 10;
-            sheet.Intelligent = 10;
+            sheet.Intelligence = 10;
             sheet.Wisdom = 10;
             sheet.Charisma = 10;
 
@@ -49,7 +49,7 @@ namespace DndTable.Core.Factories
             sheet.Strength = strength;
             sheet.Dexterity = dexterity;
             sheet.Constitution = 10;
-            sheet.Intelligent = 10;
+            sheet.Intelligence = 10;
             sheet.Wisdom = 10;
             sheet.Charisma = 10;
 
@@ -82,7 +82,7 @@ namespace DndTable.Core.Factories
             sheet.Strength = 15;
             sheet.Dexterity = 10;
             sheet.Constitution = 11;
-            sheet.Intelligent = 9;
+            sheet.Intelligence = 9;
             sheet.Wisdom = 8;
             sheet.Charisma = 8;
 
@@ -108,7 +108,7 @@ namespace DndTable.Core.Factories
             sheet.Strength = 16;
             sheet.Dexterity = 10;
             sheet.Constitution = 12;
-            sheet.Intelligent = 9;
+            sheet.Intelligence = 9;
             sheet.Wisdom = 8;
             sheet.Charisma = 8;
 

@@ -64,6 +64,11 @@ namespace DndTable.Core.Characters
                 return value;
             }
 
+            public int UseAbilityBonus(Attribute attribute)
+            {
+                return Use(attribute.GetAbilityBonus(), attribute.Description);
+            }
+
             public void Dispose()
             {
                 //Logger.Singleton.EndCharacterSheetProperty(_localIndentLevel, _contextDescription);

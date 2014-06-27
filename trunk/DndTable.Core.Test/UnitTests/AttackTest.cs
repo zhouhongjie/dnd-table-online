@@ -44,7 +44,7 @@ namespace DndTable.Core.Test.UnitTests
 
             var char1 = Factory.CreateCharacter("dummy1");
             game.AddCharacter(char1, attackerPosition);
-            game.EquipWeapon(char1, WeaponFactory.Dagger()); // damage = D4
+            char1.EquipWeapon(WeaponFactory.Dagger()); // damage = D4
 
             var char2 = Factory.CreateCharacter("dummy2");
             game.AddCharacter(char2, targetPosition);
@@ -112,7 +112,7 @@ namespace DndTable.Core.Test.UnitTests
 
             var char1 = Factory.CreateCharacter("dummy1");
             game.AddCharacter(char1, Position.Create(1, 1));
-            game.EquipWeapon(char1, WeaponFactory.CrossbowLight());
+            char1.EquipWeapon(WeaponFactory.CrossbowLight());
 
             var char2 = Factory.CreateCharacter("dummy2");
             game.AddCharacter(char2, Position.Create(5, 5));

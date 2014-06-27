@@ -54,6 +54,7 @@
     <Compile Include="Actions\SwitchWeaponAction.cs" />
     <Compile Include="Actions\UsePotionAction.cs" />
     <Compile Include="Armors\Armor.cs" />
+    <Compile Include="Characters\Attribute.cs" />
     <Compile Include="Characters\Calculator.cs" />
     <Compile Include="Characters\CharacterRace.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
@@ -74,6 +75,9 @@
     <Compile Include="Items\PotionOfBullsStrength.cs" />
     <Compile Include="Items\PotionOfCatsGrace.cs" />
     <Compile Include="Items\PotionOfCureLightWound.cs" />
+    <Compile Include="Spells\BaseSpell.cs" />
+    <Compile Include="Spells\ISpell.cs" />
+    <Compile Include="Spells\MagicMissile.cs" />
     <Compile Include="Weapons\WeaponFactory.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Actions\IAction.cs" />

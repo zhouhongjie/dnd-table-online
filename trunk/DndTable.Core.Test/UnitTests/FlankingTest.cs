@@ -128,7 +128,7 @@ namespace DndTable.Core.Test.UnitTests
             sheet.Strength = 10;
             sheet.Dexterity = 10;
             sheet.Constitution = 10;
-            sheet.Intelligent = 10;
+            sheet.Intelligence = 10;
             sheet.Wisdom = 10;
             sheet.Charisma = 10;
 

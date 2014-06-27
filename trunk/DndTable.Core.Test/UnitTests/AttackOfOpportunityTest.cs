@@ -198,11 +198,11 @@ namespace DndTable.Core.Test.UnitTests
 
             var char1 = Factory.CreateCharacter("dummy1");
             game.AddCharacter(char1, attackerPosition);
-            game.EquipWeapon(char1, attackerWeapon);
+            char1.EquipWeapon(attackerWeapon);
 
             var char2 = Factory.CreateCharacter("dummy2");
             game.AddCharacter(char2, targetPosition);
-            game.EquipWeapon(char2, opportunityWeapon);
+            char2.EquipWeapon(opportunityWeapon);
 
             // Dirty downcasting
             if (!sameFaction)
