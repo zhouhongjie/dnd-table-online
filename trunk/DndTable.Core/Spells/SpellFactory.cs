@@ -12,5 +12,19 @@ namespace DndTable.Core.Spells
         {
             return new MagicMissile();
         }
+
+        public static ISpell CureLightWound()
+        {
+            return new CureLightWound();
+        }
+        public static ISpell CatsGrace()
+        {
+            return new CatsGrace();
+        }
+
+        public static ISpell BullsStrength()
+        {
+            return new BullsStrength();
+        }
     }
 }

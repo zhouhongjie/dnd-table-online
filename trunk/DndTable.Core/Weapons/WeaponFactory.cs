@@ -55,6 +55,40 @@ namespace DndTable.Core.Weapons
             return weapon;
         }
 
+        public static IWeapon MaceLight()
+        {
+            var weapon = new Weapon();
+
+            weapon.Description = "Light mace";
+            weapon.Proficiency = WeaponProficiencyEnum.Simple;
+            weapon.IsRanged = false;
+            weapon.DamageD = 6;
+            weapon.CriticalMultiplier = 2;
+            weapon.CriticalRange = 0;
+            weapon.RangeIncrement = 0;
+            weapon.Weight = 6;
+            weapon.DamageTypes.Add(WeaponDamageTypeEnum.Bludgeoning);
+
+            return weapon;
+        }
+
+        public static IWeapon Rapier()
+        {
+            var weapon = new Weapon();
+
+            weapon.Description = "Rapier";
+            weapon.Proficiency = WeaponProficiencyEnum.Martial;
+            weapon.IsRanged = false;
+            weapon.DamageD = 6;
+            weapon.CriticalMultiplier = 2;
+            weapon.CriticalRange = 2;
+            weapon.RangeIncrement = 0;
+            weapon.Weight = 3;
+            weapon.DamageTypes.Add(WeaponDamageTypeEnum.Piercing);
+
+            return weapon;
+        }
+
         public static IWeapon CrossbowLight()
         {
             var weapon = new Weapon();

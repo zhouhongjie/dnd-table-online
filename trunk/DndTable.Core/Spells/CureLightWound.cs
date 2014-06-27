@@ -5,20 +5,25 @@ using System.Text;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 
-namespace DndTable.Core.Items
+namespace DndTable.Core.Spells
 {
-    public class PotionOfCureLightWound : BasePotion
+    internal class CureLightWound : BaseSpell
     {
         public override string Description
         {
             get { return "Cure light wound"; }
         }
 
-        internal override bool Use(ICharacter character, IDiceRoller diceRoller)
+        public override int MaxRange
         {
-            var sheet = CharacterSheet.GetEditableSheet(character);
+            get { return 1; }
+        }
 
-            sheet.HitPoints += diceRoller.Roll(character, DiceRollEnum.PotionEffect, 8, 1);
+        public override bool CastOn(ICharacter target, IDiceRoller diceRoller)
+        {
+            var sheet = CharacterSheet.GetEditableSheet(target);
+
+            sheet.HitPoints += diceRoller.Roll(Caster, DiceRollEnum.PotionEffect, 8, 1);
 
             if (sheet.HitPoints > sheet.MaxHitPoints)
                 sheet.HitPoints = sheet.MaxHitPoints;

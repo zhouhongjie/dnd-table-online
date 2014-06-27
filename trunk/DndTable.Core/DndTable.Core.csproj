@@ -74,10 +74,11 @@
     <Compile Include="Armors\ArmorFactory.cs" />
     <Compile Include="Factories\Factory.cs" />
     <Compile Include="Items\PotionFactory.cs" />
-    <Compile Include="Items\PotionOfBullsStrength.cs" />
-    <Compile Include="Items\PotionOfCatsGrace.cs" />
-    <Compile Include="Items\PotionOfCureLightWound.cs" />
+    <Compile Include="Items\SpellEffectPotion.cs" />
     <Compile Include="Spells\BaseSpell.cs" />
+    <Compile Include="Spells\BullsStrength.cs" />
+    <Compile Include="Spells\CatsGrace.cs" />
+    <Compile Include="Spells\CureLightWound.cs" />
     <Compile Include="Spells\SpellFactory.cs" />
     <Compile Include="Spells\ISpell.cs" />
     <Compile Include="Spells\MagicMissile.cs" />

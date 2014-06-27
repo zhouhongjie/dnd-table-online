@@ -49,7 +49,7 @@ public class TableManager : MonoBehaviour
 
     private enum ModeEnum
     {
-        Player, MapEditor
+        DM, Player, MapEditor
     }
 
     private ModeEnum _mode = ModeEnum.Player;
@@ -69,44 +69,46 @@ public class TableManager : MonoBehaviour
             // Players
             //var regdar = Factory.CreateCharacter("Regdar");
             //var tordek = Factory.CreateCharacter("Tordek");
-            var boris = Factory.CreateCharacter("Boris", 14, 12);
-            boris.EquipWeapon(WeaponFactory.Longsword());
-            //Game.EquipWeapon(boris, WeaponFactory.CrossbowLight());
-            boris.EquipArmor(ArmorFactory.FullPlate());
-            //Game.GivePotion(boris, PotionFactory.CreatePotionOfCureLightWound());
-            boris.GiveWeapon(WeaponFactory.CrossbowLight());
 
-            var maiko = Factory.CreateCharacter("Maiko", 12, 16);
-            maiko.EquipWeapon(WeaponFactory.Longbow());
-            maiko.EquipArmor(ArmorFactory.Leather());
-            //Game.GivePotion(maiko, PotionFactory.CreatePotionOfCureLightWound());
-            maiko.PrepareSpell(SpellFactory.MagicMissile());
-            maiko.PrepareSpell(SpellFactory.MagicMissile());
-            maiko.PrepareSpell(SpellFactory.MagicMissile());
+            var allPcs = new List<ICharacter>();
 
-            Game.AddCharacter(boris, Position.Create(3, 3));
-            Game.AddCharacter(maiko, Position.Create(3, 4));
+            // Boris
+            {
+                var boris = Factory.CreateCharacter("Boris", 14, 12);
+                boris.EquipWeapon(WeaponFactory.Longsword());
+                boris.EquipArmor(ArmorFactory.ScaleMail());
+                boris.GiveWeapon(WeaponFactory.CrossbowLight());
+                Game.AddCharacter(boris, Position.Create(3, 3));
+                allPcs.Add(boris);
+            }
 
-            // Orcs
-            //Game.AddCharacter(Factory.CreateOrc(), Position.Create(20, 20));
-            //Game.AddCharacter(Factory.CreateOrc(), Position.Create(20, 21));
-            //Game.AddCharacter(Factory.CreateOrc(), Position.Create(20, 22));
-            //Game.AddCharacter(Factory.CreateOrcChief(), Position.Create(19, 21));
+            // Maiko
+            {
+                var maiko = Factory.CreateCharacter("Maiko", 12, 16);
+                maiko.EquipWeapon(WeaponFactory.Longbow());
+                maiko.EquipArmor(ArmorFactory.ScaleMail());
+                maiko.PrepareSpell(SpellFactory.MagicMissile());
+                maiko.PrepareSpell(SpellFactory.MagicMissile());
+                maiko.PrepareSpell(SpellFactory.MagicMissile());
+                Game.AddCharacter(maiko, Position.Create(3, 4));
+                allPcs.Add(maiko);
+            }
 
-            // Loot
-            //Game.AddChest(Position.Create(22, 22));
-
-            // Build dungeon
-            // Walls
-            //Game.AddWall(Position.Create(5, 5));
-            //Game.AddWall(Position.Create(5, 6));
-            //Game.AddWall(Position.Create(5, 7));
-            //Game.AddWall(Position.Create(5, 9));
-            //Game.AddWall(Position.Create(5, 10));
+            // Healer
+            {
+                var healer = Factory.CreateCharacter("Jozan");
+                healer.EquipArmor(ArmorFactory.FullPlate());
+                healer.EquipWeapon(WeaponFactory.MaceLight());
+                healer.PrepareSpell(SpellFactory.CureLightWound());
+                healer.PrepareSpell(SpellFactory.CureLightWound());
+                healer.PrepareSpell(SpellFactory.CureLightWound());
+                Game.AddCharacter(healer, Position.Create(3, 5));
+                allPcs.Add(healer);
+            }
 
             // Start encounter
-	        CurrentEncounter = Game.StartEncounter(new List<ICharacter>() { boris, maiko });
-	        //CurrentEncounter = Game.StartEncounter();
+            CurrentEncounter = Game.StartEncounter(allPcs);
+            //CurrentEncounter = Game.StartEncounter();
         }
 
 	    CreateSupportObjects();
@@ -142,13 +144,17 @@ public class TableManager : MonoBehaviour
         if (Input.GetKey(KeyCode.F1))
         {
             StopCurrentAction();
-            _mode = ModeEnum.MapEditor;
+            _mode = ModeEnum.Player;
         }
         else if (Input.GetKey(KeyCode.F2))
         {
             StopCurrentAction();
-            _mode = ModeEnum.Player;
-            Game.GameBoard.Save(Dungeon);
+            _mode = ModeEnum.DM;
+        }
+        else if (Input.GetKey(KeyCode.F3))
+        {
+            StopCurrentAction();
+            _mode = ModeEnum.MapEditor;
         }
     }
 
@@ -182,29 +188,43 @@ public class TableManager : MonoBehaviour
         if (!UpdateMultistepOperation())
         {
             if (_mode == ModeEnum.Player)
-                GUILayout.Window(2, new Rect(0, 0, 150, 0), UpdatePossibleActionsUI, "Actions");
+                GUILayout.Window(2, new Rect(0, 0, 150, 0), UpdatePossibleActionsUI, "Player: " + CurrentPlayer.CharacterSheet.Name);
             else if (_mode == ModeEnum.MapEditor)
                 GUILayout.Window(3, new Rect(0, 0, 150, 0), UpdateMapEditorActionsUI, "Map editor");
+            else if (_mode == ModeEnum.MapEditor)
+                GUILayout.Window(4, new Rect(0, 0, 150, 0), UpdateDMActionsUI, "DM");
         }
+    }
+
+    private void UpdateDMActionsUI(int windowId)
+    {
+        GUILayout.BeginVertical();
+
+        if (GUILayout.Button("Start encounter"))
+        {
+            StopCurrentAction();
+            _currentActionUI = new SelectMultipleCharactersUI(Game, (selectedChars) =>
+                                                                        {
+                                                                            if (selectedChars.Count == 0)
+                                                                                return false;
+
+                                                                            CurrentEncounter = Game.StartEncounter(selectedChars);
+                                                                            return true;
+                                                                        });
+        }
+
+        GUILayout.EndVertical();
     }
 
     private void UpdateMapEditorActionsUI(int windowId)
     {
         GUILayout.BeginVertical();
 
-        var offset = 0;
         {
-            if (GUILayout.Button("Start encounter"))
+            if (GUILayout.Button("Save"))
             {
                 StopCurrentAction();
-                _currentActionUI = new SelectMultipleCharactersUI(Game, (selectedChars) =>
-                                                                            {
-                                                                                if (selectedChars.Count == 0)
-                                                                                    return false;
-
-                                                                                CurrentEncounter = Game.StartEncounter(selectedChars);
-                                                                                return true;
-                                                                            });
+                Game.GameBoard.Save(Dungeon);
             }
             if (GUILayout.Button("Walls"))
             {
@@ -373,7 +393,7 @@ public class TableManager : MonoBehaviour
     private void UpdateFieldOfView()
     {
         // TEMP disable in DM mode
-        if (_mode == ModeEnum.MapEditor)
+        if (_mode != ModeEnum.Player)
             return;
 
         if (CurrentPlayer == null)

@@ -5,22 +5,23 @@ using System.Text;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 using DndTable.Core.Items;
+using DndTable.Core.Spells;
 using Moq;
 using NUnit.Framework;
 
 namespace DndTable.Core.Test.UnitTests
 {
     [TestFixture]
-    public class PotionTest
+    public class SpellTest
     {
         [Test]
-        public void DrinkPotionAction()
+        public void CastSpellAction()
         {
             throw new NotImplementedException("TODO"); 
         }
 
         [Test]
-        public void PotionOfCureLightWound()
+        public void CureLightWound()
         {
             var sheet = new CharacterSheet()
                             {
@@ -35,15 +36,15 @@ namespace DndTable.Core.Test.UnitTests
             var diceRoller = new DiceRoller(diceRandomizer.Object);
 
             // Do test
-            var potion = new PotionOfCureLightWound();
-            potion.Use(character, diceRoller);
+            var potion = new CureLightWound();
+            potion.CastOn(character, diceRoller);
 
             Assert.AreEqual(16, character.CharacterSheet.HitPoints, "10 + 5 (1d8) + 1 (lvl)");
 
             // Cannot exceed MaxHitPoints
-            potion.Use(character, diceRoller);
+            potion.CastOn(character, diceRoller);
             Assert.AreEqual(20, character.CharacterSheet.HitPoints);
-            potion.Use(character, diceRoller);
+            potion.CastOn(character, diceRoller);
             Assert.AreEqual(20, character.CharacterSheet.HitPoints);
         }
     }

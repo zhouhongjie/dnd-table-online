@@ -15,6 +15,19 @@
             return armour;
         }
 
+        public static IArmor StuddedLeather()
+        {
+            var armour = new Armor();
+
+            armour.Proficiency = ArmorProficiencyEnum.Light;
+            armour.ArmorBonus = 3;
+            armour.MaxDexBonus = 5;
+            armour.ArmorCheckPenalty = -1;
+            armour.ArcaneSpellFailure = 15;
+
+            return armour;
+        }
+
         public static IArmor ScaleMail()
         {
             var armour = new Armor();
