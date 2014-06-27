@@ -5,16 +5,16 @@ using System.Text;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 
-namespace DndTable.Core.Items
+namespace DndTable.Core.Spells
 {
-    internal class PotionOfCatsGrace : BasePotion
+    internal class CatsGrace : BaseSpell
     {
         public override string Description
         {
             get { return "Cat's grace"; }
         }
 
-        internal override bool Use(ICharacter character, IDiceRoller diceRoller)
+        public override bool CastOn(ICharacter character, IDiceRoller diceRoller)
         {
             var sheet = CharacterSheet.GetEditableSheet(character);
 
@@ -22,6 +22,11 @@ namespace DndTable.Core.Items
             sheet.DexterityAttribute.AddBuff(buff);
 
             return true;
+        }
+
+        public override int MaxRange
+        {
+            get { return 1; }
         }
     }
 }

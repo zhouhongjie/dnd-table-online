@@ -58,6 +58,8 @@ namespace DndTable.Core.Actions
             if (!Executer.CharacterSheet.CanAct())
                 return;
 
+            // TODO: arcane spell failure
+
             if (!_spell.CastOn(_targetCharacter, DiceRoller))
                 return;
 

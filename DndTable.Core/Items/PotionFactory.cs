@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DndTable.Core.Spells;
 
 namespace DndTable.Core.Items
 {
@@ -9,17 +10,17 @@ namespace DndTable.Core.Items
     {
         public static IPotion CreatePotionOfCureLightWound()
         {
-            return new PotionOfCureLightWound();
+            return new SpellEffectPotion(SpellFactory.CureLightWound() as BaseSpell);
         }
 
         public static IPotion CreatePotionOfCatsGrace()
         {
-            return new PotionOfCatsGrace();
+            return new SpellEffectPotion(SpellFactory.CatsGrace() as BaseSpell);
         }
 
         public static IPotion CreatePotionOfBullsStrength()
         {
-            return new PotionOfBullsStrength();
+            return new SpellEffectPotion(SpellFactory.BullsStrength() as BaseSpell);
         }
     }
 }
