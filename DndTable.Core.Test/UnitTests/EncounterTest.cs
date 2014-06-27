@@ -161,11 +161,11 @@ namespace DndTable.Core.Test.UnitTests
             var current = _encounter.GetCurrentCharacter();
 
             // Cannot charge with ranged weapon
-            _game.EquipWeapon(current, new Weapon() { IsRanged = true } );
+            current.EquipWeapon(new Weapon() { IsRanged = true });
             AssertActionNotPossible<ChargeAction>();
-            _game.EquipWeapon(current, null);
+            current.EquipWeapon(null);
             AssertActionPossible<ChargeAction>();
-            _game.EquipWeapon(current, new Weapon() { IsRanged = false } );
+            current.EquipWeapon(new Weapon() { IsRanged = false });
             AssertActionPossible<ChargeAction>();
 
             // Charge is FullRound action with move

@@ -32,11 +32,5 @@ namespace DndTable.Core
         IEncounter StartEncounter();
         IEncounter StartEncounter(List<ICharacter> characters);
         IEncounter CurrentEncounter { get; }
-
-        // Actions
-        void EquipWeapon(ICharacter character, IWeapon weapon);
-        void EquipArmor(ICharacter character, IArmor armor);
-        void GivePotion(ICharacter character, IPotion potion);
-        void GiveWeapon(ICharacter character, IWeapon weapon);
     }
 }
