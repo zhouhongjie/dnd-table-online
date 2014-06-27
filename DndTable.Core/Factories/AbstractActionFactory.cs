@@ -7,6 +7,7 @@ using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 using DndTable.Core.Entities;
 using DndTable.Core.Items;
+using DndTable.Core.Spells;
 using DndTable.Core.Weapons;
 
 namespace DndTable.Core.Factories
@@ -81,6 +82,13 @@ namespace DndTable.Core.Factories
         public IAction SwitchWeapon(ICharacter character, IWeapon weapon)
         {
             var action = new SwitchWeaponAction(character, weapon);
+            action.Initialize(this);
+            return action;
+        }
+
+        public IAction CastSpell(ICharacter character, ISpell spell)
+        {
+            var action = new CastSpellAction(character, spell);
             action.Initialize(this);
             return action;
         }

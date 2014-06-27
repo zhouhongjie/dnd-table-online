@@ -3,6 +3,7 @@ using DndTable.Core.Armors;
 using DndTable.Core.Dice;
 using DndTable.Core.Entities;
 using DndTable.Core.Items;
+using DndTable.Core.Spells;
 using DndTable.Core.Weapons;
 
 namespace DndTable.Core.Characters
@@ -37,6 +38,16 @@ namespace DndTable.Core.Characters
         public void GiveWeapon(IWeapon weapon)
         {
             Characters.CharacterSheet.GetEditableSheet(this).Weapons.Add(weapon);
+        }
+
+        public void PrepareSpell(ISpell spell)
+        {
+            var baseSpell = spell as BaseSpell;
+            if (baseSpell == null)
+                throw new ArgumentException();
+
+            baseSpell.Caster = this;
+            Characters.CharacterSheet.GetEditableSheet(this).Spells.Add(spell);
         }
 
     }

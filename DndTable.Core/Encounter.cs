@@ -199,6 +199,16 @@ namespace DndTable.Core
                 }
             }
 
+            // CastSpell actions
+            // TODO: duration type varies by spell
+            if (CanDoStandardAction())
+            {
+                foreach (var spell in GetCurrentCharacter().CharacterSheet.Spells)
+                {
+                    actions.Add(_actionFactory.CastSpell(GetCurrentCharacter(), spell));
+                }
+            }
+
             // Switch weapon action
             if (CanDoFullRoundAction())
             {

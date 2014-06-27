@@ -9,6 +9,7 @@ using DndTable.Core.Dice;
 using DndTable.Core.Entities;
 using DndTable.Core.Factories;
 using DndTable.Core.Items;
+using DndTable.Core.Spells;
 using DndTable.Core.Weapons;
 using DndTable.UnityUI;
 using UnityEngine;
@@ -69,16 +70,19 @@ public class TableManager : MonoBehaviour
             //var regdar = Factory.CreateCharacter("Regdar");
             //var tordek = Factory.CreateCharacter("Tordek");
             var boris = Factory.CreateCharacter("Boris", 14, 12);
-            Game.EquipWeapon(boris, WeaponFactory.Longsword());
+            boris.EquipWeapon(WeaponFactory.Longsword());
             //Game.EquipWeapon(boris, WeaponFactory.CrossbowLight());
-            Game.EquipArmor(boris, ArmorFactory.FullPlate());
+            boris.EquipArmor(ArmorFactory.FullPlate());
             //Game.GivePotion(boris, PotionFactory.CreatePotionOfCureLightWound());
-            Game.GiveWeapon(boris, WeaponFactory.CrossbowLight());
+            boris.GiveWeapon(WeaponFactory.CrossbowLight());
 
             var maiko = Factory.CreateCharacter("Maiko", 12, 16);
-            Game.EquipWeapon(maiko, WeaponFactory.Longbow());
-            Game.EquipArmor(maiko, ArmorFactory.Leather());
+            maiko.EquipWeapon(WeaponFactory.Longbow());
+            maiko.EquipArmor(ArmorFactory.Leather());
             //Game.GivePotion(maiko, PotionFactory.CreatePotionOfCureLightWound());
+            maiko.PrepareSpell(SpellFactory.MagicMissile());
+            maiko.PrepareSpell(SpellFactory.MagicMissile());
+            maiko.PrepareSpell(SpellFactory.MagicMissile());
 
             Game.AddCharacter(boris, Position.Create(3, 3));
             Game.AddCharacter(maiko, Position.Create(3, 4));
@@ -319,6 +323,18 @@ public class TableManager : MonoBehaviour
                 else if (action is IStraightLineMove)
                 {
                     _currentActionUI = new StraightLineMoveUI(Game, action as IStraightLineMove, CurrentPlayer);
+                }
+                else if (action is ICastSpellAction)
+                {
+                    var castSpellAction = action as ICastSpellAction;
+                    _currentActionUI = new SelectChararterUI(Game, CurrentPlayer.Position, castSpellAction.MaxRange, 
+                        (target) =>
+                            {
+                                if (target == null)
+                                    return false;
+                                castSpellAction.Target(target).Do();
+                                return true;
+                            });
                 }
                 else
                 {

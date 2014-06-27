@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DndTable.Core.Armors;
 using DndTable.Core.Items;
 using DndTable.Core.Log;
+using DndTable.Core.Spells;
 using DndTable.Core.Weapons;
 
 namespace DndTable.Core.Characters
@@ -44,8 +45,10 @@ namespace DndTable.Core.Characters
         #region inventory
         private readonly List<IPotion> _potions = new List<IPotion>();
         private readonly List<IWeapon> _weapons = new List<IWeapon>();
+        private readonly List<ISpell> _spells = new List<ISpell>();
         public List<IPotion> Potions { get { return _potions; } }
         public List<IWeapon> Weapons { get { return _weapons; } }
+        public List<ISpell> Spells { get { return _spells; } }
         #endregion
 
         #region buffs // TODO: list of buff/debuff objects to incorporate duration & type (enhancement, luck, ...)

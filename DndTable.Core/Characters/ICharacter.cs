@@ -2,6 +2,7 @@
 using DndTable.Core.Entities;
 using DndTable.Core.Factories;
 using DndTable.Core.Items;
+using DndTable.Core.Spells;
 using DndTable.Core.Weapons;
 
 namespace DndTable.Core.Characters
@@ -15,9 +16,12 @@ namespace DndTable.Core.Characters
         void EquipWeapon(IWeapon weapon);
         void EquipArmor(IArmor armor);
 
+        void PrepareSpell(ISpell spell);
+
         // Inventory actions
         void GivePotion(IPotion potion);
         void GiveWeapon(IWeapon weapon);
+
     }
 
     public enum CharacterTypeEnum
