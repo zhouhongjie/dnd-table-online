@@ -131,5 +131,10 @@ namespace DndTable.Core.Factories
         {
             return new Chest();
         }
+
+        public static IEntity CreateDoor()
+        {
+            return new Door();
+        }
     }
 }

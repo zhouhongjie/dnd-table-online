@@ -108,6 +108,10 @@ namespace DndTable.Core.Persistence
                     {
                         newEntity = Factory.CreateChest() as BaseEntity;
                     }
+                    else if (entityXml.EntityType == EntityTypeEnum.Door)
+                    {
+                        newEntity = Factory.CreateDoor() as BaseEntity;
+                    }
                     else if (entityXml.EntityType == EntityTypeEnum.Character)
                     {
                         newEntity = Factory.CreateNpc(entityXml.CharacterType) as BaseEntity;
