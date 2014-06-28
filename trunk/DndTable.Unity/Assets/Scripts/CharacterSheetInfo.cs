@@ -1,4 +1,5 @@
 ﻿using System;
+using DndTable.Core;
 using UnityEngine;
 using System.Collections;
 using DndTable.Core.Characters;
@@ -7,6 +8,7 @@ public class CharacterSheetInfo : MonoBehaviour {
 
     public ICharacter Character;
 
+    private TableManager TableManager { get { return Singleton<TableManager>.Instance; } }
 
     void OnGUI()
     {
@@ -15,6 +17,11 @@ public class CharacterSheetInfo : MonoBehaviour {
 
         if (Camera.main == null)
             return;
+
+        // TODO: Check FoV
+        //var position = Position.Create((int)transform.position.x, (int)transform.position.y);
+        //if (!TableManager.Game.GameBoard.IsVisibleForCurrentPlayer(position))
+        //    return;
 
         if (!Character.CharacterSheet.CanAct())
             GUI.color = Color.red;

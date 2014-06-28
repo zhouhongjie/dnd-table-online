@@ -98,9 +98,9 @@ public class TableManager : MonoBehaviour
 
             // Healer
             {
-                var healer = Factory.CreateCharacter("Jozan");
+                var healer = Factory.CreateCharacter("Jozan", 12, 12);
                 healer.EquipArmor(ArmorFactory.FullPlate());
-                healer.EquipWeapon(WeaponFactory.MaceLight());
+                healer.EquipWeapon(WeaponFactory.MaceHeavy());
                 healer.PrepareSpell(SpellFactory.CureLightWound());
                 healer.PrepareSpell(SpellFactory.CureLightWound());
                 healer.PrepareSpell(SpellFactory.CureLightWound());
@@ -255,6 +255,11 @@ public class TableManager : MonoBehaviour
             {
                 StopCurrentAction();
                 _currentActionUI = new MapEditorUI(Game, CharacterTypeEnum.OrcChief);
+            }
+            if (GUILayout.Button("Kobolt"))
+            {
+                StopCurrentAction();
+                _currentActionUI = new MapEditorUI(Game, CharacterTypeEnum.Kobolt);
             }
         }
         GUILayout.EndVertical();

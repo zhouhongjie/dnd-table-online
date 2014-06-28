@@ -45,8 +45,9 @@ namespace DndTable.Core
 
         public bool RemoveCharacter(ICharacter character)
         {
-            if (!_characters.Contains(character))
-                return false;
+            // Only PC's are added to this list, not NPCs (for now)
+            //if (!_characters.Contains(character))
+            //    return false;
 
             if (CurrentEncounter.Participants.Contains(character))
                 throw new NotSupportedException("Character cannot be removed: part of current encounter");

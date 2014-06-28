@@ -24,8 +24,6 @@ public class DoorScript : MonoBehaviour {
 
         if (isLeftRight)
         {
-            Debug.Log("LeftRight");
-
             ShowHideRecursive(LeftRight, Door.IsBlocking);
             ShowHideRecursive(LeftRightOpen, !Door.IsBlocking);
             ShowHideRecursive(TopBottom, false);
@@ -33,8 +31,6 @@ public class DoorScript : MonoBehaviour {
         }
         if (isTopBottom)
         {
-            Debug.Log("TopBottom");
-
             ShowHideRecursive(LeftRight, false);
             ShowHideRecursive(LeftRightOpen, false);
             ShowHideRecursive(TopBottom, Door.IsBlocking);

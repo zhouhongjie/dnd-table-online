@@ -66,6 +66,8 @@ namespace DndTable.Core.Factories
                 return CreateOrc();
             if (npcType == CharacterTypeEnum.OrcChief)
                 return CreateOrcChief();
+            if (npcType == CharacterTypeEnum.Kobolt)
+                return CreateKobolt();
 
             throw new NotImplementedException();
         }
@@ -120,6 +122,37 @@ namespace DndTable.Core.Factories
             sheet.EquipedArmor = ArmorFactory.ScaleMail();
 
             return new Character(sheet, CharacterTypeEnum.OrcChief);
+        }
+
+        public static ICharacter CreateKobolt(string name = "Kobolt")
+        {
+            var sheet = new CharacterSheet();
+
+            sheet.Name = name;
+            sheet.Race = CharacterRace.Reptilian;
+            sheet.FactionId = 2;
+
+            //var diceRoller = new DiceRoller();
+            sheet.Strength = 6;
+            sheet.Dexterity = 13;
+            sheet.Constitution = 11;
+            sheet.Intelligence = 10;
+            sheet.Wisdom = 10;
+            sheet.Charisma = 10;
+
+            sheet.HitPoints = 2;
+            sheet.MaxHitPoints = 2;
+            sheet.Speed = 30;
+
+            sheet.SizeModifier = 1;
+
+            sheet.NaturalArmor = 1;
+
+            sheet.EquipedWeapon = WeaponFactory.CrossbowLight();
+            sheet.EquipedArmor = ArmorFactory.Leather();
+            sheet.Weapons.Add(WeaponFactory.HalfSpear());
+
+            return new Character(sheet, CharacterTypeEnum.Kobolt);
         }
 
         public static IEntity CreateWall()

@@ -42,6 +42,8 @@ namespace DndTable.Core.Characters
 
         public int BaseAttackBonus { get; internal set; }
 
+        public int NaturalArmor { get; internal set; }
+
         #region inventory
         private readonly List<IPotion> _potions = new List<IPotion>();
         private readonly List<IWeapon> _weapons = new List<IWeapon>();
