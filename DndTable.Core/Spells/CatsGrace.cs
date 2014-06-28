@@ -18,7 +18,7 @@ namespace DndTable.Core.Spells
         {
             var sheet = CharacterSheet.GetEditableSheet(character);
 
-            var buff = diceRoller.Roll(character, DiceRollEnum.PotionEffect, 4, 1);
+            var buff = diceRoller.Roll(Caster, DiceRollEnum.PotionEffect, 4, 1);
             sheet.DexterityAttribute.AddBuff(buff);
 
             return true;

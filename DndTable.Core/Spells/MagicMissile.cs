@@ -18,7 +18,7 @@ namespace DndTable.Core.Spells
         {
             // TODO: evolve by lvl
 
-            var damage = diceRoller.Roll(target, DiceRollEnum.SpellEffect, 4, 1);
+            var damage = diceRoller.Roll(Caster, DiceRollEnum.SpellEffect, 4, 1);
 
             // TODO: spell resistance => here or in CastSpell action?
 

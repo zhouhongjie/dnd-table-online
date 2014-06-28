@@ -22,6 +22,8 @@ namespace DndTable.Core.Items
 
         internal override bool Use(Characters.ICharacter character, Dice.IDiceRoller diceRoller)
         {
+            // TODO: not entirely correct => caster can also be used to determine spell effectiveness (caster lvl, ...)
+            _spellEffect.Caster = character;
             return _spellEffect.CastOn(character, diceRoller);
         }
     }
