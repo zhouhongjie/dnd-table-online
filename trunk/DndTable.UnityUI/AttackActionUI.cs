@@ -34,7 +34,25 @@ namespace DndTable.UnityUI
                 // Attack
                 if (Input.GetMouseButtonDown(0))
                 {
-                    var target = _game.GameBoard.GetEntity(selectedPosition, EntityTypeEnum.Character) as ICharacter;
+                    // TODO: needs to be reworked together with the possibility to have multiple entities on 1 tile
+                    // Find the correct character to hit.
+                    // = a character, and preferably one that is still moving
+                   var possibleTargets = _game.GameBoard.GetEntities(selectedPosition);
+                    ICharacter target = null;
+                    foreach (var current in possibleTargets)
+                    {
+                        var currentCharacter = current as ICharacter;
+                        if (currentCharacter != null)
+                        {
+                            // A character!
+                            target = currentCharacter;
+
+                            // Someone worth hitting!
+                            if (target.CharacterSheet.CanAct())
+                                break;
+                        }
+                    }
+
                     if (target != null)
                     {
                         _attackAction.Target(target).Do();
