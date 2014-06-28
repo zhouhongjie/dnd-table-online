@@ -192,9 +192,12 @@ namespace DndTable.Core
                 map[MaxX - 1, i] = true;
             }
 
+            // Add all visible obstacles
             foreach (var entity in _entities)
             {
                 if (entity.EntityType == EntityTypeEnum.Wall)
+                    map[entity.Position.X, entity.Position.Y] = true;
+                if (entity.EntityType == EntityTypeEnum.Door && entity.IsBlocking)
                     map[entity.Position.X, entity.Position.Y] = true;
             }
 

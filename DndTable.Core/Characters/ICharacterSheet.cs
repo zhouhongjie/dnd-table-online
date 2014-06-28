@@ -39,7 +39,7 @@ namespace DndTable.Core.Characters
         List<ISpell> Spells { get; }
 
 
-            bool CanAct();
+        bool CanAct();
         int GetCurrentAttackBonus(int range, bool isFlanking);
         int GetCurrentDamageBonus();
         int GetCurrentSpeed();

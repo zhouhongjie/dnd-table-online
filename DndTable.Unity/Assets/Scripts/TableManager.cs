@@ -23,6 +23,7 @@ public class TableManager : MonoBehaviour
     public Transform PlayerTemplate;
     public Transform WallTemplate;
     public Transform ChestTemplate;
+    public Transform DoorTemplate;
 
     public Camera PlayerCameraTemplate;
     public Transform IndicatorTemplate;
@@ -239,6 +240,11 @@ public class TableManager : MonoBehaviour
             {
                 StopCurrentAction();
                 _currentActionUI = new MapEditorUI(Game, EntityTypeEnum.Chest);
+            }
+            if (GUILayout.Button("Doors"))
+            {
+                StopCurrentAction();
+                _currentActionUI = new MapEditorUI(Game, EntityTypeEnum.Door);
             }
             if (GUILayout.Button("Orc"))
             {
@@ -501,6 +507,10 @@ public class TableManager : MonoBehaviour
             {
                 newTransform = CreateEntity(ChestTemplate, entity);
             }
+            else if (entity.EntityType == EntityTypeEnum.Door)
+            {
+                newTransform = CreateEntity(DoorTemplate, entity);
+            }
             else
             {
                 throw new NotSupportedException("EntityType does not have a template Transform: " + entity.EntityType);
@@ -603,6 +613,16 @@ public class TableManager : MonoBehaviour
             if (script != null)
             {
                 script.Wall = entity;
+                script.GameBoard = Game.GameBoard;
+            }
+        }
+
+        // Door
+        {
+            var script = newObj.GetComponent("DoorScript") as DoorScript;
+            if (script != null)
+            {
+                script.Door = entity;
                 script.GameBoard = Game.GameBoard;
             }
         }

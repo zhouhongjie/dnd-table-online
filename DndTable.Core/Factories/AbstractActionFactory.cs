@@ -74,7 +74,14 @@ namespace DndTable.Core.Factories
 
         internal IAction OpenChest(ICharacter character, Chest chest)
         {
-            var action = new OpenChest(character, chest);
+            var action = new OpenChestAction(character, chest);
+            action.Initialize(this);
+            return action;
+        }
+
+        internal IAction UseDoor(ICharacter character, Door door)
+        {
+            var action = new UseDoorAction(character, door);
             action.Initialize(this);
             return action;
         }

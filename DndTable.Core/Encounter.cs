@@ -228,6 +228,11 @@ namespace DndTable.Core
                         if (CanDoFullRoundAction())
                             actions.Add(contextAction);
                     }
+                    else if (contextAction.Type == ActionTypeEnum.MoveEquivalent)
+                    {
+                        if (CanDoMoveEquivalentAction())
+                            actions.Add(contextAction);
+                    }
                     else
                     {
                         throw new NotImplementedException();

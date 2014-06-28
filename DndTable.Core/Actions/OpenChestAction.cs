@@ -10,11 +10,11 @@ using DndTable.Core.Items;
 
 namespace DndTable.Core.Actions
 {
-    internal class OpenChest : BaseAction
+    internal class OpenChestAction : BaseAction
     {
         private Chest _chest;
 
-        internal OpenChest(ICharacter executer, Chest chest)
+        internal OpenChestAction(ICharacter executer, Chest chest)
             : base(executer)
         {
             _chest = chest;
