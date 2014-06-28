@@ -76,7 +76,7 @@ public class TableManager : MonoBehaviour
             {
                 var boris = Factory.CreateCharacter("Boris", 14, 12);
                 boris.EquipWeapon(WeaponFactory.Longsword());
-                boris.EquipArmor(ArmorFactory.ScaleMail());
+                boris.EquipArmor(ArmorFactory.StuddedLeather());
                 boris.GiveWeapon(WeaponFactory.CrossbowLight());
                 Game.AddCharacter(boris, Position.Create(3, 3));
                 allPcs.Add(boris);
@@ -86,7 +86,8 @@ public class TableManager : MonoBehaviour
             {
                 var maiko = Factory.CreateCharacter("Maiko", 12, 16);
                 maiko.EquipWeapon(WeaponFactory.Longbow());
-                maiko.EquipArmor(ArmorFactory.ScaleMail());
+                maiko.EquipArmor(ArmorFactory.Leather());
+                maiko.GiveWeapon(WeaponFactory.Rapier());
                 maiko.PrepareSpell(SpellFactory.MagicMissile());
                 maiko.PrepareSpell(SpellFactory.MagicMissile());
                 maiko.PrepareSpell(SpellFactory.MagicMissile());
@@ -99,6 +100,9 @@ public class TableManager : MonoBehaviour
                 var healer = Factory.CreateCharacter("Jozan");
                 healer.EquipArmor(ArmorFactory.FullPlate());
                 healer.EquipWeapon(WeaponFactory.MaceLight());
+                healer.PrepareSpell(SpellFactory.CureLightWound());
+                healer.PrepareSpell(SpellFactory.CureLightWound());
+                healer.PrepareSpell(SpellFactory.CureLightWound());
                 healer.PrepareSpell(SpellFactory.CureLightWound());
                 healer.PrepareSpell(SpellFactory.CureLightWound());
                 healer.PrepareSpell(SpellFactory.CureLightWound());
@@ -191,7 +195,7 @@ public class TableManager : MonoBehaviour
                 GUILayout.Window(2, new Rect(0, 0, 150, 0), UpdatePossibleActionsUI, "Player: " + CurrentPlayer.CharacterSheet.Name);
             else if (_mode == ModeEnum.MapEditor)
                 GUILayout.Window(3, new Rect(0, 0, 150, 0), UpdateMapEditorActionsUI, "Map editor");
-            else if (_mode == ModeEnum.MapEditor)
+            else if (_mode == ModeEnum.DM)
                 GUILayout.Window(4, new Rect(0, 0, 150, 0), UpdateDMActionsUI, "DM");
         }
     }

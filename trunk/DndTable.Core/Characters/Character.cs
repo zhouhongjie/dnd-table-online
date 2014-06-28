@@ -20,6 +20,12 @@ namespace DndTable.Core.Characters
             CharacterType = charType;
         }
 
+        public override bool IsBlocking
+        {
+            get { return CharacterSheet.CanAct(); }
+        } 
+
+
         public void EquipWeapon(IWeapon weapon)
         {
             Characters.CharacterSheet.GetEditableSheet(this).EquipedWeapon = weapon;
