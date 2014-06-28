@@ -80,6 +80,9 @@ namespace DndTable.Core
             if (_rebuildCells)
                 RebuildOptimizedCells();
 
+            if (!CheckBoundaries(position))
+                return null;
+
             var cell = _cells[position.X, position.Y];
             if (cell == null)
                 return null;
@@ -95,6 +98,9 @@ namespace DndTable.Core
         {
             if (_rebuildCells)
                 RebuildOptimizedCells();
+
+            if (!CheckBoundaries(position))
+                return null;
 
             var cell = _cells[position.X, position.Y];
             if (cell == null)
@@ -169,6 +175,8 @@ namespace DndTable.Core
         public bool[,] GetFieldOfView(Position origin)
         {
             return CalculateFieldOfView(origin);
+            //_currentFieldOfView = CalculateFieldOfView(origin);
+            //return _currentFieldOfView;
         }
 
         internal void OptimizeFieldOfViewForCurrentPlayer(Position origin)

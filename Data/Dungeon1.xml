@@ -415,12 +415,6 @@
       <EntityType>Wall</EntityType>
       <CharacterType>Unknown</CharacterType>
       <PositionX>17</PositionX>
-      <PositionY>21</PositionY>
-    </EntityXml>
-    <EntityXml>
-      <EntityType>Wall</EntityType>
-      <CharacterType>Unknown</CharacterType>
-      <PositionX>17</PositionX>
       <PositionY>22</PositionY>
     </EntityXml>
     <EntityXml>
@@ -766,18 +760,6 @@
       <PositionY>9</PositionY>
     </EntityXml>
     <EntityXml>
-      <EntityType>Chest</EntityType>
-      <CharacterType>Unknown</CharacterType>
-      <PositionX>8</PositionX>
-      <PositionY>2</PositionY>
-    </EntityXml>
-    <EntityXml>
-      <EntityType>Chest</EntityType>
-      <CharacterType>Unknown</CharacterType>
-      <PositionX>6</PositionX>
-      <PositionY>2</PositionY>
-    </EntityXml>
-    <EntityXml>
       <EntityType>Wall</EntityType>
       <CharacterType>Unknown</CharacterType>
       <PositionX>14</PositionX>
@@ -838,12 +820,6 @@
       <PositionY>16</PositionY>
     </EntityXml>
     <EntityXml>
-      <EntityType>Chest</EntityType>
-      <CharacterType>Unknown</CharacterType>
-      <PositionX>22</PositionX>
-      <PositionY>16</PositionY>
-    </EntityXml>
-    <EntityXml>
       <EntityType>Wall</EntityType>
       <CharacterType>Unknown</CharacterType>
       <PositionX>19</PositionX>
@@ -1045,12 +1021,6 @@
       <EntityType>Wall</EntityType>
       <CharacterType>Unknown</CharacterType>
       <PositionX>8</PositionX>
-      <PositionY>21</PositionY>
-    </EntityXml>
-    <EntityXml>
-      <EntityType>Wall</EntityType>
-      <CharacterType>Unknown</CharacterType>
-      <PositionX>8</PositionX>
       <PositionY>20</PositionY>
     </EntityXml>
     <EntityXml>
@@ -1114,12 +1084,6 @@
       <PositionY>19</PositionY>
     </EntityXml>
     <EntityXml>
-      <EntityType>Chest</EntityType>
-      <CharacterType>Unknown</CharacterType>
-      <PositionX>16</PositionX>
-      <PositionY>19</PositionY>
-    </EntityXml>
-    <EntityXml>
       <EntityType>Wall</EntityType>
       <CharacterType>Unknown</CharacterType>
       <PositionX>7</PositionX>
@@ -1178,36 +1142,6 @@
       <CharacterType>Orc</CharacterType>
       <PositionX>21</PositionX>
       <PositionY>20</PositionY>
-    </EntityXml>
-    <EntityXml>
-      <EntityType>Character</EntityType>
-      <CharacterType>Orc</CharacterType>
-      <PositionX>2</PositionX>
-      <PositionY>25</PositionY>
-    </EntityXml>
-    <EntityXml>
-      <EntityType>Character</EntityType>
-      <CharacterType>Orc</CharacterType>
-      <PositionX>3</PositionX>
-      <PositionY>24</PositionY>
-    </EntityXml>
-    <EntityXml>
-      <EntityType>Character</EntityType>
-      <CharacterType>Orc</CharacterType>
-      <PositionX>4</PositionX>
-      <PositionY>25</PositionY>
-    </EntityXml>
-    <EntityXml>
-      <EntityType>Character</EntityType>
-      <CharacterType>Orc</CharacterType>
-      <PositionX>6</PositionX>
-      <PositionY>25</PositionY>
-    </EntityXml>
-    <EntityXml>
-      <EntityType>Chest</EntityType>
-      <CharacterType>Unknown</CharacterType>
-      <PositionX>16</PositionX>
-      <PositionY>22</PositionY>
     </EntityXml>
     <EntityXml>
       <EntityType>Character</EntityType>
@@ -1278,12 +1212,6 @@
     <EntityXml>
       <EntityType>Door</EntityType>
       <CharacterType>Unknown</CharacterType>
-      <PositionX>10</PositionX>
-      <PositionY>23</PositionY>
-    </EntityXml>
-    <EntityXml>
-      <EntityType>Door</EntityType>
-      <CharacterType>Unknown</CharacterType>
       <PositionX>20</PositionX>
       <PositionY>17</PositionY>
     </EntityXml>
@@ -1292,6 +1220,90 @@
       <CharacterType>Unknown</CharacterType>
       <PositionX>6</PositionX>
       <PositionY>18</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>Kobolt</CharacterType>
+      <PositionX>4</PositionX>
+      <PositionY>21</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>Kobolt</CharacterType>
+      <PositionX>2</PositionX>
+      <PositionY>20</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>Kobolt</CharacterType>
+      <PositionX>5</PositionX>
+      <PositionY>20</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>Kobolt</CharacterType>
+      <PositionX>2</PositionX>
+      <PositionY>24</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>Kobolt</CharacterType>
+      <PositionX>4</PositionX>
+      <PositionY>25</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>Kobolt</CharacterType>
+      <PositionX>6</PositionX>
+      <PositionY>24</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>Kobolt</CharacterType>
+      <PositionX>6</PositionX>
+      <PositionY>25</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Door</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>17</PositionX>
+      <PositionY>21</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Chest</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>10</PositionX>
+      <PositionY>19</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Door</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>8</PositionX>
+      <PositionY>21</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Wall</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>10</PositionX>
+      <PositionY>23</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>OrcChief</CharacterType>
+      <PositionX>21</PositionX>
+      <PositionY>16</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Chest</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>11</PositionX>
+      <PositionY>2</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Chest</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>14</PositionX>
+      <PositionY>2</PositionY>
     </EntityXml>
   </Entities>
 </BoardXml>

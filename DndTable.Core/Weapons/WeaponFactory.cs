@@ -72,6 +72,23 @@ namespace DndTable.Core.Weapons
             return weapon;
         }
 
+        public static IWeapon MaceHeavy()
+        {
+            var weapon = new Weapon();
+
+            weapon.Description = "Heavy mace";
+            weapon.Proficiency = WeaponProficiencyEnum.Simple;
+            weapon.IsRanged = false;
+            weapon.DamageD = 8;
+            weapon.CriticalMultiplier = 2;
+            weapon.CriticalRange = 0;
+            weapon.RangeIncrement = 0;
+            weapon.Weight = 12;
+            weapon.DamageTypes.Add(WeaponDamageTypeEnum.Bludgeoning);
+
+            return weapon;
+        }
+
         public static IWeapon Rapier()
         {
             var weapon = new Weapon();
@@ -140,8 +157,27 @@ namespace DndTable.Core.Weapons
             weapon.CriticalMultiplier = 2;
             weapon.CriticalRange = 0;
             weapon.RangeIncrement = 10;
-            weapon.Weight = 6; // ?
+            weapon.Weight = 3;
             weapon.DamageTypes.Add(WeaponDamageTypeEnum.Bludgeoning);
+
+            return weapon;
+        }
+
+        public static IWeapon HalfSpear()
+        {
+            // (*) Can be used by small character!
+
+            var weapon = new Weapon();
+
+            weapon.Description = "Halfspear";
+            weapon.Proficiency = WeaponProficiencyEnum.Simple;
+            weapon.IsRanged = false;
+            weapon.DamageD = 6;
+            weapon.CriticalMultiplier = 3;
+            weapon.CriticalRange = 0;
+            weapon.RangeIncrement = 20;
+            weapon.Weight = 3; // ?
+            weapon.DamageTypes.Add(WeaponDamageTypeEnum.Piercing);
 
             return weapon;
         }
