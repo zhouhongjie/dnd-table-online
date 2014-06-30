@@ -76,6 +76,7 @@ public class TableManager : MonoBehaviour
             // Boris
             {
                 var boris = Factory.CreateCharacter("Boris", 14, 12);
+                boris.SaveCharacterSheet("Boris");
                 boris.EquipWeapon(WeaponFactory.Longsword());
                 boris.EquipArmor(ArmorFactory.StuddedLeather());
                 boris.GiveWeapon(WeaponFactory.CrossbowLight());
@@ -86,6 +87,7 @@ public class TableManager : MonoBehaviour
             // Maiko
             {
                 var maiko = Factory.CreateCharacter("Maiko", 12, 16);
+                maiko.SaveCharacterSheet("Maiko");
                 maiko.EquipWeapon(WeaponFactory.Longbow());
                 maiko.EquipArmor(ArmorFactory.Leather());
                 maiko.GiveWeapon(WeaponFactory.Rapier());
@@ -99,6 +101,7 @@ public class TableManager : MonoBehaviour
             // Healer
             {
                 var healer = Factory.CreateCharacter("Jozan", 12, 12);
+                healer.SaveCharacterSheet("Jozan");
                 healer.EquipArmor(ArmorFactory.FullPlate());
                 healer.EquipWeapon(WeaponFactory.MaceHeavy());
                 healer.PrepareSpell(SpellFactory.CureLightWound());
@@ -127,6 +130,8 @@ public class TableManager : MonoBehaviour
         // Show all = reset renderers for UpdateFieldOfView
         // This gameObject should be handled first
 	    ShowAllRecursive(transform);
+        if (CurrentPlayer != null)
+            Game.GameBoard.OptimizeFieldOfViewForCurrentPlayer(CurrentPlayer.Position);
 
         UpdateEntities();
 	    UpdateEditorMode();
@@ -192,7 +197,7 @@ public class TableManager : MonoBehaviour
 
         if (!UpdateMultistepOperation())
         {
-            if (_mode == ModeEnum.Player)
+            if (_mode == ModeEnum.Player && CurrentPlayer != null)
                 GUILayout.Window(2, new Rect(0, 0, 150, 0), UpdatePossibleActionsUI, "Player: " + CurrentPlayer.CharacterSheet.Name);
             else if (_mode == ModeEnum.MapEditor)
                 GUILayout.Window(3, new Rect(0, 0, 150, 0), UpdateMapEditorActionsUI, "Map editor");
@@ -414,7 +419,7 @@ public class TableManager : MonoBehaviour
         if (CurrentPlayer == null)
             return;
 
-        var fieldOfView = Game.GameBoard.GetFieldOfView(CurrentPlayer.Position);
+        var fieldOfView = Game.GameBoard.GetFieldOfViewForCurrentPlayer();
 
         for (var i=0; i < transform.childCount; i++)
         {

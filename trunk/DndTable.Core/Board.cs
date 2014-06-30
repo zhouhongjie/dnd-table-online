@@ -175,11 +175,9 @@ namespace DndTable.Core
         public bool[,] GetFieldOfView(Position origin)
         {
             return CalculateFieldOfView(origin);
-            //_currentFieldOfView = CalculateFieldOfView(origin);
-            //return _currentFieldOfView;
         }
 
-        internal void OptimizeFieldOfViewForCurrentPlayer(Position origin)
+        public void OptimizeFieldOfViewForCurrentPlayer(Position origin)
         {
             _currentFieldOfView = CalculateFieldOfView(origin);
         }

@@ -18,10 +18,9 @@ public class CharacterSheetInfo : MonoBehaviour {
         if (Camera.main == null)
             return;
 
-        // TODO: Check FoV
-        //var position = Position.Create((int)transform.position.x, (int)transform.position.y);
-        //if (!TableManager.Game.GameBoard.IsVisibleForCurrentPlayer(position))
-        //    return;
+        // Check FoV
+        if (!TableManager.Game.GameBoard.IsVisibleForCurrentPlayer(Character.Position))
+            return;
 
         if (!Character.CharacterSheet.CanAct())
             GUI.color = Color.red;

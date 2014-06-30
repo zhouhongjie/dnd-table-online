@@ -22,6 +22,10 @@ namespace DndTable.Core.Characters
         void GivePotion(IPotion potion);
         void GiveWeapon(IWeapon weapon);
 
+        // Persistence
+
+        bool SaveCharacterSheet(string name);
+        bool LoadCharacterSheet(string name);
     }
 
     public enum CharacterTypeEnum
