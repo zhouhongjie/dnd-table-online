@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BoardXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <MaxX>10</MaxX>
+  <MaxY>20</MaxY>
+  <Entities>
+    <EntityXml>
+      <EntityType>Wall</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>1</PositionX>
+      <PositionY>2</PositionY>
+    </EntityXml>
+  </Entities>
+</BoardXml>
