@@ -17,9 +17,11 @@ namespace DndTable.Core
         List<IEntity> GetEntities(Position position);
         bool MoveEntity(IEntity entity, Position to);
 
+        void OptimizeFieldOfViewForCurrentPlayer(Position origin);
         bool IsVisibleForCurrentPlayer(Position origin);
         bool[,] GetFieldOfViewForCurrentPlayer();
 
+        // Not optimized!
         bool[,] GetFieldOfView(Position origin);
 
         bool Save(string name);

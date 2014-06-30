@@ -179,6 +179,9 @@ namespace DndTable.Core.Characters
                 // Add size modifier
                 result += context.Use(SizeModifier, "Size");
 
+                // Natural armor
+                result += NaturalArmor;
+
                 // Add armor (not touch, ...)
                 if (EquipedArmor != null)
                     result += context.Use(EquipedArmor.ArmorBonus, "ArmorBonus");

@@ -3,6 +3,7 @@ using DndTable.Core.Armors;
 using DndTable.Core.Dice;
 using DndTable.Core.Entities;
 using DndTable.Core.Items;
+using DndTable.Core.Persistence;
 using DndTable.Core.Spells;
 using DndTable.Core.Weapons;
 
@@ -14,10 +15,15 @@ namespace DndTable.Core.Characters
         public CharacterTypeEnum CharacterType { get; private set; }
         public override EntityTypeEnum EntityType { get { return EntityTypeEnum.Character; } }
 
+        private Repository _repository { get; set; }
+
         public Character(ICharacterSheet sheet, CharacterTypeEnum charType = CharacterTypeEnum.Unknown)
         {
             CharacterSheet = sheet;
             CharacterType = charType;
+
+            // TODO: use dependency injection
+            _repository = Repository.CreateRepository();
         }
 
         public override bool IsBlocking
@@ -54,6 +60,18 @@ namespace DndTable.Core.Characters
 
             baseSpell.Caster = this;
             Characters.CharacterSheet.GetEditableSheet(this).Spells.Add(spell);
+        }
+
+
+        public bool SaveCharacterSheet(string name)
+        {
+            return _repository.SaveCharacterSheet(name, Characters.CharacterSheet.GetEditableSheet(this));
+        }
+
+        public bool LoadCharacterSheet(string name)
+        {
+            var sheet = Characters.CharacterSheet.GetEditableSheet(this);
+            return _repository.LoadCharacterSheet(name, ref sheet);
         }
 
     }

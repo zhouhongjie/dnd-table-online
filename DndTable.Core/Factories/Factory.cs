@@ -23,7 +23,6 @@ namespace DndTable.Core.Factories
             sheet.Name = name;
             sheet.FactionId = 1;
 
-            //var diceRoller = new DiceRoller();
             sheet.Strength = 10;
             sheet.Dexterity = 10;
             sheet.Constitution = 10;
@@ -45,7 +44,6 @@ namespace DndTable.Core.Factories
             sheet.Name = name;
             sheet.FactionId = 1;
 
-            //var diceRoller = new DiceRoller();
             sheet.Strength = strength;
             sheet.Dexterity = dexterity;
             sheet.Constitution = 10;
@@ -80,7 +78,6 @@ namespace DndTable.Core.Factories
             sheet.Race = CharacterRace.Orc;
             sheet.FactionId = 2;
 
-            //var diceRoller = new DiceRoller();
             sheet.Strength = 15;
             sheet.Dexterity = 10;
             sheet.Constitution = 11;
@@ -106,7 +103,6 @@ namespace DndTable.Core.Factories
             sheet.Race = CharacterRace.Orc;
             sheet.FactionId = 2;
 
-            //var diceRoller = new DiceRoller();
             sheet.Strength = 16;
             sheet.Dexterity = 10;
             sheet.Constitution = 12;
@@ -132,7 +128,6 @@ namespace DndTable.Core.Factories
             sheet.Race = CharacterRace.Reptilian;
             sheet.FactionId = 2;
 
-            //var diceRoller = new DiceRoller();
             sheet.Strength = 6;
             sheet.Dexterity = 13;
             sheet.Constitution = 11;
@@ -154,6 +149,35 @@ namespace DndTable.Core.Factories
 
             return new Character(sheet, CharacterTypeEnum.Kobolt);
         }
+
+        //public static ICharacter CreateWolf(string name = "Wolf")
+        //{
+        //    var sheet = new CharacterSheet();
+
+        //    sheet.Name = name;
+        //    sheet.Race = CharacterRace.Animal;
+        //    sheet.FactionId = 2;
+
+        //    sheet.Strength = 13;
+        //    sheet.Dexterity = 15;
+        //    sheet.Constitution = 15;
+        //    sheet.Intelligence = 2;
+        //    sheet.Wisdom = 12;
+        //    sheet.Charisma = 6;
+
+        //    sheet.HitPoints = 13;
+        //    sheet.MaxHitPoints = 13;
+        //    sheet.Speed = 50;
+
+        //    sheet.NaturalArmor = 2;
+
+        //    // TODO... ???? bite..
+        //    //sheet.EquipedWeapon = WeaponFactory.CrossbowLight();
+        //    //sheet.EquipedArmor = ArmorFactory.Leather();
+        //    //sheet.Weapons.Add(WeaponFactory.HalfSpear());
+
+        //    return new Character(sheet, CharacterTypeEnum.Kobolt);
+        //}
 
         public static IEntity CreateWall()
         {

@@ -7,6 +7,6 @@ namespace DndTable.Core.Characters
 {
     public enum CharacterRace
     {
-        Human, Dwarf, Elf, Orc, Reptilian
+        Human, Dwarf, Elf, Orc, Reptilian, Animal
     }
 }

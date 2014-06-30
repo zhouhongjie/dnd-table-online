@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,18 +13,63 @@ namespace DndTable.Core.Persistence
 {
     internal class Repository
     {
-        private string _folder { get; set; }
+        private string _dungeonFolder { get; set; }
+        private string _characterSheetFolder { get; set; }
 
         public static Repository CreateRepository()
         {
             // TODO check default Data folder path
             //return new Repository(@".\Data\");
-            return new Repository(@"E:\Data\Projects\DndTableOnline\Data\");
+
+            var dungeonFolder = @"../Data/Maps/";
+            var characterSheetFolder = @"../Data/Characters/";
+
+            
+
+            return new Repository(dungeonFolder, characterSheetFolder);
         }
 
-        internal Repository(string folder)
+        internal Repository(string dungeonFolder, string characterSheetFolder)
         {
-            _folder = folder;
+            _dungeonFolder = dungeonFolder;
+            _characterSheetFolder = characterSheetFolder;
+        }
+
+        internal bool SaveCharacterSheet(string name, CharacterSheet sheet)
+        {
+            var sheetXml = new CharacterSheetXml();
+            sheetXml.CopyFrom(sheet);
+
+            using (var writeFileStream = new StreamWriter(_characterSheetFolder + name + ".xml"))
+            {
+                var serializer = new XmlSerializer(typeof(CharacterSheetXml));
+                serializer.Serialize(writeFileStream, sheetXml);
+            }
+
+            return true;            
+        }
+
+        internal bool LoadCharacterSheet(string name, ref CharacterSheet sheet)
+        {
+            var filename = _characterSheetFolder + name + ".xml";
+            if (!File.Exists(filename))
+                return false;
+
+            // Read file
+            using (var readFileStream = new StreamReader(filename))
+            {
+                var serializer = new XmlSerializer(typeof(CharacterSheetXml));
+                var sheetXml = serializer.Deserialize(readFileStream) as CharacterSheetXml;
+
+                if (sheetXml == null)
+                {
+                    return false;
+                }
+
+                sheetXml.CopyTo(sheet);
+            }
+
+            return true;
         }
 
         internal bool SaveBoard(string name, int maxX, int maxY, List<BaseEntity> entities)
@@ -60,7 +106,7 @@ namespace DndTable.Core.Persistence
             }
 
 
-            using (var writeFileStream = new StreamWriter(_folder + name + ".xml"))
+            using (var writeFileStream = new StreamWriter(_dungeonFolder + name + ".xml"))
             {
                 var serializer = new XmlSerializer(typeof(BoardXml));
                 serializer.Serialize(writeFileStream, boardXml);
@@ -77,7 +123,7 @@ namespace DndTable.Core.Persistence
             entities = null;
 
             // Check file
-            var filename = _folder + name + ".xml";
+            var filename = _dungeonFolder + name + ".xml";
             if (!File.Exists(filename))
                 return false;
 
