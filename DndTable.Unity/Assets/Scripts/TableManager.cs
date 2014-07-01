@@ -86,7 +86,7 @@ public class TableManager : MonoBehaviour
 
             // Maiko
             {
-                var maiko = Factory.CreateCharacter("Maiko", 12, 16);
+                var maiko = Factory.CreateCharacter("Maiko", 12, 16, 10, 12, 10, 13);
                 maiko.SaveCharacterSheet("Maiko");
                 maiko.EquipWeapon(WeaponFactory.Longbow());
                 maiko.EquipArmor(ArmorFactory.Leather());
@@ -94,6 +94,7 @@ public class TableManager : MonoBehaviour
                 maiko.PrepareSpell(SpellFactory.MagicMissile());
                 maiko.PrepareSpell(SpellFactory.MagicMissile());
                 maiko.PrepareSpell(SpellFactory.MagicMissile());
+                maiko.PrepareSpell(SpellFactory.SleepArrow());
                 Game.AddCharacter(maiko, Position.Create(3, 4));
                 allPcs.Add(maiko);
             }

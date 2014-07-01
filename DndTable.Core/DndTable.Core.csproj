@@ -61,6 +61,7 @@
     <Compile Include="Characters\Attribute.cs" />
     <Compile Include="Characters\Calculator.cs" />
     <Compile Include="Characters\CharacterRace.cs" />
+    <Compile Include="Characters\ConditionEnum.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="Characters\Character.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Spells\BullsStrength.cs" />
     <Compile Include="Spells\CatsGrace.cs" />
     <Compile Include="Spells\CureLightWound.cs" />
+    <Compile Include="Spells\SleepArrow.cs" />
     <Compile Include="Spells\SpellFactory.cs" />
     <Compile Include="Spells\ISpell.cs" />
     <Compile Include="Spells\MagicMissile.cs" />

@@ -13,6 +13,7 @@ namespace DndTable.Core.Spells
 
         public abstract string Description { get; }
         public abstract int MaxRange { get; }
+        public abstract int Level { get; }
 
         public abstract bool CastOn(ICharacter target, IDiceRoller diceRoller);
 

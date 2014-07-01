@@ -53,7 +53,7 @@ namespace DndTable.Core.Characters
         public List<ISpell> Spells { get { return _spells; } }
         #endregion
 
-        #region buffs // TODO: list of buff/debuff objects to incorporate duration & type (enhancement, luck, ...)
+        #region attributes // TODO: list of buff/debuff objects to incorporate duration & type (enhancement, luck, ...)
         internal Attribute StrengthAttribute = new Attribute("Strength");
         internal Attribute DexterityAttribute = new Attribute("Dexterity");
         internal Attribute ConstitutionAttribute = new Attribute("Constitution");
@@ -62,6 +62,18 @@ namespace DndTable.Core.Characters
         internal Attribute CharismaAttribute = new Attribute("Charisma");
         #endregion
 
+        private readonly HashSet<ConditionEnum> _conditions = new HashSet<ConditionEnum>();
+        public HashSet<ConditionEnum> Conditions { get { return _conditions; } }
+
+        internal bool HasCondition(ConditionEnum condition)
+        {
+            return _conditions.Contains(condition);
+        }
+        
+        internal bool RemoveCondition(ConditionEnum condition)
+        {
+            return _conditions.Remove(condition);
+        }
         
         private int GetMeleeAttackBonus(Calculator.CalculatorPropertyContext context)
         {
@@ -103,8 +115,19 @@ namespace DndTable.Core.Characters
         /// <returns></returns>
         public bool CanAct()
         {
+            if (HasCondition(ConditionEnum.Sleeping))
+                return false;
+
             // TEMP (I know this is not correct)
             return HitPoints > 0;
+        }
+
+        public void ApplyDamage(int damage)
+        {
+            HitPoints -= damage;
+
+            // Awaken
+            RemoveCondition(ConditionEnum.Sleeping);
         }
 
         public int GetCurrentAttackBonus(int range, bool isFlanking)
@@ -199,6 +222,16 @@ namespace DndTable.Core.Characters
             {
                 // TODO: modifiers
                 return context.UseAbilityBonus(DexterityAttribute);
+            }
+        }
+
+        public int GetArcaneSpellDC(int spellLevel)
+        {
+            using (var context = Calculator.CreatePropertyContext("ArcaneSpellDC"))
+            {
+                return context.UseAbilityBonus(IntelligenceAttribute) +
+                       context.Use(spellLevel, "SpellLevel") +
+                       context.Use(10, "10");
             }
         }
 

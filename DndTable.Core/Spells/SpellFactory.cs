@@ -13,6 +13,11 @@ namespace DndTable.Core.Spells
             return new MagicMissile();
         }
 
+        public static ISpell SleepArrow()
+        {
+            return new SleepArrow();
+        }
+
         public static ISpell CureLightWound()
         {
             return new CureLightWound();

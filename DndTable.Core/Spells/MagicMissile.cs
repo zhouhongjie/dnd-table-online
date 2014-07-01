@@ -13,16 +13,17 @@ namespace DndTable.Core.Spells
 
         // Medium (100 ft. + 10 ft./level)
         public override int MaxRange { get { return 100; } }
+        public override int Level { get { return 1; } }
 
         public override bool CastOn(ICharacter target, IDiceRoller diceRoller)
         {
             // TODO: evolve by lvl
 
-            var damage = diceRoller.Roll(Caster, DiceRollEnum.SpellEffect, 4, 1);
+            var damage = diceRoller.Roll(Caster, DiceRollEnum.MagicEffect, 4, 1);
 
             // TODO: spell resistance => here or in CastSpell action?
 
-            CharacterSheet.GetEditableSheet(target).HitPoints -= damage;
+            CharacterSheet.GetEditableSheet(target).ApplyDamage(damage);
 
             return true;
         }

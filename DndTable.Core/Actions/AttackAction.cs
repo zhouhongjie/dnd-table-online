@@ -117,7 +117,7 @@ namespace DndTable.Core.Actions
                 if (damage < 1)
                     damage = 1;
 
-                CharacterSheet.GetEditableSheet(_targetCharacter).HitPoints -= damage;
+                CharacterSheet.GetEditableSheet(_targetCharacter).ApplyDamage(damage);
             }
         }
 
