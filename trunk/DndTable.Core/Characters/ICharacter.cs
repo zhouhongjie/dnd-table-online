@@ -23,7 +23,6 @@ namespace DndTable.Core.Characters
         void GiveWeapon(IWeapon weapon);
 
         // Persistence
-
         bool SaveCharacterSheet(string name);
         bool LoadCharacterSheet(string name);
     }

@@ -38,6 +38,8 @@ namespace DndTable.Core.Characters
         List<IWeapon> Weapons { get; }
         List<ISpell> Spells { get; }
 
+        HashSet<ConditionEnum> Conditions { get; }
+
 
         bool CanAct();
         int GetCurrentAttackBonus(int range, bool isFlanking);

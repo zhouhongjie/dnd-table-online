@@ -19,11 +19,16 @@ namespace DndTable.Core.Spells
             get { return 1; }
         }
 
+        public override int Level
+        {
+            get { return 1; }
+        }
+
         public override bool CastOn(ICharacter target, IDiceRoller diceRoller)
         {
             var sheet = CharacterSheet.GetEditableSheet(target);
 
-            sheet.HitPoints += diceRoller.Roll(Caster, DiceRollEnum.PotionEffect, 8, 1);
+            sheet.HitPoints += diceRoller.Roll(Caster, DiceRollEnum.MagicEffect, 8, 1);
 
             if (sheet.HitPoints > sheet.MaxHitPoints)
                 sheet.HitPoints = sheet.MaxHitPoints;

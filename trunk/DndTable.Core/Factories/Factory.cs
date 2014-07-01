@@ -58,6 +58,27 @@ namespace DndTable.Core.Factories
             return new Character(sheet, CharacterTypeEnum.Hero);
         }
 
+        public static ICharacter CreateCharacter(string name, int str, int dex, int con, int intel, int wis, int cha)
+        {
+            var sheet = new CharacterSheet();
+
+            sheet.Name = name;
+            sheet.FactionId = 1;
+
+            sheet.Strength = str;
+            sheet.Dexterity = dex;
+            sheet.Constitution = con;
+            sheet.Intelligence = intel;
+            sheet.Wisdom = wis;
+            sheet.Charisma = cha;
+
+            sheet.HitPoints = 10;
+            sheet.MaxHitPoints = 10;
+            sheet.Speed = 30;
+
+            return new Character(sheet, CharacterTypeEnum.Hero);
+        }
+
         public static ICharacter CreateNpc(CharacterTypeEnum npcType)
         {
             if (npcType == CharacterTypeEnum.Orc)

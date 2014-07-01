@@ -18,7 +18,7 @@ namespace DndTable.Core.Spells
         {
             var sheet = CharacterSheet.GetEditableSheet(character);
 
-            var buff = diceRoller.Roll(Caster, DiceRollEnum.PotionEffect, 4, 1);
+            var buff = diceRoller.Roll(Caster, DiceRollEnum.MagicEffect, 4, 1);
             sheet.StrengthAttribute.AddBuff(buff);
 
             return true;
@@ -27,6 +27,11 @@ namespace DndTable.Core.Spells
         public override int MaxRange
         {
             get { return 1; }
+        }
+
+        public override int Level
+        {
+            get { return 2; }
         }
     }
 }
