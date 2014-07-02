@@ -5,8 +5,9 @@ using System.Text;
 
 namespace DndTable.Core.Characters
 {
-    public enum  ConditionEnum
+    public interface ICharacterConditions
     {
-        Sleeping
+        bool IsSleeping { get; }
+        bool IsHelpless { get; }
     }
 }

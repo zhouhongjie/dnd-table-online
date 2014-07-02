@@ -23,14 +23,17 @@ namespace DndTable.Core.Spells
             var dc = casterSheet.GetArcaneSpellDC(Level);
 
             if (!diceRoller.Check(character, DiceRollEnum.ResistEffect, 20, targetSheet.Will, dc))
-                targetSheet.Conditions.Add(ConditionEnum.Sleeping);
+            {
+                var duration = 10; // 1 minute/caster_lvl
+                targetSheet.AddAndApplyEffect(new SleepEffect(targetSheet, duration));
+            }
 
             return true;
         }
 
         public override int MaxRange
         {
-            get { return 110; } // = 100ft + 10ft/lvl
+            get { return 110; } // = 100ft + 10ft/caster_lvl
         }
 
         public override int Level
@@ -38,5 +41,19 @@ namespace DndTable.Core.Spells
             get { return 1; }
         }
 
+    }
+
+    internal class SleepEffect : BaseEffect
+    {
+        internal SleepEffect(CharacterSheet sheet, int durationInRounds)
+            : base(sheet, durationInRounds)
+        {}
+
+        internal override void Apply()
+        {
+            Sheet.EditableConditions.IsSleeping = true;
+        }
+
+        internal override bool CancelOnDamage { get { return true; } }
     }
 }

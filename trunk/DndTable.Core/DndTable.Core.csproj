@@ -61,7 +61,8 @@
     <Compile Include="Characters\Attribute.cs" />
     <Compile Include="Characters\Calculator.cs" />
     <Compile Include="Characters\CharacterRace.cs" />
-    <Compile Include="Characters\ConditionEnum.cs" />
+    <Compile Include="Characters\CharacterConditions.cs" />
+    <Compile Include="Characters\ICharacterConditions.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="Characters\Character.cs" />
@@ -80,6 +81,8 @@
     <Compile Include="Items\PotionFactory.cs" />
     <Compile Include="Items\SpellEffectPotion.cs" />
     <Compile Include="Persistence\CharacterSheetXml.cs" />
+    <Compile Include="Characters\BaseEffect.cs" />
+    <Compile Include="Spells\AttributeBuffEffect.cs" />
     <Compile Include="Spells\BaseSpell.cs" />
     <Compile Include="Spells\BullsStrength.cs" />
     <Compile Include="Spells\CatsGrace.cs" />
