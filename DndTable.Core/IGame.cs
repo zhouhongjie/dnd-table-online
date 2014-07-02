@@ -5,6 +5,7 @@ using System.Text;
 using DndTable.Core.Armors;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
+using DndTable.Core.Entities;
 using DndTable.Core.Factories;
 using DndTable.Core.Items;
 using DndTable.Core.Log;
@@ -23,14 +24,8 @@ namespace DndTable.Core
         List<ICharacter> GetCharacters();
         bool RemoveCharacter(ICharacter character);
 
-        bool AddWall(Position position);
-        bool RemoveWall(Position selectedPosition);
-
-        bool AddChest(Position position);
-        bool RemoveChest(Position selectedPosition);
-
-        bool AddDoor(Position position);
-        bool RemoveDoor(Position selectedPosition);
+        bool AddMapEntity(Position position, EntityTypeEnum entityType);
+        bool RemoveMapEntity(Position position);
 
         IEncounter StartEncounter();
         IEncounter StartEncounter(List<ICharacter> characters);

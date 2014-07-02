@@ -144,28 +144,9 @@ namespace DndTable.Core.Persistence
                 entities = new List<BaseEntity>();
                 foreach (var entityXml in boardXml.Entities)
                 {
-                    BaseEntity newEntity;
+                    var newEntity = Factory.CreateEntity(entityXml.EntityType, entityXml.CharacterType) as BaseEntity;
 
-                    if (entityXml.EntityType == EntityTypeEnum.Wall)
-                    {
-                        newEntity = Factory.CreateWall() as BaseEntity;
-                    }
-                    else if (entityXml.EntityType == EntityTypeEnum.Chest)
-                    {
-                        newEntity = Factory.CreateChest() as BaseEntity;
-                    }
-                    else if (entityXml.EntityType == EntityTypeEnum.Door)
-                    {
-                        newEntity = Factory.CreateDoor() as BaseEntity;
-                    }
-                    else if (entityXml.EntityType == EntityTypeEnum.Character)
-                    {
-                        newEntity = Factory.CreateNpc(entityXml.CharacterType) as BaseEntity;
-                    }
-                    else
-                    {
-                        throw new NotSupportedException("EntityType not supported yet: " + entityXml.EntityType);
-                    }
+
 
                     newEntity.Position = Position.Create(entityXml.PositionX, entityXml.PositionY);
                     entities.Add(newEntity);
