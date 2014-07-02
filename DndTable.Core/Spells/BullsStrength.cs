@@ -19,7 +19,8 @@ namespace DndTable.Core.Spells
             var sheet = CharacterSheet.GetEditableSheet(character);
 
             var buff = diceRoller.Roll(Caster, DiceRollEnum.MagicEffect, 4, 1);
-            sheet.StrengthAttribute.AddBuff(buff);
+            var duration = 600; // 1hr / caster_lvl
+            sheet.AddAndApplyEffect(new AttributeBuffEffect(sheet, duration, sheet.StrengthAttribute, buff));
 
             return true;
         }

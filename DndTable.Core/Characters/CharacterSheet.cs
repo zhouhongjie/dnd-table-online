@@ -60,21 +60,82 @@ namespace DndTable.Core.Characters
         internal Attribute IntelligenceAttribute = new Attribute("Intelligence");
         internal Attribute WisdomAttribute = new Attribute("Wisdom");
         internal Attribute CharismaAttribute = new Attribute("Charisma");
+
+        private void ClearAttributeBuffs()
+        {
+            StrengthAttribute.ClearBuff();
+            DexterityAttribute.ClearBuff();
+            ConstitutionAttribute.ClearBuff();
+            IntelligenceAttribute.ClearBuff();
+            WisdomAttribute.ClearBuff();
+            CharismaAttribute.ClearBuff();
+        }
         #endregion
 
-        private readonly HashSet<ConditionEnum> _conditions = new HashSet<ConditionEnum>();
-        public HashSet<ConditionEnum> Conditions { get { return _conditions; } }
+        #region Conditions
+        private readonly CharacterConditions _conditions = new CharacterConditions();
+        public ICharacterConditions Conditions { get { return _conditions; } }
+        internal CharacterConditions EditableConditions { get { return _conditions; } }
+        #endregion
 
-        internal bool HasCondition(ConditionEnum condition)
+        #region Effects
+        private readonly List<BaseEffect> _effects = new List<BaseEffect>();
+        internal void AddAndApplyEffect(BaseEffect effect)
         {
-            return _conditions.Contains(condition);
+            effect.Apply();
+            _effects.Add(effect);
+            
         }
-        
-        internal bool RemoveCondition(ConditionEnum condition)
+        // internal void AdvanceOneRound() ??
+        // CancelEffectsOnDamage
+        internal void ApplyEffectsForThisRound()
         {
-            return _conditions.Remove(condition);
+            RemoveExpiredEffects();
+            ApplyEffects();
         }
-        
+
+        private void ApplyEffects()
+        {
+            ClearAttributeBuffs();
+            EditableConditions.ClearEffects();
+
+            foreach (var effect in _effects)
+            {
+                effect.Apply();
+            }
+        }
+
+        private void RemoveExpiredEffects()
+        {
+            var allEffects = new List<BaseEffect>(_effects);
+            foreach (var effect in allEffects)
+            {
+                // TODO: THIS IS NOT THE CORRECT WAY TO HANDLE EFFECT DURATIONS
+                // => still thinking about the correct way
+                // Problem = when does an effect duration start? (effect should have it's own initiave counter)
+                if (!effect.DecreaseDurationAndCheck())
+                {
+                    _effects.Remove(effect);
+                }
+            }
+        }
+
+        private void CancelEffectsOnDamage()
+        {
+            // Remove cancelled effects
+            var allEffects = new List<BaseEffect>(_effects);
+            foreach (var effect in allEffects)
+            {
+                if (effect.CancelOnDamage)
+                    _effects.Remove(effect);
+            }
+
+            // Re-apply effects to push the cancel to the char sheet
+            ApplyEffects();
+        }
+
+        #endregion
+
         private int GetMeleeAttackBonus(Calculator.CalculatorPropertyContext context)
         {
             return context.Use(BaseAttackBonus, "BaseAttackBonus") +
@@ -115,10 +176,11 @@ namespace DndTable.Core.Characters
         /// <returns></returns>
         public bool CanAct()
         {
-            if (HasCondition(ConditionEnum.Sleeping))
+            if (EditableConditions.IsHelpless)
                 return false;
 
             // TEMP (I know this is not correct)
+            // should also be handled by Conditions
             return HitPoints > 0;
         }
 
@@ -126,8 +188,12 @@ namespace DndTable.Core.Characters
         {
             HitPoints -= damage;
 
+            // Cancel effects responsive to damage
+            CancelEffectsOnDamage();
+
+            // SHOULD NO LONGER BE NECESSARY!
             // Awaken
-            RemoveCondition(ConditionEnum.Sleeping);
+            //EditableConditions.IsSleeping = false;
         }
 
         public int GetCurrentAttackBonus(int range, bool isFlanking)

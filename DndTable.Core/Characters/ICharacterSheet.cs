@@ -38,7 +38,7 @@ namespace DndTable.Core.Characters
         List<IWeapon> Weapons { get; }
         List<ISpell> Spells { get; }
 
-        HashSet<ConditionEnum> Conditions { get; }
+        ICharacterConditions Conditions { get; }
 
 
         bool CanAct();

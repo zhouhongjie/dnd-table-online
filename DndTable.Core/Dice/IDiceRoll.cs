@@ -4,7 +4,7 @@ namespace DndTable.Core.Dice
 {
     public enum DiceRollEnum
     {
-        Attack, CriticalAttack, Damage, InitiativeCheck, Loot, MagicEffect, ResistEffect
+        Attack, CriticalAttack, Damage, InitiativeCheck, Loot, MagicEffect, ResistEffect, Duration
     }
 
     public interface IDiceRoll

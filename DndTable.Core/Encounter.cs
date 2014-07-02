@@ -105,6 +105,8 @@ namespace DndTable.Core
 
             GetRoundInfo(current).Reset(current);
 
+            CharacterSheet.GetEditableSheet(current).ApplyEffectsForThisRound();
+
             // TODO: Handle dying
 
 

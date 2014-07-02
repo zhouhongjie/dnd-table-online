@@ -37,7 +37,7 @@ public class CharacterSheetInfo : MonoBehaviour {
         //var label = string.Format("({0}, {1})", (int)transform.position.x, (int)transform.position.z);
         var label = Character.CharacterSheet.Name + ": " + Character.CharacterSheet.HitPoints + "hp";
 
-        if (Character.CharacterSheet.Conditions.Contains(ConditionEnum.Sleeping))
+        if (Character.CharacterSheet.Conditions.IsSleeping)
             label += " Zzzzz";
 
         GUI.Box(labelRect, label);

@@ -39,6 +39,11 @@ namespace DndTable.Core.Characters
                 Buff = buffValue;
         }
 
+        public void ClearBuff()
+        {
+            Buff = 0;
+        }
+
         // TODO: list of buff/debuff objects to incorporate duration & type (enhancement, luck, ...)
         private int Buff { get; set; }
     }
