@@ -200,6 +200,48 @@ namespace DndTable.Core.Factories
         //    return new Character(sheet, CharacterTypeEnum.Kobolt);
         //}
 
+        public static IEntity CreateEntity(EntityTypeEnum entityType)
+        {
+            IEntity newEntity = null;
+
+            if (entityType == EntityTypeEnum.Wall)
+            {
+                newEntity = Factory.CreateWall() as BaseEntity;
+            }
+            else if (entityType == EntityTypeEnum.Chest)
+            {
+                newEntity = Factory.CreateChest() as BaseEntity;
+            }
+            else if (entityType == EntityTypeEnum.Door)
+            {
+                newEntity = Factory.CreateDoor() as BaseEntity;
+            }
+            else if (entityType == EntityTypeEnum.Pit)
+            {
+                newEntity = Factory.CreatePit() as BaseEntity;
+            }
+            else if (entityType == EntityTypeEnum.Character)
+            {
+                throw new NotSupportedException("use CreateEntity(EntityTypeEnum entityType, CharacterTypeEnum characterType)");
+            }
+            else
+            {
+                throw new NotImplementedException("EntityType not supported yet: " + entityType);
+            }
+
+            return newEntity;
+        }
+
+        public static IEntity CreateEntity(EntityTypeEnum entityType, CharacterTypeEnum characterType)
+        {
+            var newEntity = 
+                entityType == EntityTypeEnum.Character 
+                ? CreateNpc(characterType) 
+                : CreateEntity(entityType);
+
+            return newEntity;
+        }
+
         public static IEntity CreateWall()
         {
             return new Wall();
@@ -213,6 +255,11 @@ namespace DndTable.Core.Factories
         public static IEntity CreateDoor()
         {
             return new Door();
+        }
+
+        public static IEntity CreatePit()
+        {
+            return new Pit();
         }
     }
 }

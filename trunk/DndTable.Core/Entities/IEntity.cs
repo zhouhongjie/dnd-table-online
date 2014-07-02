@@ -15,6 +15,6 @@
 
     public enum EntityTypeEnum
     {
-        Character, Wall, Chest, Door
+        Character, Wall, Chest, Door, Pit
     }
 }

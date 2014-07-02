@@ -75,6 +75,7 @@
     <Compile Include="Encounter.cs" />
     <Compile Include="Entities\Chest.cs" />
     <Compile Include="Entities\Door.cs" />
+    <Compile Include="Entities\Pit.cs" />
     <Compile Include="Factories\AbstractActionFactory.cs" />
     <Compile Include="Armors\ArmorFactory.cs" />
     <Compile Include="Factories\Factory.cs" />

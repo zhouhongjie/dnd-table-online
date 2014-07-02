@@ -45,25 +45,14 @@ namespace DndTable.UnityUI
                 var target = _game.GameBoard.GetEntity(selectedPosition, _entityType);
                 if (target == null)
                 {
-                    if (_entityType == EntityTypeEnum.Wall)
-                        _game.AddWall(selectedPosition);
-                    if (_entityType == EntityTypeEnum.Chest)
-                        _game.AddChest(selectedPosition);
-                    if (_entityType == EntityTypeEnum.Door)
-                        _game.AddDoor(selectedPosition);
                     if (_entityType == EntityTypeEnum.Character)
                         _game.AddCharacter(Factory.CreateNpc(_npcType), selectedPosition);
+                    else
+                    _game.AddMapEntity(selectedPosition, _entityType);
                 }
                 else
                 {
-                    if (target.EntityType == EntityTypeEnum.Wall)
-                        _game.RemoveWall(selectedPosition);
-                    if (target.EntityType == EntityTypeEnum.Chest)
-                        _game.RemoveChest(selectedPosition);
-                    if (target.EntityType == EntityTypeEnum.Door)
-                        _game.RemoveDoor(selectedPosition);
-                    if (_entityType == EntityTypeEnum.Character)
-                        _game.RemoveCharacter(target as ICharacter);
+                    _game.RemoveMapEntity(selectedPosition);
                 }
             }
         }

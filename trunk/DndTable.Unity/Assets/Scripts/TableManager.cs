@@ -24,6 +24,7 @@ public class TableManager : MonoBehaviour
     public Transform WallTemplate;
     public Transform ChestTemplate;
     public Transform DoorTemplate;
+    public Transform PitTemplate;
 
     public Camera PlayerCameraTemplate;
     public Transform IndicatorTemplate;
@@ -251,6 +252,11 @@ public class TableManager : MonoBehaviour
             {
                 StopCurrentAction();
                 _currentActionUI = new MapEditorUI(Game, EntityTypeEnum.Door);
+            }
+            if (GUILayout.Button("Pits"))
+            {
+                StopCurrentAction();
+                _currentActionUI = new MapEditorUI(Game, EntityTypeEnum.Pit);
             }
             if (GUILayout.Button("Orc"))
             {
@@ -521,6 +527,10 @@ public class TableManager : MonoBehaviour
             else if (entity.EntityType == EntityTypeEnum.Door)
             {
                 newTransform = CreateEntity(DoorTemplate, entity);
+            }
+            else if (entity.EntityType == EntityTypeEnum.Pit)
+            {
+                newTransform = CreateEntity(PitTemplate, entity);
             }
             else
             {

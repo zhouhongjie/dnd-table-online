@@ -60,43 +60,21 @@ namespace DndTable.Core
             return true;
         }
 
-        public bool AddWall(Position position)
+        public bool AddMapEntity(Position position, EntityTypeEnum entityType)
         {
-            return _gameBoard.AddEntity(Factory.CreateWall(), position);
+            return _gameBoard.AddEntity(Factory.CreateEntity(entityType), position);
         }
 
-        public bool RemoveWall(Position selectedPosition)
+        public bool RemoveMapEntity(Position position)
         {
-            return _RemoveEntity(selectedPosition, EntityTypeEnum.Wall);
-        }
+            var entities = _gameBoard.GetEntities(position);
 
-        public bool AddChest(Position position)
-        {
-            return _gameBoard.AddEntity(Factory.CreateChest(), position);
-        }
+            foreach (var entity in entities)
+            {
+                _gameBoard.RemoveEntity(entity);
+            }
 
-        public bool RemoveChest(Position selectedPosition)
-        {
-            return _RemoveEntity(selectedPosition, EntityTypeEnum.Chest);
-        }
-
-        public bool AddDoor(Position position)
-        {
-            return _gameBoard.AddEntity(Factory.CreateDoor(), position);
-        }
-
-        public bool RemoveDoor(Position selectedPosition)
-        {
-            return _RemoveEntity(selectedPosition, EntityTypeEnum.Door);
-        }
-
-        private bool _RemoveEntity(Position selectedPosition, EntityTypeEnum entityType)
-        {
-            var entity = _gameBoard.GetEntity(selectedPosition, entityType);
-            if (entity == null)
-                return false;
-
-            return _gameBoard.RemoveEntity(entity);
+            return entities.Count > 0;
         }
 
         public List<ICharacter> GetCharacters()

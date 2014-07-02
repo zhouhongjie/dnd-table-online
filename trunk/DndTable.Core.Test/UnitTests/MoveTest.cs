@@ -125,7 +125,7 @@ namespace DndTable.Core.Test.UnitTests
 
             // Add obstacles
             game.AddCharacter(Factory.CreateCharacter("obstacle1"), Position.Create(1, 2));
-            game.AddWall(Position.Create(2, 1));
+            game.AddMapEntity(Position.Create(2, 1), EntityTypeEnum.Wall);
 
             var moveAction = new MoveAction(char1);
             moveAction.Initialize(actionFactory);
