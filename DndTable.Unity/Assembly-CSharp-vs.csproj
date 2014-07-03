@@ -59,12 +59,19 @@
      <Compile Include="Assets\Scripts\PlayerCameraManager.cs" />
      <Compile Include="Assets\Scripts\TableManager.cs" />
      <Compile Include="Assets\Scripts\WallScript.cs" />
+ <Reference Include="Assembly-UnityScript-firstpass">
+ <HintPath>E:/Data/Projects/DndTableOnline/DndTable.Unity/Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll</HintPath>
+ </Reference>
  <Reference Include="DndTable.Core">
  <HintPath>E:/Data/Projects/DndTableOnline/DndTable.Unity/Assets/Libs/DndTable.Core.dll</HintPath>
  </Reference>
  <Reference Include="DndTable.UnityUI">
  <HintPath>E:/Data/Projects/DndTableOnline/DndTable.Unity/Assets/Libs/DndTable.UnityUI.dll</HintPath>
  </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass-vs.csproj">
+      <Project>{6321B33D-F854-08F5-0C60-E462ADB452B4}</Project>      <Name>Assembly-CSharp-firstpass-vs</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

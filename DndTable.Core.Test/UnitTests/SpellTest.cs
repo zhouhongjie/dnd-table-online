@@ -37,6 +37,7 @@ namespace DndTable.Core.Test.UnitTests
 
             // Do test
             var potion = new CureLightWound();
+            potion.Caster = character;
             potion.CastOn(character, diceRoller);
 
             Assert.AreEqual(16, character.CharacterSheet.HitPoints, "10 + 5 (1d8) + 1 (lvl)");

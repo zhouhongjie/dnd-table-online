@@ -156,8 +156,11 @@ namespace DndTable.Core
             // Check Standard actions
             if (CanDoStandardAction())
             {
-                if (GetCurrentCharacter().CharacterSheet.EquipedWeapon != null && !GetCurrentCharacter().CharacterSheet.EquipedWeapon.NeedsReload)
+                if ((GetCurrentCharacter().CharacterSheet.EquipedWeapon != null && !GetCurrentCharacter().CharacterSheet.EquipedWeapon.NeedsReload)
+                    || GetCurrentCharacter().CharacterSheet.HasNaturalWeapons)
                 {
+                    TODO sedsezf
+
                     if (GetCurrentCharacter().CharacterSheet.EquipedWeapon.IsRanged)
                         actions.Add(_actionFactory.RangeAttack(GetCurrentCharacter()));
                     else
@@ -174,7 +177,8 @@ namespace DndTable.Core
             if (CanDoMoveAction() && CanDoFullRoundAction())
             {
                 // Cannot charge with ranged weapon
-                if (GetCurrentCharacter().CharacterSheet.EquipedWeapon == null || !GetCurrentCharacter().CharacterSheet.EquipedWeapon.IsRanged)
+                if ((GetCurrentCharacter().CharacterSheet.EquipedWeapon != null && !GetCurrentCharacter().CharacterSheet.EquipedWeapon.IsRanged)
+                    || GetCurrentCharacter().CharacterSheet.HasNaturalWeapons)
                     actions.Add(_actionFactory.Charge(GetCurrentCharacter()));
             }
 

@@ -6,6 +6,7 @@ namespace DndTable.Core.Weapons
     internal class Weapon : IWeapon
     {
         public string Description { get; internal set; }
+        public int NrOfDamageDice { get; internal set; }
         public int DamageD { get; internal set; }
         public WeaponProficiencyEnum Proficiency { get; internal set; }
         public bool IsRanged { get; internal set; }
@@ -20,6 +21,7 @@ namespace DndTable.Core.Weapons
 
         internal Weapon()
         {
+            NrOfDamageDice = 1;
             CriticalMultiplier = 1;
             Proficiency = WeaponProficiencyEnum.Simple;
             DamageTypes = new List<WeaponDamageTypeEnum>();

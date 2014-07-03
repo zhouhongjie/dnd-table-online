@@ -1110,12 +1110,6 @@
     <EntityXml>
       <EntityType>Character</EntityType>
       <CharacterType>Orc</CharacterType>
-      <PositionX>12</PositionX>
-      <PositionY>3</PositionY>
-    </EntityXml>
-    <EntityXml>
-      <EntityType>Character</EntityType>
-      <CharacterType>Orc</CharacterType>
       <PositionX>18</PositionX>
       <PositionY>2</PositionY>
     </EntityXml>
@@ -1562,6 +1556,18 @@
       <CharacterType>Kobolt</CharacterType>
       <PositionX>13</PositionX>
       <PositionY>11</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>Wolf</CharacterType>
+      <PositionX>11</PositionX>
+      <PositionY>4</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>Wolf</CharacterType>
+      <PositionX>13</PositionX>
+      <PositionY>3</PositionY>
     </EntityXml>
   </Entities>
 </BoardXml>

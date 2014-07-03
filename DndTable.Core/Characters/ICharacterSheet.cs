@@ -40,6 +40,7 @@ namespace DndTable.Core.Characters
 
         ICharacterConditions Conditions { get; }
 
+        bool HasNaturalWeapons { get; }
 
         bool CanAct();
         int GetCurrentAttackBonus(int range, bool isFlanking);

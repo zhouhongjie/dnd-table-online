@@ -9,7 +9,7 @@ namespace DndTable.Core.Dice
     internal class DiceCheck : DiceRoll
     {
         public DiceCheck(ICharacter roller, DiceRollEnum type, int d, int bonus, int roll, int dc)
-            : base(roller, type, d, bonus, roll)
+            : base(roller, type, 1, d, bonus, roll)
         {
             DC = dc;
             Success = Result >= DC;

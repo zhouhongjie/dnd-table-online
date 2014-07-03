@@ -87,6 +87,8 @@ namespace DndTable.Core.Factories
                 return CreateOrcChief();
             if (npcType == CharacterTypeEnum.Kobolt)
                 return CreateKobolt();
+            if (npcType == CharacterTypeEnum.Wolf)
+                return CreateWolf();
 
             throw new NotImplementedException();
         }
@@ -171,34 +173,32 @@ namespace DndTable.Core.Factories
             return new Character(sheet, CharacterTypeEnum.Kobolt);
         }
 
-        //public static ICharacter CreateWolf(string name = "Wolf")
-        //{
-        //    var sheet = new CharacterSheet();
+        public static ICharacter CreateWolf(string name = "Wolf")
+        {
+            var sheet = new CharacterSheet();
 
-        //    sheet.Name = name;
-        //    sheet.Race = CharacterRace.Animal;
-        //    sheet.FactionId = 2;
+            sheet.Name = name;
+            sheet.Race = CharacterRace.Animal;
+            sheet.FactionId = 2;
 
-        //    sheet.Strength = 13;
-        //    sheet.Dexterity = 15;
-        //    sheet.Constitution = 15;
-        //    sheet.Intelligence = 2;
-        //    sheet.Wisdom = 12;
-        //    sheet.Charisma = 6;
+            sheet.Strength = 13;
+            sheet.Dexterity = 15;
+            sheet.Constitution = 15;
+            sheet.Intelligence = 2;
+            sheet.Wisdom = 12;
+            sheet.Charisma = 6;
 
-        //    sheet.HitPoints = 13;
-        //    sheet.MaxHitPoints = 13;
-        //    sheet.Speed = 50;
+            sheet.HitPoints = 13;
+            sheet.MaxHitPoints = 13;
+            sheet.Speed = 50;
 
-        //    sheet.NaturalArmor = 2;
+            sheet.NaturalArmor = 2;
+            sheet.NaturalWeapons.Add(new NaturalWeapon("Bite", true, 3, 1, 6, 1));
 
-        //    // TODO... ???? bite..
-        //    //sheet.EquipedWeapon = WeaponFactory.CrossbowLight();
-        //    //sheet.EquipedArmor = ArmorFactory.Leather();
-        //    //sheet.Weapons.Add(WeaponFactory.HalfSpear());
+            // TODO: Special attack => Trip
 
-        //    return new Character(sheet, CharacterTypeEnum.Kobolt);
-        //}
+            return new Character(sheet, CharacterTypeEnum.Wolf);
+        }
 
         public static IEntity CreateEntity(EntityTypeEnum entityType)
         {

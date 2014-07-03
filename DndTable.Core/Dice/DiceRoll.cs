@@ -8,10 +8,11 @@ namespace DndTable.Core.Dice
 {
     internal class DiceRoll : IDiceRoll
     {
-        public DiceRoll(ICharacter roller, DiceRollEnum type, int d, int bonus, int roll)
+        public DiceRoll(ICharacter roller, DiceRollEnum type, int nrOfDice, int d, int bonus, int roll)
         {
             Roller = roller;
             Type = type;
+            NrOfDice = nrOfDice;
             D = d;
             Bonus = bonus;
             Roll = roll;
@@ -21,6 +22,7 @@ namespace DndTable.Core.Dice
 
         public ICharacter Roller { get; private set; }
         public DiceRollEnum Type { get; private set; }
+        public int NrOfDice { get; private set; }
         public int D { get; private set; }
         public int Bonus { get; private set; }
 
@@ -31,13 +33,14 @@ namespace DndTable.Core.Dice
         {
             get
             {
-                return string.Format("{0}-{1}: {3}(1d{2}) + {4} = {5}",
+                return string.Format("{0}-{1}: {3}({6}d{2}) + {4} = {5}",
                                      Roller.CharacterSheet.Name,
                                      Type,
                                      D,
                                      Roll,
                                      Bonus,
-                                     Result);
+                                     Result,
+                                     NrOfDice);
             }
         }
     }
