@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DndTable.Core.Armors;
+using DndTable.Core.Factories;
 using DndTable.Core.Items;
 using DndTable.Core.Log;
 using DndTable.Core.Spells;
@@ -207,6 +208,12 @@ namespace DndTable.Core.Characters
                 //           CurrentRoundInfo.UseAttackBonus(context);
                 //}
 
+                // NaturalWeapons
+                if (NaturalWeapons.Count > 0)
+                {
+                    return NaturalWeapons[0].Attack;
+                }
+
                 // Ranged
                 if (EquipedWeapon != null && EquipedWeapon.IsRanged)
                 {
@@ -221,8 +228,29 @@ namespace DndTable.Core.Characters
             }
         }
 
+        internal DamageRoll GetCurrentDamageRoll()
+        {
+            if (NaturalWeapons.Count > 0)
+            {
+                // TODO: multiattack
+                var weapon = NaturalWeapons[0];
+                return new DamageRoll(weapon.DamageRolls, weapon.DamageD, weapon.DamageBonus);
+            }
+            else
+            {
+                // TODO: weapon can have multiple rolls as well
+                if (EquipedWeapon == null)
+                    throw new NotImplementedException("TODO: unarmed attack");
+
+                return new DamageRoll(EquipedWeapon.NrOfDamageDice, EquipedWeapon.DamageD, GetCurrentDamageBonus());
+            }
+        }
+
         public int GetCurrentDamageBonus()
         {
+            if (NaturalWeapons.Count > 0)
+                throw new InvalidOperationException("shouldn't use DamageBonus for natural weapons");
+
             using (var context = Calculator.CreatePropertyContext("DamageBonus"))
             {
                 // TODO: weapon bonus
@@ -305,6 +333,24 @@ namespace DndTable.Core.Characters
         private RoundInfo _currentRoundInfo = new RoundInfo();
         internal RoundInfo CurrentRoundInfo { get { return _currentRoundInfo; } }
 
+        private List<NaturalWeapon> _naturalWeapons = new List<NaturalWeapon>();
+        internal List<NaturalWeapon> NaturalWeapons { get { return _naturalWeapons; } }
 
+        public bool HasNaturalWeapons { get { return NaturalWeapons.Count > 0; }}
+        }
+    }
+
+    public class DamageRoll
+    {
+        public DamageRoll(int nrOfDice, int d, int bonus)
+        {
+            NrOfDice = nrOfDice;
+            D = d;
+            Bonus = bonus;
+        }
+
+        public int NrOfDice { get; private set; }
+        public int D { get; private set; }
+        public int Bonus { get; private set; }   
     }
 }

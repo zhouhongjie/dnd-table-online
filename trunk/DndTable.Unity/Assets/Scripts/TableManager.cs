@@ -273,6 +273,11 @@ public class TableManager : MonoBehaviour
                 StopCurrentAction();
                 _currentActionUI = new MapEditorUI(Game, CharacterTypeEnum.Kobolt);
             }
+            if (GUILayout.Button("Wolf"))
+            {
+                StopCurrentAction();
+                _currentActionUI = new MapEditorUI(Game, CharacterTypeEnum.Wolf);
+            }
         }
         GUILayout.EndVertical();
     }

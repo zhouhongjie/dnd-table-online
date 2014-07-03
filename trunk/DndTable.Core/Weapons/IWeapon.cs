@@ -21,6 +21,7 @@ namespace DndTable.Core.Weapons
         WeaponProficiencyEnum Proficiency { get; }
         bool IsRanged { get; }
 
+        int NrOfDamageDice { get; }
         int DamageD { get; }
 
         int CriticalMultiplier { get; }

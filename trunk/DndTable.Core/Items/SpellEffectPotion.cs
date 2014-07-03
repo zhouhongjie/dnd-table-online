@@ -23,6 +23,7 @@ namespace DndTable.Core.Items
         internal override bool Use(Characters.ICharacter character, Dice.IDiceRoller diceRoller)
         {
             // TODO: not entirely correct => caster can also be used to determine spell effectiveness (caster lvl, ...)
+            // Should be the caster that created the potion (or a dummy caster)
             _spellEffect.Caster = character;
             return _spellEffect.CastOn(character, diceRoller);
         }

@@ -105,14 +105,16 @@ namespace DndTable.Core.Actions
 
 
             // Do damage
+            var damageRollInfo = CharacterSheet.GetEditableSheet(Executer).GetCurrentDamageRoll();
             var nrOfDamageRolls = isCritical ? Executer.CharacterSheet.EquipedWeapon.CriticalMultiplier : 1;
             for (var i = 0; i < nrOfDamageRolls; i++)
             {
                 var damage = DiceRoller.Roll(
-                    Executer, 
-                    DiceRollEnum.Damage, 
-                    Executer.CharacterSheet.EquipedWeapon.DamageD, 
-                    Executer.CharacterSheet.GetCurrentDamageBonus());
+                    Executer,
+                    DiceRollEnum.Damage,
+                    damageRollInfo.NrOfDice,
+                    damageRollInfo.D,
+                    damageRollInfo.Bonus);
 
                 if (damage < 1)
                     damage = 1;

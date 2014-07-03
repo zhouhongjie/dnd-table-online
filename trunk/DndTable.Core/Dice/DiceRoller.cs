@@ -18,7 +18,21 @@ namespace DndTable.Core.Dice
 
         public int Roll(ICharacter roller, DiceRollEnum type, int d, int bonus)
         {
-            var roll = new DiceRoll(roller, type, d, bonus, _diceRandomizer.Roll(d));
+            var roll = new DiceRoll(roller, type, 1, d, bonus, _diceRandomizer.Roll(d));
+            Logger.Singleton.AddRoll(roll);
+            _rolls.Add(roll);
+            return roll.Result;
+        }
+
+        public int Roll(ICharacter roller, DiceRollEnum type, int nrOfRolls, int d, int bonus)
+        {
+            int rolls = 0;
+            for (var i=0; i < nrOfRolls; i++)
+            {
+                rolls += _diceRandomizer.Roll(d);
+            }
+
+            var roll = new DiceRoll(roller, type, nrOfRolls, d, bonus, rolls);
             Logger.Singleton.AddRoll(roll);
             _rolls.Add(roll);
             return roll.Result;

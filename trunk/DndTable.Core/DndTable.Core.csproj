@@ -92,6 +92,7 @@
     <Compile Include="Spells\SpellFactory.cs" />
     <Compile Include="Spells\ISpell.cs" />
     <Compile Include="Spells\MagicMissile.cs" />
+    <Compile Include="Weapons\NaturalWeapon.cs" />
     <Compile Include="Weapons\WeaponFactory.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Actions\IAction.cs" />
