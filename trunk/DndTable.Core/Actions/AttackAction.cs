@@ -29,6 +29,8 @@ namespace DndTable.Core.Actions
         {
             get
             {
+                if (Executer.CharacterSheet.HasNaturalWeapons)
+                    return "Natural attack";
                 if (Executer.CharacterSheet.EquipedWeapon == null)
                     return "Unarmed attack NOT SUPPORTED YET";
                 if (Executer.CharacterSheet.EquipedWeapon.IsRanged)
@@ -52,12 +54,16 @@ namespace DndTable.Core.Actions
                 throw new InvalidOperationException("Character target expected");
 
             // Has weapon?
-            if ((Executer.CharacterSheet.EquipedWeapon == null))
-                throw new InvalidOperationException("attacker has no equiped weapon");
+            if (!Executer.CharacterSheet.HasNaturalWeapons)
+            {
+                // Weapon equiped
+                if (Executer.CharacterSheet.EquipedWeapon == null)
+                    throw new InvalidOperationException("attacker has no equiped weapon");
 
-            // Needs reload?
-            if (Executer.CharacterSheet.EquipedWeapon.NeedsReload)
-                throw new InvalidOperationException("attacker's equiped weapon needs reload");
+                // Needs reload?
+                if (Executer.CharacterSheet.EquipedWeapon.NeedsReload)
+                    throw new InvalidOperationException("attacker's equiped weapon needs reload");
+            }
 
             // Check max range
             var rangeRounded = MathHelper.GetTilesDistance(Executer.Position, _targetCharacter.Position);
@@ -78,7 +84,12 @@ namespace DndTable.Core.Actions
 
             // Use the weapon (Launch ammo is required)
             var weapon = (Executer.CharacterSheet.EquipedWeapon as Weapon);
-            weapon.Use();
+            if (weapon != null)
+                weapon.Use();
+
+            // don't use the stats of the EquipedWeapon
+            // => use the DamageRollStatistics
+            var damageRollInfo = CharacterSheet.GetEditableSheet(Executer).GetCurrentDamageRoll();
 
             // Check hit
             var check = DiceRoller.RollAttack(
@@ -86,7 +97,7 @@ namespace DndTable.Core.Actions
                 DiceRollEnum.Attack,
                 Executer.CharacterSheet.GetCurrentAttackBonus((int)rangeRounded * 5, IsFlanking()),  // Convert tiles to feet
                 _targetCharacter.CharacterSheet.GetCurrentArmorClass(),
-                20 - Executer.CharacterSheet.EquipedWeapon.CriticalRange);
+                20 - damageRollInfo.CriticalRange);
 
             if (!check.Success)
                 return;
@@ -105,8 +116,7 @@ namespace DndTable.Core.Actions
 
 
             // Do damage
-            var damageRollInfo = CharacterSheet.GetEditableSheet(Executer).GetCurrentDamageRoll();
-            var nrOfDamageRolls = isCritical ? Executer.CharacterSheet.EquipedWeapon.CriticalMultiplier : 1;
+            var nrOfDamageRolls = isCritical ? damageRollInfo.CriticalMultiplier : 1;
             for (var i = 0; i < nrOfDamageRolls; i++)
             {
                 var damage = DiceRoller.Roll(

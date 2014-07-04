@@ -209,7 +209,7 @@ namespace DndTable.Core.Characters
                 //}
 
                 // NaturalWeapons
-                if (NaturalWeapons.Count > 0)
+                if (HasNaturalWeapons)
                 {
                     return NaturalWeapons[0].Attack;
                 }
@@ -228,13 +228,13 @@ namespace DndTable.Core.Characters
             }
         }
 
-        internal DamageRoll GetCurrentDamageRoll()
+        internal AttackRollStatistics GetCurrentDamageRoll()
         {
-            if (NaturalWeapons.Count > 0)
+            if (HasNaturalWeapons)
             {
-                // TODO: multiattack
+                // TODO: multi-attack
                 var weapon = NaturalWeapons[0];
-                return new DamageRoll(weapon.DamageRolls, weapon.DamageD, weapon.DamageBonus);
+                return new AttackRollStatistics(weapon.DamageRolls, weapon.DamageD, weapon.DamageBonus, 0, 2);
             }
             else
             {
@@ -242,13 +242,17 @@ namespace DndTable.Core.Characters
                 if (EquipedWeapon == null)
                     throw new NotImplementedException("TODO: unarmed attack");
 
-                return new DamageRoll(EquipedWeapon.NrOfDamageDice, EquipedWeapon.DamageD, GetCurrentDamageBonus());
+                return new AttackRollStatistics(EquipedWeapon.NrOfDamageDice,
+                                      EquipedWeapon.DamageD,
+                                      GetCurrentDamageBonus(),
+                                      EquipedWeapon.CriticalRange,
+                                      EquipedWeapon.CriticalMultiplier);
             }
         }
 
         public int GetCurrentDamageBonus()
         {
-            if (NaturalWeapons.Count > 0)
+            if (HasNaturalWeapons)
                 throw new InvalidOperationException("shouldn't use DamageBonus for natural weapons");
 
             using (var context = Calculator.CreatePropertyContext("DamageBonus"))
@@ -337,20 +341,26 @@ namespace DndTable.Core.Characters
         internal List<NaturalWeapon> NaturalWeapons { get { return _naturalWeapons; } }
 
         public bool HasNaturalWeapons { get { return NaturalWeapons.Count > 0; }}
-        }
     }
 
-    public class DamageRoll
+
+    public class AttackRollStatistics
     {
-        public DamageRoll(int nrOfDice, int d, int bonus)
+        public AttackRollStatistics( int nrOfDice, int d, int bonus, int criticalRange, int criticalMultiplier)
         {
             NrOfDice = nrOfDice;
             D = d;
             Bonus = bonus;
+            CriticalRange = criticalRange;
+            CriticalMultiplier = criticalMultiplier;
         }
 
         public int NrOfDice { get; private set; }
         public int D { get; private set; }
         public int Bonus { get; private set; }   
+        public int CriticalRange { get; private set; }   
+        public int CriticalMultiplier { get; private set; }   
     }
+
 }
+
