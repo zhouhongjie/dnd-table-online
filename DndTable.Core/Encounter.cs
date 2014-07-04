@@ -159,9 +159,9 @@ namespace DndTable.Core
                 if ((GetCurrentCharacter().CharacterSheet.EquipedWeapon != null && !GetCurrentCharacter().CharacterSheet.EquipedWeapon.NeedsReload)
                     || GetCurrentCharacter().CharacterSheet.HasNaturalWeapons)
                 {
-                    TODO sedsezf
-
-                    if (GetCurrentCharacter().CharacterSheet.EquipedWeapon.IsRanged)
+                    if (GetCurrentCharacter().CharacterSheet.HasNaturalWeapons)
+                        actions.Add(_actionFactory.NaturalAttack(GetCurrentCharacter()));
+                    else if (GetCurrentCharacter().CharacterSheet.EquipedWeapon.IsRanged)
                         actions.Add(_actionFactory.RangeAttack(GetCurrentCharacter()));
                     else
                         actions.Add(_actionFactory.MeleeAttack(GetCurrentCharacter()));

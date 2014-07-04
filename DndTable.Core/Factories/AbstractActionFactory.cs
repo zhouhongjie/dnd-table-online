@@ -37,6 +37,11 @@ namespace DndTable.Core.Factories
             return MeleeAttack(attacker);
         }
 
+        internal IAttackAction NaturalAttack(ICharacter attacker)
+        {
+            return MeleeAttack(attacker);
+        }
+
         internal IMoveAction Move(ICharacter character)
         {
             var action = new MoveAction(character);
