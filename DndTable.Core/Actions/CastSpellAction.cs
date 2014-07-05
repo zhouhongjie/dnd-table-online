@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DndTable.Core.Characters;
+using DndTable.Core.Dice;
 using DndTable.Core.Spells;
 
 namespace DndTable.Core.Actions
@@ -53,10 +54,19 @@ namespace DndTable.Core.Actions
             Register();
 
             // TODO: cast on the defence
-            // TODO: concentration check to continue casting
+            var hitpointsBeforeAoO = Executer.CharacterSheet.HitPoints;
             HandleAttackOfOpportunity(context);
             if (!Executer.CharacterSheet.CanAct())
                 return;
+
+            // Concentration check
+            var damageByAoO = hitpointsBeforeAoO - Executer.CharacterSheet.HitPoints;
+            if (damageByAoO > 0)
+            {
+                // TODO: concentration skill in character sheet
+                if (!DiceRoller.Check(Executer, DiceRollEnum.Concentration, 20, 0, damageByAoO + 10 + _spell.Level))
+                    return;
+            }
 
             // TODO: arcane spell failure
 
