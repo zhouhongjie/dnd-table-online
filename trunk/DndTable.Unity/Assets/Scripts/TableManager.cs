@@ -405,6 +405,9 @@ public class TableManager : MonoBehaviour
         {
             //GUI.Label(new Rect(0, start, Screen.width, Screen.height), character.CharacterSheet.Name + ": " + character.CharacterSheet.HitPoints + "hp");
             label += character.CharacterSheet.Name + ": " + character.CharacterSheet.HitPoints + "hp" + "\n";
+
+            if (character.CharacterSheet.Conditions.IsSleeping)
+                label += " Zzzzz";
         }
         GUILayout.Label(label);
     }
