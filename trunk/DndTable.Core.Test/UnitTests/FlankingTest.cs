@@ -90,6 +90,62 @@ namespace DndTable.Core.Test.UnitTests
         }
 
         [Test]
+        public void WithNaturalWeapon()
+        {
+            var target = CreateCharacter(1, Position.Create(5, 5));
+            var attacker = CreateCharacter(2, Position.Create(4, 4));
+
+            // Participant with natural weapon
+            var participant = CreateCharacter(2, Position.Create(6, 6), null);
+            CharacterSheet.GetEditableSheet(participant).NaturalWeapons.Add(new NaturalWeapon("dummy", true, 1, 1, 1, 1));
+
+            var participants = new List<ICharacter>()
+                                   {
+                                       participant
+                                   };
+
+            Assert.IsTrue(ActionHelper.IsFlanking(attacker, target, participants));
+        }
+
+        [Test]
+        public void CheckAttackerWeapon()
+        {
+            var target = CreateCharacter(1, Position.Create(5, 5));
+            var participants = new List<ICharacter>()
+                                   {
+                                       CreateCharacter(2, Position.Create(6, 6))
+                                   };
+
+            // Melee => ok
+            {
+                var attacker = CreateCharacter(2, Position.Create(4, 4));
+                Assert.IsTrue(ActionHelper.IsFlanking(attacker, target, participants));
+            }
+            // Natural melee => ok
+            {
+                var attacker = CreateCharacter(2, Position.Create(4, 4), null);
+                CharacterSheet.GetEditableSheet(attacker).NaturalWeapons.Add(new NaturalWeapon("melee", true, 1, 1, 1, 1));
+                Assert.IsTrue(ActionHelper.IsFlanking(attacker, target, participants));
+            }
+            // Unarmed => not ok
+            {
+                var attacker = CreateCharacter(2, Position.Create(4, 4), null);
+                Assert.IsFalse(ActionHelper.IsFlanking(attacker, target, participants));
+            }
+            // Natural ranged => not ok
+            {
+                var attacker = CreateCharacter(2, Position.Create(4, 4), null);
+                CharacterSheet.GetEditableSheet(attacker).NaturalWeapons.Add(new NaturalWeapon("melee", false, 1, 1, 1, 1));
+                Assert.IsFalse(ActionHelper.IsFlanking(attacker, target, participants));
+            }
+            // Ranged => not ok
+            {
+                var attacker = CreateCharacter(2, Position.Create(4, 4), new Weapon() { IsRanged = true });
+                Assert.IsFalse(ActionHelper.IsFlanking(attacker, target, participants));
+            }
+        }
+
+        [Test]
         public void ParticipantNotThreatening()
         {
             var target = CreateCharacter(1, Position.Create(5, 5));
@@ -109,6 +165,17 @@ namespace DndTable.Core.Test.UnitTests
                 var participants = new List<ICharacter>()
                                        {
                                            CreateCharacter(1, Position.Create(6, 6), new Weapon() { IsRanged = true })
+                                       };
+                Assert.IsFalse(ActionHelper.IsFlanking(attacker, target, participants));
+            }
+
+            // Dead
+            {
+                var dead = CreateCharacter(1, Position.Create(6, 6));
+                CharacterSheet.GetEditableSheet(dead).ApplyDamage(100);
+                var participants = new List<ICharacter>()
+                                       {
+                                           dead
                                        };
                 Assert.IsFalse(ActionHelper.IsFlanking(attacker, target, participants));
             }
