@@ -140,6 +140,13 @@ namespace DndTable.Core.Actions
 
         private bool ProvokesAttackOfOpportunity()
         {
+            // TODO: check
+            if (Executer.CharacterSheet.HasNaturalWeapons)
+                return false;
+            // TODO: unarmed combat feat => no longer AoO
+            if (Executer.CharacterSheet.EquipedWeapon == null)
+                return true;
+
             return Executer.CharacterSheet.EquipedWeapon.IsRanged;
         }
 

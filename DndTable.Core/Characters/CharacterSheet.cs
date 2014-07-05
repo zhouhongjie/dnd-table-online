@@ -211,7 +211,9 @@ namespace DndTable.Core.Characters
                 // NaturalWeapons
                 if (HasNaturalWeapons)
                 {
-                    return NaturalWeapons[0].Attack;
+                    return context.Use(NaturalWeapons[0].Attack, NaturalWeapons[0].Name + " bonus") +
+                           CurrentRoundInfo.UseAttackBonus(context) +
+                           context.Use(isFlanking ? 2 : 0, "Flanking");
                 }
 
                 // Ranged
@@ -301,7 +303,7 @@ namespace DndTable.Core.Characters
                 result += context.Use(SizeModifier, "Size");
 
                 // Natural armor
-                result += NaturalArmor;
+                result += context.Use(NaturalArmor, "NaturalArmor");
 
                 // Add armor (not touch, ...)
                 if (EquipedArmor != null)
