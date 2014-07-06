@@ -19,8 +19,9 @@ namespace DndTable.Core.Characters
         void PrepareSpell(ISpell spell);
 
         // Inventory actions
-        void GivePotion(IPotion potion);
-        void GiveWeapon(IWeapon weapon);
+        void Give(IPotion potion);
+        void Give(IWeapon weapon);
+        bool RemoveItem(IPotion potion);
 
         // Persistence
         bool SaveCharacterSheet(string name);

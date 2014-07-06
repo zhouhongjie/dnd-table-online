@@ -80,9 +80,13 @@ public class TableManager : MonoBehaviour
                 boris.SaveCharacterSheet("Boris");
                 boris.EquipWeapon(WeaponFactory.Longsword());
                 boris.EquipArmor(ArmorFactory.StuddedLeather());
-                boris.GiveWeapon(WeaponFactory.CrossbowLight());
+                boris.Give(WeaponFactory.CrossbowLight());
                 Game.AddCharacter(boris, Position.Create(3, 3));
                 allPcs.Add(boris);
+
+
+                boris.Give(PotionFactory.CreatePotionOfCureLightWound());
+                boris.Give(PotionFactory.CreatePotionOfCureLightWound());
             }
 
             // Maiko
@@ -91,7 +95,7 @@ public class TableManager : MonoBehaviour
                 maiko.SaveCharacterSheet("Maiko");
                 maiko.EquipWeapon(WeaponFactory.Longbow());
                 maiko.EquipArmor(ArmorFactory.Leather());
-                maiko.GiveWeapon(WeaponFactory.Rapier());
+                maiko.Give(WeaponFactory.Rapier());
                 maiko.PrepareSpell(SpellFactory.MagicMissile());
                 maiko.PrepareSpell(SpellFactory.MagicMissile());
                 maiko.PrepareSpell(SpellFactory.MagicMissile());
