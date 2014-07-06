@@ -9,7 +9,7 @@ namespace DndTable.Core.Actions
 
     public enum ActionCategoryEnum
     {
-        Other, Combat, Move, Spell
+        Other, Combat, Move, Spell, Context
     }
 
     public interface IAction

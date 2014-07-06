@@ -45,13 +45,17 @@ namespace DndTable.Core.Actions
 
                 for (var i = 0; i < nrOfPotions; i++)
                 {
-                    var potionChoice = DiceRoller.Roll(Executer, DiceRollEnum.Loot, 3, 0);
+                    var potionChoice = DiceRoller.Roll(Executer, DiceRollEnum.Loot, 10, 0);
                     IPotion currentPotion = null;
+
+                    // 1/10
                     if (potionChoice == 1)
-                        currentPotion = PotionFactory.CreatePotionOfCureLightWound();
-                    else if (potionChoice == 2)
                         currentPotion = PotionFactory.CreatePotionOfCatsGrace();
-                    else if (potionChoice == 3)
+                    // 1/10
+                    else if (potionChoice == 2)
+                        currentPotion = PotionFactory.CreatePotionOfBullsStrength();
+                    // 8/10
+                    else 
                         currentPotion = PotionFactory.CreatePotionOfBullsStrength();
 
                     CharacterSheet.GetEditableSheet(Executer).Potions.Add(currentPotion);
@@ -66,6 +70,8 @@ namespace DndTable.Core.Actions
         {
             get { return ActionTypeEnum.FullRound; }
         }
+
+        public override ActionCategoryEnum Category { get { return ActionCategoryEnum.Context; } }
 
         public override string Description
         {
