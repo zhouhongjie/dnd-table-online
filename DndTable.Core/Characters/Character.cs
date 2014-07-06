@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using DndTable.Core.Actions;
 using DndTable.Core.Armors;
 using DndTable.Core.Dice;
 using DndTable.Core.Entities;
+using DndTable.Core.Factories;
 using DndTable.Core.Items;
 using DndTable.Core.Persistence;
 using DndTable.Core.Spells;
@@ -42,14 +45,19 @@ namespace DndTable.Core.Characters
             Characters.CharacterSheet.GetEditableSheet(this).EquipedArmor = armor;
         }
 
-        public void GivePotion(IPotion potion)
+        public void Give(IPotion potion)
         {
             Characters.CharacterSheet.GetEditableSheet(this).Potions.Add(potion);
         }
 
-        public void GiveWeapon(IWeapon weapon)
+        public void Give(IWeapon weapon)
         {
             Characters.CharacterSheet.GetEditableSheet(this).Weapons.Add(weapon);
+        }
+
+        public bool RemoveItem(IPotion potion)
+        {
+            return Characters.CharacterSheet.GetEditableSheet(this).Potions.Remove(potion);
         }
 
         public void PrepareSpell(ISpell spell)
@@ -72,6 +80,23 @@ namespace DndTable.Core.Characters
         {
             var sheet = Characters.CharacterSheet.GetEditableSheet(this);
             return _repository.LoadCharacterSheet(name, ref sheet);
+        }
+
+
+        internal override List<IAction> GetUseActions(ICharacter selectingCharacter, AbstractActionFactory actionFactory)
+        {
+            var actions = new List<IAction>();
+
+            foreach (var potion in selectingCharacter.CharacterSheet.Potions)
+            {
+                var action = actionFactory.GiveItem(selectingCharacter, potion) as BaseAction;
+                if (action == null)
+                    throw new InvalidCastException();
+
+                actions.Add(action.Target(this));
+            }
+
+            return actions;
         }
 
     }
