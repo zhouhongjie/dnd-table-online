@@ -37,6 +37,8 @@ namespace DndTable.Core.Actions
             get { return ActionTypeEnum.MoveEquivalent; }
         }
 
+        public override ActionCategoryEnum Category { get { return ActionCategoryEnum.Context; } }
+
         public override string Description
         {
             get { return _door.IsOpen ? "Close door" : "Open door"; }

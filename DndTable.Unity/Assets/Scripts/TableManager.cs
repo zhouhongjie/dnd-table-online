@@ -85,8 +85,8 @@ public class TableManager : MonoBehaviour
                 allPcs.Add(boris);
 
 
-                boris.Give(PotionFactory.CreatePotionOfCureLightWound());
-                boris.Give(PotionFactory.CreatePotionOfCureLightWound());
+                //boris.Give(PotionFactory.CreatePotionOfCureLightWound());
+                //boris.Give(PotionFactory.CreatePotionOfCureLightWound());
             }
 
             // Maiko
@@ -338,6 +338,10 @@ public class TableManager : MonoBehaviour
             AddButtonsForCategory(ActionCategoryEnum.Combat, ref actionsRemaining);
             AddButtonsForCategory(ActionCategoryEnum.Move, ref actionsRemaining);
             AddButtonsForCategory(ActionCategoryEnum.Other, ref actionsRemaining);
+            AddButtonsForCategory(ActionCategoryEnum.Context, ref actionsRemaining);
+
+            if (actionsRemaining.Count > 0)
+                throw new NotSupportedException("Some ActionCategories are not supported");
         }
 
         GUILayout.EndHorizontal();
@@ -354,7 +358,7 @@ public class TableManager : MonoBehaviour
 
         foreach (var action in allActions)
         {
-            if (action.Category != category && category != ActionCategoryEnum.Other)
+            if (action.Category != category)
                 continue;
 
             // Action handled => remove from list
