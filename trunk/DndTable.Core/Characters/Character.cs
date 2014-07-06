@@ -89,11 +89,14 @@ namespace DndTable.Core.Characters
 
             foreach (var potion in selectingCharacter.CharacterSheet.Potions)
             {
-                var action = actionFactory.GiveItem(selectingCharacter, potion) as BaseAction;
-                if (action == null)
-                    throw new InvalidCastException();
-
-                actions.Add(action.Target(this));
+                // Give
+                {
+                    actions.Add(actionFactory.GiveItem(selectingCharacter, potion, this));
+                }
+                // Apply potion
+                {
+                    actions.Add(actionFactory.ApplyPotion(selectingCharacter, potion, this));
+                }
             }
 
             return actions;

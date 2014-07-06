@@ -56,7 +56,7 @@ namespace DndTable.Core.Actions
                         currentPotion = PotionFactory.CreatePotionOfBullsStrength();
                     // 8/10
                     else 
-                        currentPotion = PotionFactory.CreatePotionOfBullsStrength();
+                        currentPotion = PotionFactory.CreatePotionOfCureLightWound();
 
                     CharacterSheet.GetEditableSheet(Executer).Potions.Add(currentPotion);
                 }
