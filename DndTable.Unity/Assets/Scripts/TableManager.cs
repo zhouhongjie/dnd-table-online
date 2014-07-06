@@ -80,12 +80,12 @@ public class TableManager : MonoBehaviour
                 boris.SaveCharacterSheet("Boris");
                 boris.EquipWeapon(WeaponFactory.Longsword());
                 boris.EquipArmor(ArmorFactory.StuddedLeather());
-                boris.Give(WeaponFactory.CrossbowLight());
+                //boris.Give(WeaponFactory.CrossbowLight());
                 Game.AddCharacter(boris, Position.Create(3, 3));
                 allPcs.Add(boris);
 
 
-                //boris.Give(PotionFactory.CreatePotionOfCureLightWound());
+                boris.Give(PotionFactory.CreatePotionOfCureLightWound());
                 //boris.Give(PotionFactory.CreatePotionOfCureLightWound());
             }
 
@@ -98,10 +98,13 @@ public class TableManager : MonoBehaviour
                 maiko.Give(WeaponFactory.Rapier());
                 maiko.PrepareSpell(SpellFactory.MagicMissile());
                 maiko.PrepareSpell(SpellFactory.MagicMissile());
-                maiko.PrepareSpell(SpellFactory.MagicMissile());
+                maiko.PrepareSpell(SpellFactory.SleepArrow());
+                maiko.PrepareSpell(SpellFactory.SleepArrow());
                 maiko.PrepareSpell(SpellFactory.SleepArrow());
                 Game.AddCharacter(maiko, Position.Create(3, 4));
                 allPcs.Add(maiko);
+
+                maiko.Give(PotionFactory.CreatePotionOfCureLightWound());
             }
 
             // Healer
@@ -118,6 +121,8 @@ public class TableManager : MonoBehaviour
                 healer.PrepareSpell(SpellFactory.CureLightWound());
                 Game.AddCharacter(healer, Position.Create(3, 5));
                 allPcs.Add(healer);
+
+                healer.Give(PotionFactory.CreatePotionOfCureLightWound());
             }
 
             // Start encounter
@@ -337,6 +342,7 @@ public class TableManager : MonoBehaviour
             var actionsRemaining = CurrentEncounter.GetPossibleActionsForCurrentCharacter();
             AddButtonsForCategory(ActionCategoryEnum.Combat, ref actionsRemaining);
             AddButtonsForCategory(ActionCategoryEnum.Move, ref actionsRemaining);
+            AddButtonsForCategory(ActionCategoryEnum.Spell, ref actionsRemaining);
             AddButtonsForCategory(ActionCategoryEnum.Other, ref actionsRemaining);
             AddButtonsForCategory(ActionCategoryEnum.Context, ref actionsRemaining);
 
