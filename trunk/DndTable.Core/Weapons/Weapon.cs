@@ -16,6 +16,9 @@ namespace DndTable.Core.Weapons
         public int Weight { get; internal set; }
         public List<WeaponDamageTypeEnum> DamageTypes { get; internal set; }
 
+        public bool ProvokesAoO { get { return IsRanged; } }
+
+
         public bool NeedsReload { get { return this.ReloadInfo != null && !this.ReloadInfo.IsLoaded; } }
         public ReloadInfo ReloadInfo { get; internal set; }
 
@@ -27,7 +30,7 @@ namespace DndTable.Core.Weapons
             DamageTypes = new List<WeaponDamageTypeEnum>();
         }
 
-        internal void Use()
+        public void Use()
         {
             if (ReloadInfo != null)
             {

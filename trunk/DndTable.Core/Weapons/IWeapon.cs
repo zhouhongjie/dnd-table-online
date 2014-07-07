@@ -4,7 +4,7 @@ namespace DndTable.Core.Weapons
 {
     public enum WeaponProficiencyEnum
     {
-        Simple, Martial, Exotic
+        Simple, Martial, Exotic, Natural
     }
 
     public enum WeaponDamageTypeEnum
@@ -33,11 +33,19 @@ namespace DndTable.Core.Weapons
 
         List<WeaponDamageTypeEnum> DamageTypes { get; }
 
+        bool ProvokesAoO { get; }
+
         #endregion
 
         #region Operational status
 
         bool NeedsReload { get; }
+
+        #endregion
+
+        #region operation
+
+        void Use();
 
         #endregion
     }

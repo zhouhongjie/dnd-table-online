@@ -15,7 +15,7 @@ namespace DndTable.Core.Actions
             if (sheet.HasNaturalWeapons)
             {
                 // No AoO with ranged weapons
-                if (!sheet.NaturalWeapons[0].IsMelee)
+                if (sheet.NaturalWeapons[0].IsRanged)
                     return false;
             }
             else
