@@ -27,7 +27,7 @@ namespace DndTable.Core.Factories
 
         internal IAttackAction MeleeAttack(ICharacter attacker)
         {
-            var action = new AttackAction(attacker);
+            var action = new AttackAction2(attacker);
             action.Initialize(this);
             return action;
         }

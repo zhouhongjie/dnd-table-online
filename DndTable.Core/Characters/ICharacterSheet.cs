@@ -44,9 +44,11 @@ namespace DndTable.Core.Characters
 
         bool CanAct();
         int GetCurrentAttackBonus(int range, bool isFlanking);
-        int GetCurrentDamageBonus();
+        //int GetCurrentDamageBonus();
         int GetCurrentSpeed();
         int GetCurrentArmorClass();
         int GetCurrentInitiative();
+
+        IWeapon GetCurrentWeapon();
     }
 }

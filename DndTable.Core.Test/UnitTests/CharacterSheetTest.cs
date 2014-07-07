@@ -19,11 +19,11 @@ namespace DndTable.Core.Test.UnitTests
             var sheet = new CharacterSheet();
 
             // Dexterity
-            sheet.Dexterity = 0;
+            sheet.DexterityAttribute.SetValue(0);
             Assert.AreEqual(5, sheet.GetCurrentArmorClass());
-            sheet.Dexterity = 10;
+            sheet.DexterityAttribute.SetValue(10);
             Assert.AreEqual(10, sheet.GetCurrentArmorClass());
-            sheet.Dexterity = 20;
+            sheet.DexterityAttribute.SetValue(20);
             Assert.AreEqual(15, sheet.GetCurrentArmorClass());
         }
 
@@ -31,7 +31,7 @@ namespace DndTable.Core.Test.UnitTests
         public void ArmorClassArmorTest()
         {
             var sheet = new CharacterSheet();
-            sheet.Dexterity = 10;
+            sheet.DexterityAttribute.SetValue(10);
 
             // Armor
             var armor = new Armor();
@@ -48,7 +48,7 @@ namespace DndTable.Core.Test.UnitTests
         public void ArmorClassSizeTest()
         {
             var sheet = new CharacterSheet();
-            sheet.Dexterity = 10;
+            sheet.DexterityAttribute.SetValue(10);
 
             // Size
             sheet.SizeModifier = 2;
@@ -64,12 +64,12 @@ namespace DndTable.Core.Test.UnitTests
             var weapon = new Weapon() { IsRanged = false };
 
             var sheet = new CharacterSheet();
-            sheet.Strength = 12;
-            sheet.Dexterity = 20;
+            sheet.StrengthAttribute.SetValue(12);
+            sheet.DexterityAttribute.SetValue(20);
             sheet.EquipedWeapon = weapon;
             Assert.AreEqual(1, sheet.GetCurrentAttackBonus(5, false));
-            sheet.Strength = 14;
-            sheet.Dexterity = 20;
+            sheet.StrengthAttribute.SetValue(14);
+            sheet.DexterityAttribute.SetValue(20);
             Assert.AreEqual(2, sheet.GetCurrentAttackBonus(5, false));
         }
 
@@ -80,12 +80,12 @@ namespace DndTable.Core.Test.UnitTests
 
             // Test Dex
             var sheet = new CharacterSheet();
-            sheet.Strength = 20;
-            sheet.Dexterity = 12;
+            sheet.StrengthAttribute.SetValue(20);
+            sheet.DexterityAttribute.SetValue(12);
             sheet.EquipedWeapon = weapon;
             Assert.AreEqual(1, sheet.GetCurrentAttackBonus(10, false));
-            sheet.Strength = 20;
-            sheet.Dexterity = 14;
+            sheet.StrengthAttribute.SetValue(20);
+            sheet.DexterityAttribute.SetValue(14);
             Assert.AreEqual(2, sheet.GetCurrentAttackBonus(10, false));
 
             // Test RangeIncrement
@@ -101,8 +101,8 @@ namespace DndTable.Core.Test.UnitTests
         public void GetCurrentAttackBonusTest_Flanking()
         {
             var sheet = new CharacterSheet();
-            sheet.Strength = 10;
-            sheet.Dexterity = 10;
+            sheet.StrengthAttribute.SetValue(10);
+            sheet.DexterityAttribute.SetValue(10);
 
             // Unarmed
             Assert.AreEqual(0, sheet.GetCurrentAttackBonus(5, false));
@@ -123,13 +123,13 @@ namespace DndTable.Core.Test.UnitTests
             var weapon = new Weapon() {IsRanged = false};
 
             var sheet = new CharacterSheet();
-            sheet.Strength = 12;
-            sheet.Dexterity = 20;
+            sheet.StrengthAttribute.SetValue(12);
+            sheet.DexterityAttribute.SetValue(20);
             sheet.EquipedWeapon = weapon;
-            Assert.AreEqual(1, sheet.GetCurrentDamageBonus());
-            sheet.Strength = 14;
-            sheet.Dexterity = 20;
-            Assert.AreEqual(2, sheet.GetCurrentDamageBonus());
+            Assert.AreEqual(1, sheet.GetCurrentDamageRoll().Bonus);
+            sheet.StrengthAttribute.SetValue(14);
+            sheet.DexterityAttribute.SetValue(20);
+            Assert.AreEqual(2, sheet.GetCurrentDamageRoll().Bonus);
         }
 
         [Test]
@@ -138,26 +138,26 @@ namespace DndTable.Core.Test.UnitTests
             var weapon = new Weapon() {IsRanged = true};
 
             var sheet = new CharacterSheet();
-            sheet.Strength = 20;
-            sheet.Dexterity = 12;
+            sheet.StrengthAttribute.SetValue(20);
+            sheet.DexterityAttribute.SetValue(12);
             sheet.EquipedWeapon = weapon;
-            Assert.AreEqual(0, sheet.GetCurrentDamageBonus());
-            sheet.Strength = 20;
-            sheet.Dexterity = 14;
-            Assert.AreEqual(0, sheet.GetCurrentDamageBonus());
+            Assert.AreEqual(0, sheet.GetCurrentDamageRoll().Bonus);
+            sheet.StrengthAttribute.SetValue(20);
+            sheet.DexterityAttribute.SetValue(14);
+            Assert.AreEqual(0, sheet.GetCurrentDamageRoll().Bonus);
         }
 
         [Test]
         public void GetCurrentInitiativeTest()
         {
             var sheet = new CharacterSheet();
-            sheet.Dexterity = 0;
+            sheet.DexterityAttribute.SetValue(0);
             Assert.AreEqual(-5, sheet.GetCurrentInitiative());
-            sheet.Dexterity = 10;
+            sheet.DexterityAttribute.SetValue(10);
             Assert.AreEqual(0, sheet.GetCurrentInitiative());
-            sheet.Dexterity = 12;
+            sheet.DexterityAttribute.SetValue(12);
             Assert.AreEqual(1, sheet.GetCurrentInitiative());
-            sheet.Dexterity = 16;
+            sheet.DexterityAttribute.SetValue(16);
             Assert.AreEqual(3, sheet.GetCurrentInitiative());
         }
     }

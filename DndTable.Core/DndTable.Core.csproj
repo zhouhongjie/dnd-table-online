@@ -45,6 +45,7 @@
     <Compile Include="Actions\BaseAction.cs" />
     <Compile Include="Actions\CastSpellAction.cs" />
     <Compile Include="Actions\ChargeAction.cs" />
+    <Compile Include="Actions\AttackAction2.cs" />
     <Compile Include="Actions\FiveFootStep.cs" />
     <Compile Include="Actions\GiveItemAction.cs" />
     <Compile Include="Actions\IAttackAction.cs" />

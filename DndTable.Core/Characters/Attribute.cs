@@ -22,7 +22,7 @@ namespace DndTable.Core.Characters
 
         public void SetValue(int value)
         {
-            if (BaseStat != 0)
+            if (Buff != 0)
                 throw new NotSupportedException("TODO: review manipulation of attributes => this can be confusing when there are buffs active = currently only used for initialization");
 
             BaseStat = value;
