@@ -5,6 +5,8 @@
         protected CharacterSheet Sheet { get; private set; }
         protected int DurationInRounds { get; private set; }
 
+        public bool IsExpired { get; set; }
+
         internal BaseEffect(CharacterSheet sheet, int durationInRounds)
         {
             Sheet = sheet;

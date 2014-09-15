@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DndTable.Core.Characters;
@@ -18,9 +17,24 @@ namespace DndTable.Core.Spells
         {
             var sheet = CharacterSheet.GetEditableSheet(character);
 
-            var buff = diceRoller.Roll(Caster, DiceRollEnum.MagicEffect, 4, 1);
+            var buffValue = diceRoller.Roll(Caster, DiceRollEnum.MagicEffect, 4, 1);
             var duration = 600; // 1hr / caster_lvl
-            sheet.AddAndApplyEffect(new AttributeBuffEffect(sheet, duration, sheet.StrengthAttribute, buff));
+            //sheet.AddAndApplyEffect(new AttributeBuffEffect(sheet, duration, sheet.StrengthAttribute, buffValue));
+
+
+            // NEW
+            {
+                // Spell creates an effect
+                // Effect creates AttributeBuff
+                // AttributeBuff influences attribute
+
+                var effect = new AttributeBuffEffect2(sheet, duration);
+                var buff = new AttributeBuff(effect, buffValue);
+
+                sheet.StrengthAttribute.AddBuff(buff);
+                sheet.AddAndApplyEffect(effect);
+            }
+
 
             return true;
         }

@@ -92,7 +92,7 @@ namespace DndTable.Core.Test.UnitTests
             // No reload needed on weapon
             {
                 Assert.IsFalse(current.CharacterSheet.EquipedWeapon.NeedsReload);
-                AssertActionPossible<AttackAction>();
+                AssertActionPossible<AttackAction2>();
                 AssertActionNotPossible<ReloadAction>();
             }
 
@@ -122,12 +122,12 @@ namespace DndTable.Core.Test.UnitTests
 
             // Test reload 1 partial
             {
-                AssertActionNotPossible<AttackAction>();
+                AssertActionNotPossible<AttackAction2>();
                 AssertActionPossible<ReloadAction>();
 
                 AssertDoReload();
 
-                AssertActionPossible<AttackAction>();
+                AssertActionPossible<AttackAction2>();
                 AssertActionNotPossible<ReloadAction>();
             }
         }
@@ -145,12 +145,12 @@ namespace DndTable.Core.Test.UnitTests
 
             // Test reload 2 partials
             {
-                AssertActionNotPossible<AttackAction>();
+                AssertActionNotPossible<AttackAction2>();
                 AssertActionPossible<ReloadAction>();
 
                 AssertDoReload();
 
-                AssertActionNotPossible<AttackAction>(); // no more partial actions left
+                AssertActionNotPossible<AttackAction2>(); // no more partial actions left
                 AssertActionNotPossible<ReloadAction>();
             }
         }
@@ -163,8 +163,10 @@ namespace DndTable.Core.Test.UnitTests
             // Cannot charge with ranged weapon
             current.EquipWeapon(new Weapon() { IsRanged = true });
             AssertActionNotPossible<ChargeAction>();
+            // Cannot charge unarmed (YET) => unarmed combat not yet supported
             current.EquipWeapon(null);
-            AssertActionPossible<ChargeAction>();
+            AssertActionNotPossible<ChargeAction>();
+            // Can charge with melee weapon
             current.EquipWeapon(new Weapon() { IsRanged = false });
             AssertActionPossible<ChargeAction>();
 
