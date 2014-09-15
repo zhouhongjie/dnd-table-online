@@ -17,7 +17,7 @@ namespace DndTable.Core.Test.UnitTests
         [Test]
         public void CastSpellAction()
         {
-            throw new NotImplementedException("TODO"); 
+            throw new NotImplementedException("TODO: write test"); 
         }
 
         [Test]

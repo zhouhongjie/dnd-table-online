@@ -117,6 +117,7 @@ namespace DndTable.Core.Characters
                 if (!effect.DecreaseDurationAndCheck())
                 {
                     _effects.Remove(effect);
+                    effect.IsExpired = true;
                 }
             }
         }
@@ -128,7 +129,10 @@ namespace DndTable.Core.Characters
             foreach (var effect in allEffects)
             {
                 if (effect.CancelOnDamage)
+                {
                     _effects.Remove(effect);
+                    effect.IsExpired = true;
+                }
             }
 
             // Re-apply effects to push the cancel to the char sheet

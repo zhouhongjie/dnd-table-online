@@ -129,6 +129,29 @@ namespace DndTable.Core.Weapons
             return weapon;
         }
 
+        public static IWeapon CrossbowHeavy()
+        {
+            var weapon = new Weapon();
+
+            weapon.Description = "Heavy crossbow";
+            weapon.Proficiency = WeaponProficiencyEnum.Simple;
+            weapon.IsRanged = true;
+            weapon.DamageD = 10;
+            weapon.CriticalMultiplier = 2;
+            weapon.CriticalRange = 2;
+            weapon.RangeIncrement = 120;
+            weapon.Weight = 9;
+            weapon.DamageTypes.Add(WeaponDamageTypeEnum.Piercing);
+
+            weapon.ReloadInfo = new ReloadInfo()
+                                {
+                                    IsLoaded = true,
+                                    ActionType = ActionTypeEnum.FullRound
+                                };
+
+            return weapon;
+        }
+
         public static IWeapon Longbow()
         {
             var weapon = new Weapon();

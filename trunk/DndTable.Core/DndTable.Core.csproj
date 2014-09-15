@@ -87,6 +87,7 @@
     <Compile Include="Persistence\CharacterSheetXml.cs" />
     <Compile Include="Characters\BaseEffect.cs" />
     <Compile Include="Spells\AttributeBuffEffect.cs" />
+    <Compile Include="Spells\AttributeBuffEffect2.cs" />
     <Compile Include="Spells\BaseSpell.cs" />
     <Compile Include="Spells\BullsStrength.cs" />
     <Compile Include="Spells\CatsGrace.cs" />
