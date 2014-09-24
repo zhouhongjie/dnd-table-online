@@ -56,6 +56,7 @@
     <Compile Include="UnitTests\MathHelperTest.cs" />
     <Compile Include="UnitTests\SpellTest.cs" />
     <Compile Include="UnitTests\ShadowCasterTest.cs" />
+    <Compile Include="UnitTests\SurpriseRoundTest.cs" />
     <Compile Include="UnitTests\ThreatenedAreaTest.cs" />
     <Compile Include="UserTests\CombatScenarioTest.cs" />
     <Compile Include="UnitTests\GameTest.cs" />

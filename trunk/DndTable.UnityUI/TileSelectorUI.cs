@@ -19,6 +19,7 @@ namespace DndTable.UnityUI
         private int _rangeCheckMinRange = 1;
 
         private List<Position> _alreadySelectedTiles;
+        private List<Position> _alreadySelectedTiles2;
 
         public void InitializeRangeCheck(Position center, int rangeInTiles)
         {
@@ -43,7 +44,8 @@ namespace DndTable.UnityUI
 
             if (currentTransform != null)
             {
-                MarkTarget(currentTransform);
+                var markColor = IsRangeValid(currentTransform) ? Color.green : Color.red;
+                MarkTile(currentTransform, markColor);
             }
             _lastTransform = currentTransform;
 
@@ -51,7 +53,12 @@ namespace DndTable.UnityUI
             if (_alreadySelectedTiles != null)
             {
                 foreach (var selected in _alreadySelectedTiles)
-                    MarkSelected(FindTileOnPosition(selected));
+                    MarkTile(FindTileOnPosition(selected), Color.yellow);
+            }
+            if (_alreadySelectedTiles2 != null)
+            {
+                foreach (var selected in _alreadySelectedTiles2)
+                    MarkTile(FindTileOnPosition(selected), Color.blue);
             }
         }
 
@@ -60,9 +67,10 @@ namespace DndTable.UnityUI
             return GetPosition(_lastTransform);
         }
 
-        public void SetAlreadySelected(List<Position> tilePositions)
+        public void SetAlreadySelected(List<Position> tilePositions, List<Position> tilePositions2 = null)
         {
             _alreadySelectedTiles = tilePositions;
+            _alreadySelectedTiles2 = tilePositions2;
         }
 
         private static Position GetPosition(Transform transform)
@@ -135,21 +143,12 @@ namespace DndTable.UnityUI
             return Position.Create((int)transform.position.x, (int)transform.position.z);
         }
 
-        private void MarkTarget(Transform target)
+        private void MarkTile(Transform target, Color markColor)
         {
             if (!_originalColors.ContainsKey(target))
                 _originalColors.Add(target, target.renderer.material.color);
 
-            var markColor = IsRangeValid(target) ? Color.green : Color.red;
             target.renderer.material.color = markColor;
-        }
-
-        private void MarkSelected(Transform target)
-        {
-            if (!_originalColors.ContainsKey(target))
-                _originalColors.Add(target, target.renderer.material.color);
-
-            target.renderer.material.color = Color.yellow;
         }
 
         private bool IsRangeValid(Transform target)
@@ -180,6 +179,5 @@ namespace DndTable.UnityUI
             }
             _originalColors.Clear();
         }
-
     }
 }

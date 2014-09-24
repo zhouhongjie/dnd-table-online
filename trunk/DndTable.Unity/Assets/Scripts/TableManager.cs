@@ -95,7 +95,7 @@ public class TableManager : MonoBehaviour
                 maiko.SaveCharacterSheet("Maiko");
                 maiko.EquipWeapon(WeaponFactory.Longbow());
                 maiko.EquipArmor(ArmorFactory.Leather());
-                maiko.Give(WeaponFactory.Rapier());
+                //maiko.Give(WeaponFactory.Rapier());
                 maiko.PrepareSpell(SpellFactory.MagicMissile());
                 maiko.PrepareSpell(SpellFactory.MagicMissile());
                 maiko.PrepareSpell(SpellFactory.SleepArrow());
@@ -224,12 +224,12 @@ public class TableManager : MonoBehaviour
         if (GUILayout.Button("Start encounter"))
         {
             StopCurrentAction();
-            _currentActionUI = new SelectMultipleCharactersUI(Game, (selectedChars) =>
+            _currentActionUI = new SelectMultipleCharactersUI(Game, (awareCharacters, unawareCharacters) =>
                                                                         {
-                                                                            if (selectedChars.Count == 0)
+                                                                            if (awareCharacters.Count == 0 && unawareCharacters.Count == 0)
                                                                                 return false;
 
-                                                                            CurrentEncounter = Game.StartEncounter(selectedChars);
+                                                                            CurrentEncounter = Game.StartEncounter(awareCharacters, unawareCharacters);
                                                                             return true;
                                                                         });
         }

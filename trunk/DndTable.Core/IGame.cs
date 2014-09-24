@@ -29,6 +29,7 @@ namespace DndTable.Core
 
         IEncounter StartEncounter();
         IEncounter StartEncounter(List<ICharacter> characters);
+        IEncounter StartEncounter(List<ICharacter> awareCharacters, List<ICharacter> unawareCharacters);
         IEncounter CurrentEncounter { get; }
     }
 }

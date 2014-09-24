@@ -13,10 +13,11 @@ namespace DndTable.UnityUI
     {
         private IGame _game;
         private TileSelectorUI _selector;
-        private List<ICharacter> _selectedCharacters = new List<ICharacter>();
-        private Func<List<ICharacter>, bool> _stopAction;
+        private List<ICharacter> _selectedAwareCharacters = new List<ICharacter>();
+        private List<ICharacter> _selectedUnawareCharacters = new List<ICharacter>();
+        private Func<List<ICharacter>, List<ICharacter>, bool> _stopAction;
 
-        public SelectMultipleCharactersUI(IGame game, Func<List<ICharacter>, bool> stopAction)
+        public SelectMultipleCharactersUI(IGame game, Func<List<ICharacter>, List<ICharacter>, bool> stopAction)
         {
             IsMultiStep = true;
 
@@ -29,7 +30,9 @@ namespace DndTable.UnityUI
         {
             _selector.Update();
 
-            if (_selector.IsCurrentPositionValid() && Input.GetMouseButtonDown(0))
+            // Left mouse = awareChars
+            // Right mouse = unawareChars
+            if (_selector.IsCurrentPositionValid() && (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)))
             {
                 var selectedPosition = _selector.GetCurrentPosition();
 
@@ -37,19 +40,28 @@ namespace DndTable.UnityUI
                 if (selectedChar == null)
                     return;
 
-                if (_selectedCharacters.Contains(selectedChar))
-                    _selectedCharacters.Remove(selectedChar);
+                // Remove
+                if (_selectedAwareCharacters.Contains(selectedChar))
+                    _selectedAwareCharacters.Remove(selectedChar);
+                else if (_selectedUnawareCharacters.Contains(selectedChar))
+                    _selectedUnawareCharacters.Remove(selectedChar);
                 else
-                    _selectedCharacters.Add(selectedChar);
+                // Add
+                {
+                    var characterSet = Input.GetMouseButtonDown(0) ? _selectedAwareCharacters : _selectedUnawareCharacters;
+                    characterSet.Add(selectedChar);
+                }
 
                 // Mark selected chars
-                _selector.SetAlreadySelected(_selectedCharacters.Select(c => c.Position).ToList());
+                _selector.SetAlreadySelected(
+                    _selectedAwareCharacters.Select(c => c.Position).ToList(),
+                    _selectedUnawareCharacters.Select(c => c.Position).ToList());
             }
         }
 
         public override void Stop()
         {
-            _stopAction(_selectedCharacters);
+            _stopAction(_selectedAwareCharacters, _selectedUnawareCharacters);
 
             _selector.Stop();
             IsDone = true;
