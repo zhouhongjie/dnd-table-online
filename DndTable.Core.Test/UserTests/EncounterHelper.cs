@@ -7,6 +7,7 @@ using DndTable.Core.Armors;
 using DndTable.Core.Characters;
 using DndTable.Core.Factories;
 using DndTable.Core.Weapons;
+using NUnit.Framework;
 
 namespace DndTable.Core.Test.UserTests
 {

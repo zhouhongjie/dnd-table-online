@@ -91,7 +91,15 @@ namespace DndTable.Core
         {
             // Check characters 
 
-            CurrentEncounter = new Encounter(_gameBoard, _diceRoller, characters);
+            CurrentEncounter = new Encounter(_gameBoard, _diceRoller, characters, new List<ICharacter>());
+            return CurrentEncounter;
+        }
+
+        public IEncounter StartEncounter(List<ICharacter> awareCharacters, List<ICharacter> unawareCharacters)
+        {
+            // Check characters 
+
+            CurrentEncounter = new Encounter(_gameBoard, _diceRoller, awareCharacters, unawareCharacters);
             return CurrentEncounter;
         }
 

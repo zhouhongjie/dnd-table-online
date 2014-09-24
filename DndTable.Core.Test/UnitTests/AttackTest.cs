@@ -49,7 +49,7 @@ namespace DndTable.Core.Test.UnitTests
             var char2 = Factory.CreateCharacter("dummy2");
             game.AddCharacter(char2, targetPosition);
 
-            var encounter = new Encounter(board, diceRoller, new List<ICharacter>() {char1, char2});
+            var encounter = new Encounter(board, diceRoller, new List<ICharacter>() {char1, char2}, new List<ICharacter>());
             var actionFactory = new AbstractActionFactory(encounter, board, diceRoller);
 
             Assert.AreEqual(10, char2.CharacterSheet.HitPoints, "Precondition");
@@ -117,7 +117,7 @@ namespace DndTable.Core.Test.UnitTests
             var char2 = Factory.CreateCharacter("dummy2");
             game.AddCharacter(char2, Position.Create(5, 5));
 
-            var encounter = new Encounter(board, diceRoller, new List<ICharacter>() { char1, char2 });
+            var encounter = new Encounter(board, diceRoller, new List<ICharacter>() { char1, char2 }, new List<ICharacter>());
             var actionFactory = new AbstractActionFactory(encounter, board, diceRoller);
 
 

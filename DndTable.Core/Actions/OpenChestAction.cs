@@ -7,6 +7,7 @@ using DndTable.Core.Dice;
 using DndTable.Core.Entities;
 using DndTable.Core.Factories;
 using DndTable.Core.Items;
+using DndTable.Core.Weapons;
 
 namespace DndTable.Core.Actions
 {
@@ -41,24 +42,28 @@ namespace DndTable.Core.Actions
 
             // TODO: depend on chest properties (ex. chest quality?) or .. prefill chest manually?
             {
-                var nrOfPotions = DiceRoller.Roll(Executer, DiceRollEnum.Loot, 3, 0);
+                var nrOfItems = DiceRoller.Roll(Executer, DiceRollEnum.Loot, 3, 0);
 
-                for (var i = 0; i < nrOfPotions; i++)
+                for (var i = 0; i < nrOfItems; i++)
                 {
-                    var potionChoice = DiceRoller.Roll(Executer, DiceRollEnum.Loot, 10, 0);
-                    IPotion currentPotion = null;
+                    var choice = DiceRoller.Roll(Executer, DiceRollEnum.Loot, 10, 0);
 
-                    // 1/10
-                    if (potionChoice == 1)
-                        currentPotion = PotionFactory.CreatePotionOfCatsGrace();
-                    // 1/10
-                    else if (potionChoice == 2)
-                        currentPotion = PotionFactory.CreatePotionOfBullsStrength();
-                    // 8/10
+                    if (choice == 1)
+                        Executer.Give(PotionFactory.CreatePotionOfCatsGrace());
+                    else if (choice == 2)
+                        Executer.Give(PotionFactory.CreatePotionOfBullsStrength());
+                    else if (choice == 3)
+                        Executer.Give(WeaponFactory.HalfSpear());
+                    else if (choice == 4)
+                        Executer.Give(WeaponFactory.BattleAxe());
+                    else if (choice == 5)
+                        Executer.Give(WeaponFactory.CrossbowLight());
+                    else if (choice == 6)
+                        Executer.Give(WeaponFactory.Longbow());
+                    else if (choice == 7)
+                        Executer.Give(WeaponFactory.Rapier());
                     else 
-                        currentPotion = PotionFactory.CreatePotionOfCureLightWound();
-
-                    CharacterSheet.GetEditableSheet(Executer).Potions.Add(currentPotion);
+                        Executer.Give(PotionFactory.CreatePotionOfCureLightWound());
                 }
             }
 

@@ -42,19 +42,36 @@ namespace DndTable.Core
     {
         public List<ICharacter> Participants { get; private set; }
 
+        private List<ICharacter> _unawareParticipants { get; set; }
+
         private AbstractActionFactory _actionFactory;
 
         private int _currentIndex = 0;
         private int _currentRound = 0;
+        private bool _isSurpriseRound = false;
 
         private List<ActionTypeEnum> _actionDoneByCurrentChar = new List<ActionTypeEnum>();
         private List<IAction> _contextActions = null;
 
-        internal Encounter(Board gameBoard, IDiceRoller diceRoller, List<ICharacter> participants)
+        internal Encounter(Board gameBoard, IDiceRoller diceRoller, List<ICharacter> awareParticipants, List<ICharacter> unawareParticipants)
         {
             _actionFactory = new AbstractActionFactory(this, gameBoard, diceRoller);
 
-            Participants = DoInitiativeChecks(diceRoller, participants);
+            var allParticipants = awareParticipants.Union(unawareParticipants).ToList();
+            Participants = DoInitiativeChecks(diceRoller, allParticipants);
+
+            // Surprise round only when some participants are unware
+            _isSurpriseRound = (unawareParticipants.Count > 0) && (awareParticipants.Count > 0);
+            _unawareParticipants = unawareParticipants;
+
+            // Unaware chars an't start in the surprise round
+            if (_isSurpriseRound)
+            {
+                while (_unawareParticipants.Contains(GetCurrentCharacter()))
+                {
+                    GetNextCharacter();
+                }
+            }
 
             // Init roundInfo
             GetRoundInfo(GetCurrentCharacter()).Reset(GetCurrentCharacter());
@@ -96,6 +113,7 @@ namespace DndTable.Core
             {
                 _currentRound++;
                 _currentIndex = 0;
+                _isSurpriseRound = false;
             }
 
             var current = GetCurrentCharacter();
@@ -109,6 +127,9 @@ namespace DndTable.Core
 
             // TODO: Handle dying
 
+            // Surprise round
+            if (_isSurpriseRound && _unawareParticipants.Contains(current))
+                return GetNextCharacter();
 
             // TODO: Handle infinite recursion when all chars are disabled
             if (!current.CharacterSheet.CanAct())
@@ -252,6 +273,11 @@ namespace DndTable.Core
             return actions;
         }
 
+        private bool CanDoOnlyPartialAction()
+        {
+            return _isSurpriseRound;
+        }
+
         private bool CanDoMoveAction()
         {
             return CanDoMoveEquivalentAction() &&
@@ -260,6 +286,9 @@ namespace DndTable.Core
 
         private bool CanDoMoveEquivalentAction()
         {
+            if (CanDoOnlyPartialAction())
+                return _actionDoneByCurrentChar.Count(a => a == ActionTypeEnum.MoveEquivalent || a == ActionTypeEnum.Standard) < 1;
+
             return (_actionDoneByCurrentChar.Count(a => a == ActionTypeEnum.MoveEquivalent || a == ActionTypeEnum.Standard) < 2) &&
                    (_actionDoneByCurrentChar.Count(a => a == ActionTypeEnum.FullRound) < 1);
         }
@@ -272,6 +301,9 @@ namespace DndTable.Core
 
         private bool CanDoFullRoundAction()
         {
+            if (CanDoOnlyPartialAction())
+                return false;
+
             return (_actionDoneByCurrentChar.Count(a => a == ActionTypeEnum.MoveEquivalent || a == ActionTypeEnum.Standard) < 1) &&
                    (_actionDoneByCurrentChar.Count(a => a == ActionTypeEnum.FullRound) < 1);
         }

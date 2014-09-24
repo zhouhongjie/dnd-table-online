@@ -208,7 +208,7 @@ namespace DndTable.Core.Test.UnitTests
             if (!sameFaction)
                 (char2.CharacterSheet as CharacterSheet).FactionId += 1;
 
-            var encounter = new Encounter(board, diceRoller, new List<ICharacter>() { char1, char2 });
+            var encounter = new Encounter(board, diceRoller, new List<ICharacter>() { char1, char2 }, new List<ICharacter>());
             var actionFactory = new AbstractActionFactory(encounter, board, diceRoller);
 
             return new PreparedSetup { ActionExecuter = char1, AoOExecuter = char2, ActionFactory = actionFactory };
