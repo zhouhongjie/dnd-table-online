@@ -9,5 +9,6 @@ namespace DndTable.Core.Characters
     {
         bool IsSleeping { get; }
         bool IsHelpless { get; }
+        bool IsFlatFooted { get; }
     }
 }

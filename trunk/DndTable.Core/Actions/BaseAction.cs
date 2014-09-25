@@ -80,6 +80,10 @@ namespace DndTable.Core.Actions
                 if (participant.CharacterSheet.FactionId == Executer.CharacterSheet.FactionId)
                     continue;
 
+                // No AoO when flat-footed
+                if (participant.CharacterSheet.Conditions.IsFlatFooted)
+                    continue;
+
                 if (ActionHelper.IsInThreatenedArea(Executer, participant))
                 {
                     // check participant already did an AoO

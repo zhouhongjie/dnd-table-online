@@ -5,6 +5,7 @@ using System.Text;
 using DndTable.Core.Actions;
 using DndTable.Core.Characters;
 using DndTable.Core.Factories;
+using DndTable.Core.Test.Helpers;
 using DndTable.Core.Test.UserTests;
 using DndTable.Core.Weapons;
 using NUnit.Framework;

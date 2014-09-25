@@ -6,6 +6,7 @@ using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 using DndTable.Core.Factories;
 using DndTable.Core.Log;
+using DndTable.Core.Test.Helpers;
 using DndTable.Core.Weapons;
 using NUnit.Framework;
 using System.Linq;

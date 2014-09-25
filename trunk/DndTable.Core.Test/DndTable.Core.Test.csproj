@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\DiceHelper.cs" />
     <Compile Include="UnitTests\AttackRollTest.cs" />
     <Compile Include="UnitTests\BoardTest.cs" />
     <Compile Include="UnitTests\CharacterSheetTest.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="UnitTests\AttackOfOpportunityTest.cs" />
     <Compile Include="UnitTests\EncounterTest.cs" />
     <Compile Include="UnitTests\FlankingTest.cs" />
+    <Compile Include="UnitTests\FlatFootedTest.cs" />
     <Compile Include="UnitTests\MathHelperTest.cs" />
     <Compile Include="UnitTests\SpellTest.cs" />
     <Compile Include="UnitTests\ShadowCasterTest.cs" />
@@ -62,7 +64,7 @@
     <Compile Include="UnitTests\GameTest.cs" />
     <Compile Include="UnitTests\MoveTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserTests\EncounterHelper.cs" />
+    <Compile Include="Helpers\EncounterHelper.cs" />
     <Compile Include="UserTests\RepositoryTest.cs" />
   </ItemGroup>
   <ItemGroup>

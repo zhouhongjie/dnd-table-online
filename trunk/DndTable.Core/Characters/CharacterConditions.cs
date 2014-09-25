@@ -8,6 +8,7 @@ namespace DndTable.Core.Characters
     internal class CharacterConditions : ICharacterConditions
     {
         public bool IsSleeping { get; internal set; }
+        public bool IsFlatFooted { get; internal set; }
 
         public bool IsHelpless
         {
@@ -16,6 +17,8 @@ namespace DndTable.Core.Characters
 
         internal void ClearEffects()
         {
+            // VERIFY!!!!
+
             // TODO: work with ConditionAttributes, where we clear the IsSleeping.EffectValue (but leave the IsSleeping.Value)
             // => otherwise a creature can never sleep naturally
             IsSleeping = false;
