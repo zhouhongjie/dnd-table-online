@@ -6,6 +6,7 @@ using DndTable.Core.Actions;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 using DndTable.Core.Factories;
+using DndTable.Core.Test.Helpers;
 using DndTable.Core.Test.UserTests;
 using DndTable.Core.Weapons;
 using Moq;
@@ -25,8 +26,8 @@ namespace DndTable.Core.Test.UnitTests
             var char2 = EncounterHelper.PrepareCharacter(game, "char2", Position.Create(1, 2), new Weapon() {DamageD = 4}, null);
 
             // Adjust dexterity to influence init order
-            (char1.CharacterSheet as CharacterSheet).Dexterity = dex1;
-            (char2.CharacterSheet as CharacterSheet).Dexterity = dex2;
+            CharacterSheet.GetEditableSheet(char1).Dexterity = dex1;
+            CharacterSheet.GetEditableSheet(char2).Dexterity = dex2;
 
             // Char1 aware, char2 unaware
             var encounter = game.StartEncounter(
@@ -47,7 +48,7 @@ namespace DndTable.Core.Test.UnitTests
             var char2 = EncounterHelper.PrepareCharacter(game, "char2", Position.Create(1, 2), new Weapon() {DamageD = 4}, null);
 
             // Make sure char1 is first
-            (char1.CharacterSheet as CharacterSheet).Dexterity = 20;
+            CharacterSheet.GetEditableSheet(char1).Dexterity = 20;
 
             // Char1 aware, char2 unaware
             var encounter = game.StartEncounter(
@@ -72,7 +73,7 @@ namespace DndTable.Core.Test.UnitTests
             var char2 = EncounterHelper.PrepareCharacter(game, "char2", Position.Create(1, 2), new Weapon() {DamageD = 4}, null);
 
             // Make sure char1 is first
-            (char1.CharacterSheet as CharacterSheet).Dexterity = 20;
+            CharacterSheet.GetEditableSheet(char1).Dexterity = 20;
 
             // Char1 aware, char2 unaware
             var encounter = game.StartEncounter(
@@ -95,30 +96,19 @@ namespace DndTable.Core.Test.UnitTests
             AssertActionPossible<ChargeAction>(encounter);
         }
 
-        private static DiceRoller CreateDiceRoller()
-        {
-            var diceRandomizer = new Mock<IDiceRandomizer>();
-
-            // always return 0 = no random
-            diceRandomizer.Setup(dr => dr.Roll(It.IsAny<int>())).Returns(0);
-
-            var diceRoller = new DiceRoller(diceRandomizer.Object);
-            return diceRoller;
-        }
-
         public static IGame CreateGame(int maxX, int maxY)
         {
             var board = new Board(maxX, maxY);
-            return new Game(board, CreateDiceRoller());
+            return new Game(board, DiceHelper.CreateNullDiceRoller());
         }
 
-        private void AssertActionPossible<T>(IEncounter encounter) where T : BaseAction
+        private static void AssertActionPossible<T>(IEncounter encounter) where T : BaseAction
         {
             var possibleActions = encounter.GetPossibleActionsForCurrentCharacter();
             Assert.NotNull(possibleActions.FirstOrDefault(a => a is T));
         }
 
-        private void AssertActionNotPossible<T>(IEncounter encounter) where T : BaseAction
+        private static void AssertActionNotPossible<T>(IEncounter encounter) where T : BaseAction
         {
             var possibleActions = encounter.GetPossibleActionsForCurrentCharacter();
             Assert.Null(possibleActions.FirstOrDefault(a => a is T));

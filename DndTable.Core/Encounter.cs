@@ -64,13 +64,20 @@ namespace DndTable.Core
             _isSurpriseRound = (unawareParticipants.Count > 0) && (awareParticipants.Count > 0);
             _unawareParticipants = unawareParticipants;
 
-            // Unaware chars an't start in the surprise round
+            // Unaware chars can't start in the surprise round
             if (_isSurpriseRound)
             {
-                while (_unawareParticipants.Contains(GetCurrentCharacter()))
+                if (_unawareParticipants.Contains(GetCurrentCharacter()))
                 {
                     GetNextCharacter();
                 }
+            }
+
+            // Mark all chars as flat-footed
+            foreach (var participant in allParticipants)
+            {
+                if (participant != GetCurrentCharacter())
+                    CharacterSheet.GetEditableSheet(participant).EditableConditions.IsFlatFooted = true;
             }
 
             // Init roundInfo
@@ -123,6 +130,7 @@ namespace DndTable.Core
 
             GetRoundInfo(current).Reset(current);
 
+            // Handle spell effects
             CharacterSheet.GetEditableSheet(current).ApplyEffectsForThisRound();
 
             // TODO: Handle dying
@@ -130,6 +138,9 @@ namespace DndTable.Core
             // Surprise round
             if (_isSurpriseRound && _unawareParticipants.Contains(current))
                 return GetNextCharacter();
+
+            // No longer flat-footed
+            CharacterSheet.GetEditableSheet(current).EditableConditions.IsFlatFooted = false;
 
             // TODO: Handle infinite recursion when all chars are disabled
             if (!current.CharacterSheet.CanAct())

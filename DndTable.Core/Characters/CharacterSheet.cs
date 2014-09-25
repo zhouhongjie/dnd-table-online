@@ -77,6 +77,15 @@ namespace DndTable.Core.Characters
         private readonly CharacterConditions _conditions = new CharacterConditions();
         public ICharacterConditions Conditions { get { return _conditions; } }
         internal CharacterConditions EditableConditions { get { return _conditions; } }
+
+        public bool LooseDexBonusToAC()
+        {
+            // TODO: other checks
+
+            // TODO: negated by uncanny-dodge ability
+            return EditableConditions.IsFlatFooted;
+        }
+
         #endregion
 
         #region Effects
@@ -304,7 +313,8 @@ namespace DndTable.Core.Characters
                 var result = 10;
 
                 // Add dex (not flat footed, ...)
-                result += context.UseAbilityBonus(DexterityAttribute);
+                if (!LooseDexBonusToAC())
+                    result += context.UseAbilityBonus(DexterityAttribute);
 
                 // Add size modifier
                 result += context.Use(SizeModifier, "Size");
