@@ -80,10 +80,15 @@ namespace DndTable.Core.Characters
 
         public bool LooseDexBonusToAC()
         {
-            // TODO: other checks
+            if (EditableConditions.IsHelpless)
+                return true;
 
             // TODO: negated by uncanny-dodge ability
-            return EditableConditions.IsFlatFooted;
+            if (EditableConditions.IsFlatFooted)
+                return true;
+
+            // TODO: other checks
+            return false;
         }
 
         #endregion
@@ -147,6 +152,12 @@ namespace DndTable.Core.Characters
             // Re-apply effects to push the cancel to the char sheet
             ApplyEffects();
         }
+
+        #endregion
+
+        #region Feats
+
+        public bool CanSneakAttack { get; internal set; }
 
         #endregion
 
