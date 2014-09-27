@@ -70,6 +70,10 @@ namespace DndTable.Core.Characters
             Characters.CharacterSheet.GetEditableSheet(this).Spells.Add(spell);
         }
 
+        public void AddSneakAttackFeat()
+        {
+            Characters.CharacterSheet.GetEditableSheet(this).CanSneakAttack = true;
+        }
 
         public bool SaveCharacterSheet(string name)
         {

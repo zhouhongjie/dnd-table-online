@@ -23,6 +23,9 @@ namespace DndTable.Core.Characters
         void Give(IWeapon weapon);
         bool RemoveItem(IPotion potion);
 
+        // Feats (TODO: create feats as classes)
+        void AddSneakAttackFeat();
+
         // Persistence
         bool SaveCharacterSheet(string name);
         bool LoadCharacterSheet(string name);

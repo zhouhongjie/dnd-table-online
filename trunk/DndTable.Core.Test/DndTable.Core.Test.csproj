@@ -56,6 +56,7 @@
     <Compile Include="UnitTests\FlankingTest.cs" />
     <Compile Include="UnitTests\FlatFootedTest.cs" />
     <Compile Include="UnitTests\MathHelperTest.cs" />
+    <Compile Include="UnitTests\SneakAttackTest.cs" />
     <Compile Include="UnitTests\SpellTest.cs" />
     <Compile Include="UnitTests\ShadowCasterTest.cs" />
     <Compile Include="UnitTests\SurpriseRoundTest.cs" />

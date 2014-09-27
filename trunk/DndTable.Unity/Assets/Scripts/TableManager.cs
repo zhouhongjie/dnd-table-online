@@ -125,6 +125,17 @@ public class TableManager : MonoBehaviour
                 healer.Give(PotionFactory.CreatePotionOfCureLightWound());
             }
 
+            // Thogeon
+            {
+                var thogeon = Factory.CreateCharacter("Thogeon", 12, 16, 10, 12, 10, 12);
+                thogeon.SaveCharacterSheet("Thogeon");
+                thogeon.AddSneakAttackFeat();
+                thogeon.EquipArmor(ArmorFactory.Leather());
+                thogeon.EquipWeapon(WeaponFactory.Dagger());
+                Game.AddCharacter(thogeon, Position.Create(3, 6));
+                allPcs.Add(thogeon);
+            }
+
             // Start encounter
             CurrentEncounter = Game.StartEncounter(allPcs);
             //CurrentEncounter = Game.StartEncounter();

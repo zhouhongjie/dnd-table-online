@@ -83,7 +83,7 @@ namespace DndTable.Core.Actions
 
             // Check hit
             var check = DiceRoller.RollAttack(
-                Executer, 
+                Executer,
                 DiceRollEnum.Attack,
                 Executer.CharacterSheet.GetCurrentAttackBonus((int)rangeRounded * 5, IsFlanking()),  // Convert tiles to feet
                 _targetCharacter.CharacterSheet.GetCurrentArmorClass(),
@@ -97,8 +97,8 @@ namespace DndTable.Core.Actions
             if (check.IsThreat)
             {
                 isCritical = DiceRoller.Check(
-                    Executer, 
-                    DiceRollEnum.CriticalAttack, 
+                    Executer,
+                    DiceRollEnum.CriticalAttack,
                     20,
                     Executer.CharacterSheet.GetCurrentAttackBonus((int)rangeRounded * 5, IsFlanking()),
                     _targetCharacter.CharacterSheet.GetCurrentArmorClass());
@@ -106,21 +106,64 @@ namespace DndTable.Core.Actions
 
 
             // Do damage
-            var nrOfDamageRolls = isCritical ? damageRollInfo.CriticalMultiplier : 1;
-            for (var i = 0; i < nrOfDamageRolls; i++)
             {
-                var damage = DiceRoller.Roll(
-                    Executer,
-                    DiceRollEnum.Damage,
-                    damageRollInfo.NrOfDice,
-                    damageRollInfo.D,
-                    damageRollInfo.Bonus);
+                // Normal damage + critical
+                var damage = 0;
+                var nrOfDamageRolls = isCritical ? damageRollInfo.CriticalMultiplier : 1;
+                for (var i = 0; i < nrOfDamageRolls; i++)
+                {
+                    var currentDamage = DiceRoller.Roll(
+                        Executer,
+                        DiceRollEnum.Damage,
+                        damageRollInfo.NrOfDice,
+                        damageRollInfo.D,
+                        damageRollInfo.Bonus);
 
-                if (damage < 1)
-                    damage = 1;
+                    // TODO: verify -> check here or @ the end
+                    if (currentDamage < 1)
+                        currentDamage = 1;
 
+                    damage += currentDamage;
+                }
+
+                // SneakAttack 
+                if (CanSneakAttack(Executer, _targetCharacter))
+                {
+                    var currentDamage = DiceRoller.Roll(
+                        Executer,
+                        DiceRollEnum.SneakAttack,
+                        1, // TODO: higher lvl sneaks attacks
+                        6,
+                        0);
+
+                    damage += currentDamage;
+                }
                 CharacterSheet.GetEditableSheet(_targetCharacter).ApplyDamage(damage);
             }
+        }
+
+        private bool CanSneakAttack(ICharacter attacker, ICharacter target)
+        {
+            // <= 30ft
+            var rangeRounded = MathHelper.GetTilesDistance(Executer.Position, _targetCharacter.Position);
+            if (rangeRounded > 6)
+                return false;
+
+            var attackerSheet = CharacterSheet.GetEditableSheet(attacker);
+            var targetSheet = CharacterSheet.GetEditableSheet(target);
+
+            if (!attackerSheet.CanSneakAttack)
+                return false;
+
+            // TODO: check target has concealment
+            // TODO: target type is undead
+
+            if (targetSheet.LooseDexBonusToAC())
+                return true;
+            if (IsFlanking())
+                return true;
+
+            return false;
         }
 
         private bool IsFlanking()
