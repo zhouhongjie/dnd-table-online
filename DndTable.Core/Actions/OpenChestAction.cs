@@ -49,26 +49,33 @@ namespace DndTable.Core.Actions
                     var choice = DiceRoller.Roll(Executer, DiceRollEnum.Loot, 10, 0);
 
                     if (choice == 1)
-                        Executer.Give(PotionFactory.CreatePotionOfCatsGrace());
+                        Loot(context, PotionFactory.CreatePotionOfCatsGrace());
                     else if (choice == 2)
-                        Executer.Give(PotionFactory.CreatePotionOfBullsStrength());
+                        Loot(context, PotionFactory.CreatePotionOfBullsStrength());
                     else if (choice == 3)
-                        Executer.Give(WeaponFactory.HalfSpear());
+                        Loot(context, WeaponFactory.HalfSpear());
                     else if (choice == 4)
-                        Executer.Give(WeaponFactory.BattleAxe());
+                        Loot(context, WeaponFactory.BattleAxe());
                     else if (choice == 5)
-                        Executer.Give(WeaponFactory.CrossbowLight());
+                        Loot(context, WeaponFactory.CrossbowLight());
                     else if (choice == 6)
-                        Executer.Give(WeaponFactory.Longbow());
+                        Loot(context, WeaponFactory.Longbow());
                     else if (choice == 7)
-                        Executer.Give(WeaponFactory.Rapier());
-                    else 
-                        Executer.Give(PotionFactory.CreatePotionOfCureLightWound());
+                        Loot(context, WeaponFactory.Rapier());
+                    else
+                        Loot(context, PotionFactory.CreatePotionOfCureLightWound());
                 }
             }
 
             // make chest empty!
             _chest.IsUsed = true;
+        }
+
+        private void Loot(Calculator.CalculatorActionContext context, IItem item)
+        {
+            Executer.Give(item);
+            context.Message(string.Format("{0} loots {1}", Executer.CharacterSheet.Name, item.Description));
+
         }
 
         public override ActionTypeEnum Type
