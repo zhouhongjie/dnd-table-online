@@ -105,6 +105,11 @@ namespace DndTable.Core.Characters
             {
                 Logger.Singleton.LogAoO(_localIndentLevel, opportunist, victim);
             }
+
+            public void Message(string message)
+            {
+                Logger.Singleton.LogMessage(_localIndentLevel, message);
+            }
         }
 
     }
