@@ -1,11 +1,13 @@
-﻿namespace DndTable.Core.Armors
+﻿using DndTable.Core.Items;
+
+namespace DndTable.Core.Armors
 {
     public enum ArmorProficiencyEnum
     {
         Light, Medium, Heavy, Shield
     }
 
-    public interface IArmor
+    public interface IArmor : IItem
     {
         ArmorProficiencyEnum Proficiency { get; }
         int ArmorBonus { get; }

@@ -16,12 +16,9 @@ namespace DndTable.Core.Factories
             return new Game(board, diceRoller);
         }
 
-        public static ICharacter CreateCharacter(string name)
+        private static CharacterSheet CreateDefaultSheet()
         {
             var sheet = new CharacterSheet();
-
-            sheet.Name = name;
-            sheet.FactionId = 1;
 
             sheet.Strength = 10;
             sheet.Dexterity = 10;
@@ -34,33 +31,37 @@ namespace DndTable.Core.Factories
             sheet.MaxHitPoints = 10;
             sheet.Speed = 30;
 
+            sheet.Size = SizeEnum.Medium;
+
+            return sheet;
+        }
+
+        public static ICharacter CreateCharacter(string name)
+        {
+            var sheet = CreateDefaultSheet();
+
+            sheet.Name = name;
+            sheet.FactionId = 1;
+
             return new Character(sheet, CharacterTypeEnum.Hero);
         }
 
         public static ICharacter CreateCharacter(string name, int strength, int dexterity)
         {
-            var sheet = new CharacterSheet();
+            var sheet = CreateDefaultSheet();
 
             sheet.Name = name;
             sheet.FactionId = 1;
 
             sheet.Strength = strength;
             sheet.Dexterity = dexterity;
-            sheet.Constitution = 10;
-            sheet.Intelligence = 10;
-            sheet.Wisdom = 10;
-            sheet.Charisma = 10;
-
-            sheet.HitPoints = 10;
-            sheet.MaxHitPoints = 10;
-            sheet.Speed = 30;
 
             return new Character(sheet, CharacterTypeEnum.Hero);
         }
 
-        public static ICharacter CreateCharacter(string name, int str, int dex, int con, int intel, int wis, int cha)
+        public static ICharacter CreateCharacter(string name, int str, int dex, int con, int intel, int wis, int cha, SizeEnum size = SizeEnum.Medium)
         {
-            var sheet = new CharacterSheet();
+            var sheet = CreateDefaultSheet();
 
             sheet.Name = name;
             sheet.FactionId = 1;
@@ -72,9 +73,7 @@ namespace DndTable.Core.Factories
             sheet.Wisdom = wis;
             sheet.Charisma = cha;
 
-            sheet.HitPoints = 10;
-            sheet.MaxHitPoints = 10;
-            sheet.Speed = 30;
+            sheet.Size = size;
 
             return new Character(sheet, CharacterTypeEnum.Hero);
         }
@@ -95,7 +94,7 @@ namespace DndTable.Core.Factories
 
         public static ICharacter CreateOrc(string name = "Orc")
         {
-            var sheet = new CharacterSheet();
+            var sheet = CreateDefaultSheet();
 
             sheet.Name = name;
             sheet.Race = CharacterRace.Orc;
@@ -120,7 +119,7 @@ namespace DndTable.Core.Factories
 
         public static ICharacter CreateOrcChief(string name = "Orc Chief")
         {
-            var sheet = new CharacterSheet();
+            var sheet = CreateDefaultSheet();
 
             sheet.Name = name;
             sheet.Race = CharacterRace.Orc;
@@ -145,7 +144,7 @@ namespace DndTable.Core.Factories
 
         public static ICharacter CreateKobolt(string name = "Kobolt")
         {
-            var sheet = new CharacterSheet();
+            var sheet = CreateDefaultSheet();
 
             sheet.Name = name;
             sheet.Race = CharacterRace.Reptilian;
@@ -162,7 +161,7 @@ namespace DndTable.Core.Factories
             sheet.MaxHitPoints = 2;
             sheet.Speed = 30;
 
-            sheet.SizeModifier = 1;
+            sheet.Size = SizeEnum.Small;
 
             sheet.NaturalArmor = 1;
 
@@ -175,7 +174,7 @@ namespace DndTable.Core.Factories
 
         public static ICharacter CreateWolf(string name = "Wolf")
         {
-            var sheet = new CharacterSheet();
+            var sheet = CreateDefaultSheet();
 
             sheet.Name = name;
             sheet.Race = CharacterRace.Animal;

@@ -127,13 +127,23 @@ public class TableManager : MonoBehaviour
 
             // Thogeon
             {
-                var thogeon = Factory.CreateCharacter("Thogeon", 12, 16, 10, 12, 10, 12);
+                var thogeon = Factory.CreateCharacter("Thogeon", 12, 16, 10, 12, 10, 12, SizeEnum.Small);
                 thogeon.SaveCharacterSheet("Thogeon");
                 thogeon.AddSneakAttackFeat();
                 thogeon.EquipArmor(ArmorFactory.Leather());
                 thogeon.EquipWeapon(WeaponFactory.Dagger());
+                thogeon.Give(WeaponFactory.CrossbowLight());
                 Game.AddCharacter(thogeon, Position.Create(3, 6));
                 allPcs.Add(thogeon);
+
+                thogeon.Give(PotionFactory.CreatePotionOfCureLightWound());
+
+            }
+
+            // Maria
+            {
+                var maria = Factory.CreateCharacter("mheeria");
+                Game.AddCharacter(maria, Position.Create(15, 11));
             }
 
             // Start encounter
@@ -648,7 +658,8 @@ public class TableManager : MonoBehaviour
         // CharacterSheetInfo
         if (entity is ICharacter)
         {
-            var charName = (entity as ICharacter).CharacterSheet.Name;
+            var character = entity as ICharacter;
+            var charName = character.CharacterSheet.Name;
             var texture = Resources.Load<Texture2D>(charName);
 
             ApplyTextureToChild(newObj, "Body", texture);
@@ -657,7 +668,15 @@ public class TableManager : MonoBehaviour
             var characterSheetInfoScript = newObj.GetComponent("CharacterSheetInfo") as CharacterSheetInfo;
             if (characterSheetInfoScript != null)
             {
-                characterSheetInfoScript.Character = entity as ICharacter;
+                characterSheetInfoScript.Character = character;
+            }
+
+            // Adjust to Character Size
+            if (character.CharacterSheet.Size == SizeEnum.Small)
+            {
+                var body = newObj.FindChild("Body");
+                body.localScale = body.localScale/2;
+                body.Translate(0, -0.5f, 0);
             }
         }
 

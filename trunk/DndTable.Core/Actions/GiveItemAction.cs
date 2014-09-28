@@ -9,10 +9,9 @@ namespace DndTable.Core.Actions
 {
     internal class GiveItemAction : BaseAction
     {
-        // TODO: use IItem (base interface for IPotion, IWeapon, IArmor, ...)
-        private IPotion _item;
+        private IItem _item;
 
-        internal GiveItemAction(ICharacter giver, IPotion item)
+        internal GiveItemAction(ICharacter giver, IItem item)
             : base(giver)
         {
             _item = item;

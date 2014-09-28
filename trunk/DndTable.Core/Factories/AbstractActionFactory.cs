@@ -105,7 +105,7 @@ namespace DndTable.Core.Factories
             return action;
         }
 
-        public IAction GiveItem(ICharacter character, IPotion item, ICharacter receiver)
+        public IAction GiveItem(ICharacter character, IItem item, ICharacter receiver)
         {
             var action = new GiveItemAction(character, item).Target(receiver) as BaseAction;
             action.Initialize(this);

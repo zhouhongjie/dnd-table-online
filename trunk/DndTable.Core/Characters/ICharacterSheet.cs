@@ -28,6 +28,7 @@ namespace DndTable.Core.Characters
 
         int Speed { get; }
         int SizeModifier { get; }
+        SizeEnum Size { get; }
 
         int BaseAttackBonus { get; }
 
@@ -51,4 +52,10 @@ namespace DndTable.Core.Characters
 
         IWeapon GetCurrentWeapon();
     }
+
+    public enum SizeEnum
+    {
+        Small, Medium, Large
+    }
+
 }

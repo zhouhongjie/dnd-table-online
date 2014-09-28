@@ -45,19 +45,24 @@ namespace DndTable.Core.Characters
             Characters.CharacterSheet.GetEditableSheet(this).EquipedArmor = armor;
         }
 
-        public void Give(IPotion potion)
+        public void Give(IItem item)
         {
-            Characters.CharacterSheet.GetEditableSheet(this).Potions.Add(potion);
+            if (item is IPotion)
+                Characters.CharacterSheet.GetEditableSheet(this).Potions.Add(item as IPotion);
+            else if (item is IWeapon)
+                Characters.CharacterSheet.GetEditableSheet(this).Weapons.Add(item as IWeapon);
+            else
+                throw new NotImplementedException("TODO: implement for " + item.GetType());
         }
 
-        public void Give(IWeapon weapon)
+        public bool RemoveItem(IItem item)
         {
-            Characters.CharacterSheet.GetEditableSheet(this).Weapons.Add(weapon);
-        }
+            if (item is IPotion)
+                return Characters.CharacterSheet.GetEditableSheet(this).Potions.Remove(item as IPotion);
+            if (item is IWeapon)
+                return Characters.CharacterSheet.GetEditableSheet(this).Weapons.Remove(item as IWeapon);
 
-        public bool RemoveItem(IPotion potion)
-        {
-            return Characters.CharacterSheet.GetEditableSheet(this).Potions.Remove(potion);
+            throw new NotImplementedException("TODO: implement for " + item.GetType());
         }
 
         public void PrepareSpell(ISpell spell)
@@ -100,6 +105,14 @@ namespace DndTable.Core.Characters
                 // Apply potion
                 {
                     actions.Add(actionFactory.ApplyPotion(selectingCharacter, potion, this));
+                }
+            }
+
+            foreach (var weapon in selectingCharacter.CharacterSheet.Weapons)
+            {
+                // Give
+                {
+                    actions.Add(actionFactory.GiveItem(selectingCharacter, weapon, this));
                 }
             }
 
