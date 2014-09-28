@@ -27,7 +27,7 @@ namespace DndTable.Core.Persistence
         public int MaxHitPoints { get; set; }
 
         public int Speed { get; set; }
-        public int SizeModifier { get; set; }
+        public SizeEnum Size { get; set; }
 
         public int BaseAttackBonus { get; set; }
 
@@ -52,7 +52,7 @@ namespace DndTable.Core.Persistence
             MaxHitPoints = sheet.MaxHitPoints;
 
             Speed = sheet.Speed;
-            SizeModifier = sheet.SizeModifier;
+            Size = sheet.Size;
 
             BaseAttackBonus = sheet.BaseAttackBonus;
         }
@@ -78,7 +78,7 @@ namespace DndTable.Core.Persistence
             sheet.HitPoints = MaxHitPoints;         // Set to MaxHitPoints
 
             sheet.Speed = Speed;
-            sheet.SizeModifier = SizeModifier;
+            sheet.Size = Size;
 
             sheet.BaseAttackBonus = BaseAttackBonus;
         }

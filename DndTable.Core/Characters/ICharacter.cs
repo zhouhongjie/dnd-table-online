@@ -19,9 +19,8 @@ namespace DndTable.Core.Characters
         void PrepareSpell(ISpell spell);
 
         // Inventory actions
-        void Give(IPotion potion);
-        void Give(IWeapon weapon);
-        bool RemoveItem(IPotion potion);
+        void Give(IItem item);
+        bool RemoveItem(IItem item);
 
         // Feats (TODO: create feats as classes)
         void AddSneakAttackFeat();

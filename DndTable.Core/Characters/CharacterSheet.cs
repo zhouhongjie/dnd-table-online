@@ -39,7 +39,20 @@ namespace DndTable.Core.Characters
         public int MaxHitPoints { get; internal set;  }
 
         public int Speed { get; internal set; }
-        public int SizeModifier { get; internal set; }
+        public SizeEnum Size { get; internal set; }
+        public int SizeModifier 
+        { 
+            get
+            {
+                if (Size == SizeEnum.Small)
+                    return 1;
+                if (Size == SizeEnum.Medium)
+                    return 0;
+                if (Size == SizeEnum. Large)
+                    return -1;
+                throw new NotImplementedException("TODO: SizeModifier for " + Size);
+            } 
+        }
 
         public int BaseAttackBonus { get; internal set; }
 

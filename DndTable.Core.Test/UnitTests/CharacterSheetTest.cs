@@ -51,11 +51,11 @@ namespace DndTable.Core.Test.UnitTests
             sheet.DexterityAttribute.SetValue(10);
 
             // Size
-            sheet.SizeModifier = 2;
-            Assert.AreEqual(12, sheet.GetCurrentArmorClass());
+            sheet.Size = SizeEnum.Small;
+            Assert.AreEqual(11, sheet.GetCurrentArmorClass());
 
-            sheet.SizeModifier = -2;
-            Assert.AreEqual(8, sheet.GetCurrentArmorClass());
+            sheet.Size = SizeEnum.Large;
+            Assert.AreEqual(9, sheet.GetCurrentArmorClass());
         }
 
         [Test]

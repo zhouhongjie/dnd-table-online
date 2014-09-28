@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DndTable.Core.Items;
 
 namespace DndTable.Core.Weapons
 {
@@ -12,11 +13,9 @@ namespace DndTable.Core.Weapons
         None, Piercing, Slashing, Bludgeoning
     }
 
-    public interface IWeapon
+    public interface IWeapon : IItem
     {
         #region Statistics
-
-        string Description { get; }
 
         WeaponProficiencyEnum Proficiency { get; }
         bool IsRanged { get; }

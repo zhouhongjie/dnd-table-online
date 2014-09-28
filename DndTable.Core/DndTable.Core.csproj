@@ -82,6 +82,7 @@
     <Compile Include="Factories\AbstractActionFactory.cs" />
     <Compile Include="Armors\ArmorFactory.cs" />
     <Compile Include="Factories\Factory.cs" />
+    <Compile Include="Items\IItem.cs" />
     <Compile Include="Items\PotionFactory.cs" />
     <Compile Include="Items\SpellEffectPotion.cs" />
     <Compile Include="Persistence\CharacterSheetXml.cs" />

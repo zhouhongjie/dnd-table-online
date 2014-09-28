@@ -4,6 +4,7 @@ namespace DndTable.Core.Armors
 {
     internal class Armor : IArmor
     {
+        public string Description { get; internal set; }
         public ArmorProficiencyEnum Proficiency { get; internal set; }
         public int ArmorBonus { get; internal set; }
         public int MaxDexBonus { get; internal set; }

@@ -5,7 +5,8 @@ using System.Text;
 
 namespace DndTable.Core.Items
 {
-    public interface IPotion : IItem
+    public interface IItem
     {
+        string Description { get; }
     }
 }

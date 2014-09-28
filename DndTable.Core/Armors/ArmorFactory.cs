@@ -6,6 +6,7 @@
         {
             var armour = new Armor();
 
+            armour.Description = "Leather armor";
             armour.Proficiency = ArmorProficiencyEnum.Light;
             armour.ArmorBonus = 2;
             armour.MaxDexBonus = 6;
@@ -19,6 +20,7 @@
         {
             var armour = new Armor();
 
+            armour.Description = "Studded leather armor";
             armour.Proficiency = ArmorProficiencyEnum.Light;
             armour.ArmorBonus = 3;
             armour.MaxDexBonus = 5;
@@ -32,6 +34,7 @@
         {
             var armour = new Armor();
 
+            armour.Description = "Scale mail";
             armour.Proficiency = ArmorProficiencyEnum.Medium;
             armour.ArmorBonus = 4;
             armour.MaxDexBonus = 3;
@@ -45,6 +48,7 @@
         {
             var armour = new Armor();
 
+            armour.Description = "Full plate";
             armour.Proficiency = ArmorProficiencyEnum.Heavy;
             armour.ArmorBonus = 8;
             armour.MaxDexBonus = 1;
