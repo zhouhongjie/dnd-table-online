@@ -17,6 +17,7 @@ namespace DndTable.Core
         public Position StartPosition;
         public int AttackBonus;
         public int ArmorBonus;
+        public int AttackCounter;
 
         public void Reset(ICharacter character)
         {
@@ -24,6 +25,7 @@ namespace DndTable.Core
             StartPosition = character.Position;
             AttackBonus = 0;
             ArmorBonus = 0;
+            AttackCounter = 0;
         }
 
         public int UseAttackBonus(Calculator.CalculatorPropertyContext context)
@@ -185,8 +187,8 @@ namespace DndTable.Core
             if (!CanDoMoveEquivalentAction())
                 return actions;
 
-            // Check Standard actions
-            if (CanDoStandardAction())
+            // Check attack actions
+            if (CanDoStandardAction() || CanDoSecondaryAttack())
             {
                 if (GetCurrentCharacter().CharacterSheet.HasNaturalWeapons)
                 // NaturalWeapon attack
@@ -284,6 +286,25 @@ namespace DndTable.Core
             return actions;
         }
 
+        // http://rpg.stackexchange.com/questions/22047/how-do-multiple-attacks-with-natural-weapons-work
+        private bool CanDoSecondaryAttack()
+        {
+            // use must have had a primary attack
+            // the only other actions that can have occured = 5feetMove & other attacks
+
+            var nrOfAttacksDone = GetRoundInfo(GetCurrentCharacter()).AttackCounter;
+
+            if (CharacterSheet.GetEditableSheet(GetCurrentCharacter()).GetMaxNrOfAttacks() <= nrOfAttacksDone)
+                return false;
+            
+            var nrFullRoundAttackActions = nrOfAttacksDone + _actionDoneByCurrentChar.Count(a => a == ActionTypeEnum.FiveFootStep);
+
+            if (_actionDoneByCurrentChar.Count > nrFullRoundAttackActions)
+                return false;
+
+            return true;
+        }
+
         private bool CanDoOnlyPartialAction()
         {
             return _isSurpriseRound;
@@ -321,7 +342,7 @@ namespace DndTable.Core
 
         public RoundInfo GetRoundInfo(ICharacter participant)
         {
-            return (participant.CharacterSheet as CharacterSheet).CurrentRoundInfo;
+            return CharacterSheet.GetEditableSheet(participant).CurrentRoundInfo;
         }
     }
 }

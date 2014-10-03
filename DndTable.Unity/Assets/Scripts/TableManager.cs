@@ -308,6 +308,11 @@ public class TableManager : MonoBehaviour
                 StopCurrentAction();
                 _currentActionUI = new MapEditorUI(Game, CharacterTypeEnum.Wolf);
             }
+            if (GUILayout.Button("Skeleton"))
+            {
+                StopCurrentAction();
+                _currentActionUI = new MapEditorUI(Game, CharacterTypeEnum.MediumSkeleton);
+            }
         }
         GUILayout.EndVertical();
     }

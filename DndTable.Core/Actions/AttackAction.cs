@@ -29,14 +29,10 @@ namespace DndTable.Core.Actions
         {
             get
             {
-                if (Executer.CharacterSheet.HasNaturalWeapons)
-                    return "Natural attack";
-                if (Executer.CharacterSheet.EquipedWeapon == null)
-                    return "Unarmed attack NOT SUPPORTED YET";
-                if (Executer.CharacterSheet.EquipedWeapon.IsRanged)
-                    return "Ranged attack";
-
-                return "Melee attack";
+                var label = Executer.CharacterSheet.GetCurrentWeapon().Description;
+                if (Executer.CharacterSheet.GetCurrentWeapon().IsRanged)
+                    label += " (R)";
+                return label;
             }
         }
 
@@ -45,6 +41,9 @@ namespace DndTable.Core.Actions
             using (var context = Calculator.CreateActionContext(this))
             {
                 _Do(context);
+
+                // Keep track of multiple attacks
+                CharacterSheet.GetEditableSheet(Executer).CurrentRoundInfo.AttackCounter++;
             }
         }
 
@@ -53,17 +52,13 @@ namespace DndTable.Core.Actions
             if (_targetCharacter == null)
                 throw new InvalidOperationException("Character target expected");
 
-            // Has weapon?
-            if (!Executer.CharacterSheet.HasNaturalWeapons)
-            {
-                // Weapon equiped
-                if (Executer.CharacterSheet.EquipedWeapon == null)
-                    throw new InvalidOperationException("attacker has no equiped weapon");
+            // Weapon equiped
+            if (Executer.CharacterSheet.GetCurrentWeapon() == null)
+                throw new InvalidOperationException("attacker has no equiped weapon");
 
-                // Needs reload?
-                if (Executer.CharacterSheet.EquipedWeapon.NeedsReload)
-                    throw new InvalidOperationException("attacker's equiped weapon needs reload");
-            }
+            // Needs reload?
+            if (Executer.CharacterSheet.GetCurrentWeapon().NeedsReload)
+                throw new InvalidOperationException("attacker's equiped weapon needs reload");
 
             // Check max range
             var rangeRounded = MathHelper.GetTilesDistance(Executer.Position, _targetCharacter.Position);
@@ -83,9 +78,7 @@ namespace DndTable.Core.Actions
             }
 
             // Use the weapon (Launch ammo is required)
-            var weapon = (Executer.CharacterSheet.EquipedWeapon as Weapon);
-            if (weapon != null)
-                weapon.Use();
+            Executer.CharacterSheet.GetCurrentWeapon().Use();
 
             // don't use the stats of the EquipedWeapon
             // => use the DamageRollStatistics
@@ -93,7 +86,7 @@ namespace DndTable.Core.Actions
 
             // Check hit
             var check = DiceRoller.RollAttack(
-                Executer, 
+                Executer,
                 DiceRollEnum.Attack,
                 Executer.CharacterSheet.GetCurrentAttackBonus((int)rangeRounded * 5, IsFlanking()),  // Convert tiles to feet
                 _targetCharacter.CharacterSheet.GetCurrentArmorClass(),
@@ -107,8 +100,8 @@ namespace DndTable.Core.Actions
             if (check.IsThreat)
             {
                 isCritical = DiceRoller.Check(
-                    Executer, 
-                    DiceRollEnum.CriticalAttack, 
+                    Executer,
+                    DiceRollEnum.CriticalAttack,
                     20,
                     Executer.CharacterSheet.GetCurrentAttackBonus((int)rangeRounded * 5, IsFlanking()),
                     _targetCharacter.CharacterSheet.GetCurrentArmorClass());
@@ -116,21 +109,64 @@ namespace DndTable.Core.Actions
 
 
             // Do damage
-            var nrOfDamageRolls = isCritical ? damageRollInfo.CriticalMultiplier : 1;
-            for (var i = 0; i < nrOfDamageRolls; i++)
             {
-                var damage = DiceRoller.Roll(
-                    Executer,
-                    DiceRollEnum.Damage,
-                    damageRollInfo.NrOfDice,
-                    damageRollInfo.D,
-                    damageRollInfo.Bonus);
+                // Normal damage + critical
+                var damage = 0;
+                var nrOfDamageRolls = isCritical ? damageRollInfo.CriticalMultiplier : 1;
+                for (var i = 0; i < nrOfDamageRolls; i++)
+                {
+                    var currentDamage = DiceRoller.Roll(
+                        Executer,
+                        DiceRollEnum.Damage,
+                        damageRollInfo.NrOfDice,
+                        damageRollInfo.D,
+                        damageRollInfo.Bonus);
 
-                if (damage < 1)
-                    damage = 1;
+                    // TODO: verify -> check here or @ the end
+                    if (currentDamage < 1)
+                        currentDamage = 1;
 
+                    damage += currentDamage;
+                }
+
+                // SneakAttack 
+                if (CanSneakAttack(Executer, _targetCharacter))
+                {
+                    var currentDamage = DiceRoller.Roll(
+                        Executer,
+                        DiceRollEnum.SneakAttack,
+                        1, // TODO: higher lvl sneaks attacks
+                        6,
+                        0);
+
+                    damage += currentDamage;
+                }
                 CharacterSheet.GetEditableSheet(_targetCharacter).ApplyDamage(damage);
             }
+        }
+
+        private bool CanSneakAttack(ICharacter attacker, ICharacter target)
+        {
+            // <= 30ft
+            var rangeRounded = MathHelper.GetTilesDistance(Executer.Position, _targetCharacter.Position);
+            if (rangeRounded > 6)
+                return false;
+
+            var attackerSheet = CharacterSheet.GetEditableSheet(attacker);
+            var targetSheet = CharacterSheet.GetEditableSheet(target);
+
+            if (!attackerSheet.CanSneakAttack)
+                return false;
+
+            // TODO: check target has concealment
+            // TODO: target type is undead
+
+            if (targetSheet.LooseDexBonusToAC())
+                return true;
+            if (IsFlanking())
+                return true;
+
+            return false;
         }
 
         private bool IsFlanking()
@@ -140,21 +176,14 @@ namespace DndTable.Core.Actions
 
         private bool ProvokesAttackOfOpportunity()
         {
-            // TODO: check
-            if (Executer.CharacterSheet.HasNaturalWeapons)
-                return false;
-            // TODO: unarmed combat feat => no longer AoO
-            if (Executer.CharacterSheet.EquipedWeapon == null)
-                return true;
-
-            return Executer.CharacterSheet.EquipedWeapon.IsRanged;
+            return Executer.CharacterSheet.GetCurrentWeapon().ProvokesAoO;
         }
 
         public int MaxRange
         {
             get 
             {
-                if (Executer.CharacterSheet.EquipedWeapon != null && Executer.CharacterSheet.EquipedWeapon.IsRanged)
+                if (Executer.CharacterSheet.GetCurrentWeapon().IsRanged)
                 {
                     // TODO: implement in weapon stats?
                     // Thrown weapons: range increment x5
@@ -162,7 +191,7 @@ namespace DndTable.Core.Actions
 
                     // x / 5 (feet to tiles) 
 
-                    return (int) Math.Floor(Executer.CharacterSheet.EquipedWeapon.RangeIncrement*2.0);
+                    return (int)Math.Floor(Executer.CharacterSheet.GetCurrentWeapon().RangeIncrement * 2.0);
                 }
 
 
