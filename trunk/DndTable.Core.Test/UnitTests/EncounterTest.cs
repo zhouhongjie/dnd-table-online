@@ -93,7 +93,7 @@ namespace DndTable.Core.Test.UnitTests
             // No reload needed on weapon
             {
                 Assert.IsFalse(current.CharacterSheet.EquipedWeapon.NeedsReload);
-                AssertActionPossible<AttackAction2>();
+                AssertActionPossible<AttackAction>();
                 AssertActionNotPossible<ReloadAction>();
             }
 
@@ -123,12 +123,12 @@ namespace DndTable.Core.Test.UnitTests
 
             // Test reload 1 partial
             {
-                AssertActionNotPossible<AttackAction2>();
+                AssertActionNotPossible<AttackAction>();
                 AssertActionPossible<ReloadAction>();
 
                 AssertDoReload();
 
-                AssertActionPossible<AttackAction2>();
+                AssertActionPossible<AttackAction>();
                 AssertActionNotPossible<ReloadAction>();
             }
         }
@@ -146,12 +146,12 @@ namespace DndTable.Core.Test.UnitTests
 
             // Test reload 2 partials
             {
-                AssertActionNotPossible<AttackAction2>();
+                AssertActionNotPossible<AttackAction>();
                 AssertActionPossible<ReloadAction>();
 
                 AssertDoReload();
 
-                AssertActionNotPossible<AttackAction2>(); // no more partial actions left
+                AssertActionNotPossible<AttackAction>(); // no more partial actions left
                 AssertActionNotPossible<ReloadAction>();
             }
         }

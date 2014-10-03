@@ -171,6 +171,7 @@ namespace DndTable.Core.Characters
         #region Feats
 
         public bool CanSneakAttack { get; internal set; }
+        public bool ImprovedInitiative { get; internal set; }
 
         #endregion
 
@@ -362,7 +363,12 @@ namespace DndTable.Core.Characters
             using (var context = Calculator.CreatePropertyContext("Initiative"))
             {
                 // TODO: modifiers
-                return context.UseAbilityBonus(DexterityAttribute);
+                var initiative = context.UseAbilityBonus(DexterityAttribute);
+
+                if (ImprovedInitiative)
+                    initiative += context.Use(4, "ImprovedInitiative");
+
+                return initiative;
             }
         }
 
@@ -377,6 +383,17 @@ namespace DndTable.Core.Characters
         }
 
 
+        public int GetMaxNrOfAttacks()
+        {
+            // http://rpg.stackexchange.com/questions/22047/how-do-multiple-attacks-with-natural-weapons-work
+
+            if (_naturalWeapons.Count > 1)
+                return _naturalWeapons.Count;
+
+            // TODO: also for manufactured weapons
+            return 1;
+        }
+
         private RoundInfo _currentRoundInfo = new RoundInfo();
         internal RoundInfo CurrentRoundInfo { get { return _currentRoundInfo; } }
 
@@ -389,7 +406,7 @@ namespace DndTable.Core.Characters
         {
             // TODO: multi-attacks, natural & normal mixed weapons, unarmed, ...
             if (HasNaturalWeapons)
-                return NaturalWeapons[0];
+                return NaturalWeapons[CurrentRoundInfo.AttackCounter];
             if (EquipedWeapon == null)
                 throw new NotSupportedException("TODO: unarmed combat");
             return EquipedWeapon;

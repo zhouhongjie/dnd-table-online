@@ -88,6 +88,8 @@ namespace DndTable.Core.Factories
                 return CreateKobolt();
             if (npcType == CharacterTypeEnum.Wolf)
                 return CreateWolf();
+            if (npcType == CharacterTypeEnum.MediumSkeleton)
+                return CreateMediumSkeleton();
 
             throw new NotImplementedException();
         }
@@ -197,6 +199,34 @@ namespace DndTable.Core.Factories
             // TODO: Special attack => Trip
 
             return new Character(sheet, CharacterTypeEnum.Wolf);
+        }
+
+        public static ICharacter CreateMediumSkeleton(string name = "Skeleton")
+        {
+            var sheet = CreateDefaultSheet();
+
+            sheet.Name = name;
+            sheet.Race = CharacterRace.Undead;
+            sheet.FactionId = 2;
+
+            sheet.Strength = 10;
+            sheet.Dexterity = 12;
+            //sheet.Constitution = 10;
+            //sheet.Intelligence = 9;
+            sheet.Wisdom = 10;
+            sheet.Charisma = 11;
+
+            sheet.HitPoints = 6;
+            sheet.MaxHitPoints = 6;
+            sheet.Speed = 30;
+
+            sheet.ImprovedInitiative = true;
+
+            sheet.NaturalArmor = 2;
+            sheet.NaturalWeapons.Add(new NaturalWeapon("Claw", true, 2, 1, 4, 0));
+            sheet.NaturalWeapons.Add(new NaturalWeapon("Claw", true, 2, 1, 4, 0));
+
+            return new Character(sheet, CharacterTypeEnum.MediumSkeleton);
         }
 
         public static IEntity CreateEntity(EntityTypeEnum entityType)
