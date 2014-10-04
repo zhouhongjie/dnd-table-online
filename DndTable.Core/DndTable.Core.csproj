@@ -62,9 +62,11 @@
     <Compile Include="Armors\Armor.cs" />
     <Compile Include="Characters\Attribute.cs" />
     <Compile Include="Characters\Calculator.cs" />
+    <Compile Include="Characters\CharacterImmunities.cs" />
     <Compile Include="Characters\CharacterRace.cs" />
     <Compile Include="Characters\CharacterConditions.cs" />
     <Compile Include="Characters\ICharacterConditions.cs" />
+    <Compile Include="Characters\ICharacterImmunities.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="Characters\Character.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="Factories\AbstractActionFactory.cs" />
     <Compile Include="Armors\ArmorFactory.cs" />
     <Compile Include="Factories\Factory.cs" />
+    <Compile Include="Factories\ImmunityBuilder.cs" />
     <Compile Include="Items\IItem.cs" />
     <Compile Include="Items\PotionFactory.cs" />
     <Compile Include="Items\SpellEffectPotion.cs" />

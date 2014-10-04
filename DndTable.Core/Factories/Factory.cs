@@ -226,6 +226,11 @@ namespace DndTable.Core.Factories
             sheet.NaturalWeapons.Add(new NaturalWeapon("Claw", true, 2, 1, 4, 0));
             sheet.NaturalWeapons.Add(new NaturalWeapon("Claw", true, 2, 1, 4, 0));
 
+            ImmunityBuilder.AddUndeadImmunities(sheet.EditableImmunities);
+            sheet.EditableImmunities.ImmuneToCold = true;
+            sheet.EditableImmunities.HalfDamageFromPiercing = true;
+            sheet.EditableImmunities.HalfDamageFromSlashing = true;
+
             return new Character(sheet, CharacterTypeEnum.MediumSkeleton);
         }
 

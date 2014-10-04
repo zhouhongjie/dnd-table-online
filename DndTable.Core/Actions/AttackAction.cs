@@ -42,7 +42,7 @@ namespace DndTable.Core.Actions
             {
                 _Do(context);
 
-                // Keep track of multiple attacks
+                // Keep track of multiple attacks: make sure this is done last (counter is also used to get the CurrentWeapon of the Character)
                 CharacterSheet.GetEditableSheet(Executer).CurrentRoundInfo.AttackCounter++;
             }
         }
@@ -110,6 +110,12 @@ namespace DndTable.Core.Actions
 
             // Do damage
             {
+                if (_targetCharacter.CharacterSheet.Immunities.ImmuneToCriticalHits)
+                {
+                    Logger.Singleton.LogImmunity(_targetCharacter.CharacterSheet, "CriticalHits");
+                    isCritical = false;
+                }
+
                 // Normal damage + critical
                 var damage = 0;
                 var nrOfDamageRolls = isCritical ? damageRollInfo.CriticalMultiplier : 1;
@@ -121,6 +127,9 @@ namespace DndTable.Core.Actions
                         damageRollInfo.NrOfDice,
                         damageRollInfo.D,
                         damageRollInfo.Bonus);
+
+                    // Check damage reductions
+                    currentDamage = CheckDamageReductions(currentDamage);
 
                     // TODO: verify -> check here or @ the end
                     if (currentDamage < 1)
@@ -143,6 +152,25 @@ namespace DndTable.Core.Actions
                 }
                 CharacterSheet.GetEditableSheet(_targetCharacter).ApplyDamage(damage);
             }
+        }
+
+        private int CheckDamageReductions(int damage)
+        {
+            if (_targetCharacter.CharacterSheet.Immunities.HalfDamageFromPiercing
+                && Executer.CharacterSheet.GetCurrentWeapon().DamageTypes.Contains(WeaponDamageTypeEnum.Piercing))
+            {
+                Logger.Singleton.LogImmunity(_targetCharacter.CharacterSheet, "HalfDamageFromPiercing");
+                damage /= 2;
+            }
+
+            if (_targetCharacter.CharacterSheet.Immunities.HalfDamageFromSlashing
+                && Executer.CharacterSheet.GetCurrentWeapon().DamageTypes.Contains(WeaponDamageTypeEnum.Slashing))
+            {
+                Logger.Singleton.LogImmunity(_targetCharacter.CharacterSheet, "HalfDamageFromSlashing");
+                damage /= 2;
+            }
+
+            return damage;
         }
 
         private bool CanSneakAttack(ICharacter attacker, ICharacter target)

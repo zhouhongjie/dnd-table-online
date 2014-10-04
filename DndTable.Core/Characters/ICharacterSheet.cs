@@ -40,6 +40,7 @@ namespace DndTable.Core.Characters
         List<ISpell> Spells { get; }
 
         ICharacterConditions Conditions { get; }
+        ICharacterImmunities Immunities { get; }
 
         bool HasNaturalWeapons { get; }
 
