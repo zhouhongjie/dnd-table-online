@@ -90,6 +90,8 @@ namespace DndTable.Core.Factories
                 return CreateWolf();
             if (npcType == CharacterTypeEnum.MediumSkeleton)
                 return CreateMediumSkeleton();
+            if (npcType == CharacterTypeEnum.MediumZombie)
+                return CreateMediumZombie();
 
             throw new NotImplementedException();
         }
@@ -232,6 +234,35 @@ namespace DndTable.Core.Factories
             sheet.EditableImmunities.HalfDamageFromSlashing = true;
 
             return new Character(sheet, CharacterTypeEnum.MediumSkeleton);
+        }
+
+        public static ICharacter CreateMediumZombie(string name = "Zombie")
+        {
+            var sheet = CreateDefaultSheet();
+
+            sheet.Name = name;
+            sheet.Race = CharacterRace.Undead;
+            sheet.FactionId = 2;
+
+            sheet.Strength = 13;
+            sheet.Dexterity = 8;
+            //sheet.Constitution = 10;
+            //sheet.Intelligence = 10;
+            sheet.Wisdom = 10;
+            sheet.Charisma = 1;
+
+            sheet.HitPoints = 16;
+            sheet.MaxHitPoints = 16;
+            sheet.Speed = 30;
+
+            sheet.NaturalArmor = 2;
+            sheet.NaturalWeapons.Add(new NaturalWeapon("Slam", true, 2, 1, 6, 1));
+
+            ImmunityBuilder.AddUndeadImmunities(sheet.EditableImmunities);
+
+            // TODO: "Partial actions only"
+
+            return new Character(sheet, CharacterTypeEnum.MediumZombie);
         }
 
         public static IEntity CreateEntity(EntityTypeEnum entityType)

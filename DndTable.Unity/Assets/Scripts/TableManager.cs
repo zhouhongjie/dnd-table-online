@@ -313,6 +313,11 @@ public class TableManager : MonoBehaviour
                 StopCurrentAction();
                 _currentActionUI = new MapEditorUI(Game, CharacterTypeEnum.MediumSkeleton);
             }
+            if (GUILayout.Button("Zombie"))
+            {
+                StopCurrentAction();
+                _currentActionUI = new MapEditorUI(Game, CharacterTypeEnum.MediumZombie);
+            }
         }
         GUILayout.EndVertical();
     }
