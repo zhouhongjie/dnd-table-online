@@ -2,12 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DndTable.Core.Log;
 
 namespace DndTable.Core.Characters
 {
     internal class CharacterConditions : ICharacterConditions
     {
-        public bool IsSleeping { get; internal set; }
+        private CharacterSheet _sheet;
+
+        internal CharacterConditions(CharacterSheet sheet)
+        {
+            _sheet = sheet;
+        }
+
+        private bool _isSleeping;
+        public bool IsSleeping
+        {
+            get { return _isSleeping;  }
+            set
+            {
+                if (value && _sheet.Immunities.ImmuneToSleep)
+                    Logger.Singleton.LogImmunity(_sheet, "ToSleep");
+                else
+                    _isSleeping = value;
+            }
+        }
+
         public bool IsFlatFooted { get; internal set; }
 
         public bool IsHelpless

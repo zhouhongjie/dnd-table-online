@@ -11,6 +11,11 @@ namespace DndTable.Core.Characters
 {
     public class CharacterSheet : ICharacterSheet
     {
+        internal CharacterSheet()
+        {
+            _conditions = new CharacterConditions(this);
+        }
+
         internal static CharacterSheet GetEditableSheet(ICharacter character)
         {
             var sheet = character.CharacterSheet as CharacterSheet;
@@ -87,7 +92,7 @@ namespace DndTable.Core.Characters
         #endregion
 
         #region Conditions
-        private readonly CharacterConditions _conditions = new CharacterConditions();
+        private readonly CharacterConditions _conditions;
         public ICharacterConditions Conditions { get { return _conditions; } }
         internal CharacterConditions EditableConditions { get { return _conditions; } }
 
@@ -104,6 +109,12 @@ namespace DndTable.Core.Characters
             return false;
         }
 
+        #endregion
+
+        #region Immunities
+        private readonly  CharacterImmunities _immunities = new CharacterImmunities();
+        public ICharacterImmunities Immunities { get { return _immunities; } }
+        internal CharacterImmunities EditableImmunities { get { return _immunities; } }
         #endregion
 
         #region Effects

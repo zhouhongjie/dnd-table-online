@@ -64,6 +64,11 @@ namespace DndTable.Core.Log
             _messages.Add(GetPrefix(indent) + opportunist.CharacterSheet.Name + " has an AttackOfOpportunity against: " + victim.CharacterSheet.Name);
         }
 
+        internal void LogImmunity(ICharacterSheet sheet, string immunity)
+        {
+            _messages.Add(sheet.Name + " has immunity  " + immunity);
+        }
+
         internal void LogMessage(int indent, string message)
         {
             _messages.Add(GetPrefix(indent) + message);
