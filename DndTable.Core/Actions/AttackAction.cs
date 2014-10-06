@@ -110,7 +110,7 @@ namespace DndTable.Core.Actions
 
             // Do damage
             {
-                if (_targetCharacter.CharacterSheet.Immunities.ImmuneToCriticalHits)
+                if (isCritical && _targetCharacter.CharacterSheet.Immunities.ImmuneToCriticalHits)
                 {
                     Logger.Singleton.LogImmunity(_targetCharacter.CharacterSheet, "CriticalHits");
                     isCritical = false;
@@ -159,15 +159,15 @@ namespace DndTable.Core.Actions
             if (_targetCharacter.CharacterSheet.Immunities.HalfDamageFromPiercing
                 && Executer.CharacterSheet.GetCurrentWeapon().DamageTypes.Contains(WeaponDamageTypeEnum.Piercing))
             {
-                Logger.Singleton.LogImmunity(_targetCharacter.CharacterSheet, "HalfDamageFromPiercing");
-                damage /= 2;
+                damage = (int)Math.Ceiling(damage / 2.0);
+                Logger.Singleton.LogImmunity(_targetCharacter.CharacterSheet, "HalfDamageFromPiercing => " + damage + " damage");
             }
 
             if (_targetCharacter.CharacterSheet.Immunities.HalfDamageFromSlashing
                 && Executer.CharacterSheet.GetCurrentWeapon().DamageTypes.Contains(WeaponDamageTypeEnum.Slashing))
             {
-                Logger.Singleton.LogImmunity(_targetCharacter.CharacterSheet, "HalfDamageFromSlashing");
-                damage /= 2;
+                damage = (int)Math.Ceiling(damage / 2.0);
+                Logger.Singleton.LogImmunity(_targetCharacter.CharacterSheet, "HalfDamageFromSlashing => " + damage + " damage");
             }
 
             return damage;
@@ -187,14 +187,19 @@ namespace DndTable.Core.Actions
                 return false;
 
             // TODO: check target has concealment
-            // TODO: target type is undead
 
-            if (targetSheet.LooseDexBonusToAC())
-                return true;
-            if (IsFlanking())
-                return true;
+            bool canSneak =
+                targetSheet.LooseDexBonusToAC() ||
+                IsFlanking();
 
-            return false;
+            // Immunity
+            if (canSneak && targetSheet.Immunities.ImmuneToSneakAttacks)
+            {
+                Logger.Singleton.LogImmunity(targetSheet, "SneakAttacks");
+                return false;
+            }
+
+            return canSneak;
         }
 
         private bool IsFlanking()

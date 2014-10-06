@@ -214,9 +214,14 @@ namespace DndTable.Core
             if (CanDoMoveAction() && CanDoFullRoundAction())
             {
                 // Cannot charge with ranged weapon
-                if ((GetCurrentCharacter().CharacterSheet.EquipedWeapon != null && !GetCurrentCharacter().CharacterSheet.EquipedWeapon.IsRanged)
-                    || GetCurrentCharacter().CharacterSheet.HasNaturalWeapons)
+                if ((GetCurrentCharacter().CharacterSheet.GetCurrentWeapon() != null && !GetCurrentCharacter().CharacterSheet.GetCurrentWeapon().IsRanged))
                     actions.Add(_actionFactory.Charge(GetCurrentCharacter()));
+            }
+            if (CanDoMoveAction() && CanDoOnlyPartialAction())
+            {
+                // Cannot charge with ranged weapon
+                if ((GetCurrentCharacter().CharacterSheet.GetCurrentWeapon() != null && !GetCurrentCharacter().CharacterSheet.GetCurrentWeapon().IsRanged))
+                    actions.Add(_actionFactory.PartialCharge(GetCurrentCharacter()));
             }
 
             // Check reload action (FullRound || MoveEquivalent => depending on )
@@ -307,7 +312,7 @@ namespace DndTable.Core
 
         private bool CanDoOnlyPartialAction()
         {
-            return _isSurpriseRound;
+            return _isSurpriseRound || GetCurrentCharacter().CharacterSheet.Conditions.CanDoOnlyPartialActions;
         }
 
         private bool CanDoMoveAction()

@@ -35,6 +35,9 @@ namespace DndTable.Core.Characters
             get { return IsSleeping; } // TODO: extend with unconsious, bound, paralyzed, ...
         }
 
+        public bool CanDoOnlyPartialActions { get; internal set; }
+
+        // REMOVE ASAP!!!
         internal void ClearEffects()
         {
             // VERIFY!!!!

@@ -260,6 +260,8 @@ namespace DndTable.Core.Factories
 
             ImmunityBuilder.AddUndeadImmunities(sheet.EditableImmunities);
 
+            sheet.EditableConditions.CanDoOnlyPartialActions = true;
+
             // TODO: "Partial actions only"
 
             return new Character(sheet, CharacterTypeEnum.MediumZombie);
