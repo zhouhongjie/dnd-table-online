@@ -12,16 +12,24 @@ namespace DndTable.Core.Actions
     class ChargeAction : BaseAction, IAttackAction
     {
         private readonly ICharacter _attacker;
+        private bool _isPartial;
 
-        internal ChargeAction(ICharacter attacker)
+        internal ChargeAction(ICharacter attacker, bool isPartial)
             : base(attacker)
         {
             _attacker = attacker;
+            _isPartial = isPartial;
         }
 
         public int MaxRange
         {
-            get { return _attacker.CharacterSheet.GetCurrentSpeed()*2/5 + 1; } // Double speed + 1 for attack
+            get
+            {
+                if (_isPartial)
+                    return _attacker.CharacterSheet.GetCurrentSpeed()/5 + 1; // speed + 1 for attack (/5 for ft)
+
+                return _attacker.CharacterSheet.GetCurrentSpeed()*2/5 + 1; // Double speed + 1 for attack (/5 for ft)
+            }
         }
 
         public int MinRange
@@ -31,6 +39,7 @@ namespace DndTable.Core.Actions
 
         public override ActionTypeEnum Type
         {
+            // TO VERIFY: OK FOR PARTIAL CHARGE
             // As a follow-up, this action triggers an attack = Move + Attack = FullRound
             get { return ActionTypeEnum.MoveEquivalent; }
         }
@@ -42,7 +51,7 @@ namespace DndTable.Core.Actions
 
         public override string Description
         {
-            get { return "Charge"; }
+            get { return _isPartial ? "Partial charge" : "Charge"; }
         }
 
         public override void Do()
@@ -58,7 +67,7 @@ namespace DndTable.Core.Actions
             if (_targetCharacter == null)
                 throw new InvalidOperationException("TargetCharacter required");
 
-            if (_attacker.CharacterSheet.EquipedWeapon != null && _attacker.CharacterSheet.EquipedWeapon.IsRanged)
+            if (_attacker.CharacterSheet.GetCurrentWeapon() != null && _attacker.CharacterSheet.GetCurrentWeapon().IsRanged)
                 throw new NotSupportedException("Charging with a ranged weapon is not supported");
 
             // Calculate new position = straight line from _attacker to target - striking distance (= 1 tile for now)

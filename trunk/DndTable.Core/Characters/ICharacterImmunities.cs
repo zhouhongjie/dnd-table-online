@@ -18,6 +18,7 @@ namespace DndTable.Core.Characters
         bool ImmuneToAbilityDamage { get; }
         bool ImmuneToEnergyDrain { get; }
         bool ImmuneToDeathFromMassiveDamage { get; }
+        bool ImmuneToSneakAttacks { get; }
 
         bool ImmuneToCold { get; }
 

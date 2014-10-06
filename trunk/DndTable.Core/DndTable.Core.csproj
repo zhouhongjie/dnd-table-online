@@ -82,6 +82,7 @@
     <Compile Include="Entities\Pit.cs" />
     <Compile Include="Factories\AbstractActionFactory.cs" />
     <Compile Include="Armors\ArmorFactory.cs" />
+    <Compile Include="Factories\ClassBuilder.cs" />
     <Compile Include="Factories\Factory.cs" />
     <Compile Include="Factories\ImmunityBuilder.cs" />
     <Compile Include="Items\IItem.cs" />

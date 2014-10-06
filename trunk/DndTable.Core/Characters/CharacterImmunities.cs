@@ -35,5 +35,8 @@ namespace DndTable.Core.Characters
 
         public bool HalfDamageFromSlashing { get; internal set; }
 
+
+        // Playerhandbook p47 (sneak attacks)
+        public bool ImmuneToSneakAttacks { get { return ImmuneToCriticalHits; } }
     }
 }
