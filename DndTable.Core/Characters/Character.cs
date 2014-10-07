@@ -18,6 +18,8 @@ namespace DndTable.Core.Characters
         public CharacterTypeEnum CharacterType { get; private set; }
         public override EntityTypeEnum EntityType { get { return EntityTypeEnum.Character; } }
 
+        public bool IsHero { get { return CharacterType == CharacterTypeEnum.Hero; } }
+
         private Repository _repository { get; set; }
 
         public Character(ICharacterSheet sheet, CharacterTypeEnum charType = CharacterTypeEnum.Unknown)
