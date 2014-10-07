@@ -76,11 +76,15 @@ public class TableManager : MonoBehaviour
 
             // Boris
             {
-                var boris = Factory.CreateCharacter("Boris", 14, 12, 14, 10, 10, 10);
+                var boris = Factory.CreateCharacter("Boris", 16, 12, 14, 10, 10, 10);
                 boris.SaveCharacterSheet("Boris");
+                Game.ClassBuilder.AddFighterLevel(boris);
+                Game.ClassBuilder.AddFighterLevel(boris);
+
                 boris.EquipWeapon(WeaponFactory.Longsword());
                 boris.EquipArmor(ArmorFactory.StuddedLeather());
-                //boris.Give(WeaponFactory.CrossbowLight());
+                boris.Give(WeaponFactory.Shortbow());
+
                 Game.AddCharacter(boris, Position.Create(3, 3));
                 allPcs.Add(boris);
 
@@ -91,11 +95,15 @@ public class TableManager : MonoBehaviour
 
             // Maiko
             {
-                var maiko = Factory.CreateCharacter("Maiko", 12, 16, 10, 12, 10, 13);
+                var maiko = Factory.CreateCharacter("Maiko", 10, 16, 14, 14, 10, 10);
                 maiko.SaveCharacterSheet("Maiko");
+                Game.ClassBuilder.AddWizardLevel(maiko);
+                Game.ClassBuilder.AddWizardLevel(maiko);
+
                 maiko.EquipWeapon(WeaponFactory.Longbow());
                 maiko.EquipArmor(ArmorFactory.Leather());
                 //maiko.Give(WeaponFactory.Rapier());
+
                 maiko.PrepareSpell(SpellFactory.MagicMissile());
                 maiko.PrepareSpell(SpellFactory.MagicMissile());
                 maiko.PrepareSpell(SpellFactory.SleepArrow());
@@ -111,14 +119,19 @@ public class TableManager : MonoBehaviour
             {
                 var healer = Factory.CreateCharacter("Jozan", 12, 12, 12, 10, 12, 10);
                 healer.SaveCharacterSheet("Jozan");
+                Game.ClassBuilder.AddClericLevel(healer);
+                Game.ClassBuilder.AddClericLevel(healer);
+
                 healer.EquipArmor(ArmorFactory.FullPlate());
                 healer.EquipWeapon(WeaponFactory.MaceHeavy());
+
                 healer.PrepareSpell(SpellFactory.CureLightWound());
                 healer.PrepareSpell(SpellFactory.CureLightWound());
                 healer.PrepareSpell(SpellFactory.CureLightWound());
                 healer.PrepareSpell(SpellFactory.CureLightWound());
                 healer.PrepareSpell(SpellFactory.CureLightWound());
                 healer.PrepareSpell(SpellFactory.CureLightWound());
+
                 Game.AddCharacter(healer, Position.Create(3, 5));
                 allPcs.Add(healer);
 
@@ -130,20 +143,16 @@ public class TableManager : MonoBehaviour
                 var thogeon = Factory.CreateCharacter("Thogeon", 12, 16, 12, 12, 10, 12, SizeEnum.Small);
                 thogeon.SaveCharacterSheet("Thogeon");
                 Game.ClassBuilder.AddRogueLevel(thogeon);
+                Game.ClassBuilder.AddRogueLevel(thogeon);
+
                 thogeon.EquipArmor(ArmorFactory.Leather());
                 thogeon.EquipWeapon(WeaponFactory.Dagger());
                 thogeon.Give(WeaponFactory.CrossbowLight());
+
                 Game.AddCharacter(thogeon, Position.Create(3, 6));
                 allPcs.Add(thogeon);
 
                 thogeon.Give(PotionFactory.CreatePotionOfCureLightWound());
-
-            }
-
-            // Maria
-            {
-                var maria = Factory.CreateNpcCharacter("mheeria", 6, 12, 8, 4, 4, 12);
-                Game.AddCharacter(maria, Position.Create(15, 11));
             }
 
             // Start encounter
@@ -273,6 +282,11 @@ public class TableManager : MonoBehaviour
                 StopCurrentAction();
                 _currentActionUI = new MapEditorUI(Game, EntityTypeEnum.Wall);
             }
+            if (GUILayout.Button("Wall border"))
+            {
+                StopCurrentAction();
+                CreateMapBorder();
+            }
             if (GUILayout.Button("Chests"))
             {
                 StopCurrentAction();
@@ -325,6 +339,20 @@ public class TableManager : MonoBehaviour
             }
         }
         GUILayout.EndVertical();
+    }
+
+    private void CreateMapBorder()
+    {
+        for(var x = 0; x < Game.GameBoard.MaxX; x++)
+        {
+            Game.AddMapEntity(Position.Create(x, 0), EntityTypeEnum.Wall);
+            Game.AddMapEntity(Position.Create(x, Game.GameBoard.MaxY-1), EntityTypeEnum.Wall);
+        }
+        for (var y = 0; y < Game.GameBoard.MaxY; y++)
+        {
+            Game.AddMapEntity(Position.Create(0, y), EntityTypeEnum.Wall);
+            Game.AddMapEntity(Position.Create(Game.GameBoard.MaxX-1, y), EntityTypeEnum.Wall);
+        }
     }
 
     private bool UpdateMultistepOperation()

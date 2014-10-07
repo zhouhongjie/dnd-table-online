@@ -159,6 +159,23 @@ namespace DndTable.Core.Weapons
             weapon.Description = "Longbow";
             weapon.Proficiency = WeaponProficiencyEnum.Martial;
             weapon.IsRanged = true;
+            weapon.DamageD = 6;
+            weapon.CriticalMultiplier = 3;
+            weapon.CriticalRange = 0;
+            weapon.RangeIncrement = 60;
+            weapon.Weight = 2;
+            weapon.DamageTypes.Add(WeaponDamageTypeEnum.Piercing);
+
+            return weapon;
+        }
+
+        public static IWeapon Shortbow()
+        {
+            var weapon = new Weapon();
+
+            weapon.Description = "Shortbow";
+            weapon.Proficiency = WeaponProficiencyEnum.Martial;
+            weapon.IsRanged = true;
             weapon.DamageD = 8;
             weapon.CriticalMultiplier = 3;
             weapon.CriticalRange = 0;
