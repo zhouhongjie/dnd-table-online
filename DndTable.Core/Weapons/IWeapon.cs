@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using DndTable.Core.Characters;
+using DndTable.Core.Dice;
 using DndTable.Core.Items;
 
 namespace DndTable.Core.Weapons
@@ -45,6 +47,7 @@ namespace DndTable.Core.Weapons
         #region operation
 
         void Use();
+        //void ApplyEffect(ICharacter target, IDiceRoller diceRoller);
 
         #endregion
     }

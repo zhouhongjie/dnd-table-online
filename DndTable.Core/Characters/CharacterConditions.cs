@@ -30,9 +30,11 @@ namespace DndTable.Core.Characters
 
         public bool IsFlatFooted { get; internal set; }
 
+        public bool IsParalyzed { get; internal set; }
+
         public bool IsHelpless
         {
-            get { return IsSleeping; } // TODO: extend with unconsious, bound, paralyzed, ...
+            get { return IsSleeping || IsParalyzed; } // TODO: extend with unconsious, bound, paralyzed, ...
         }
 
         public bool CanDoOnlyPartialActions { get; internal set; }
@@ -45,6 +47,7 @@ namespace DndTable.Core.Characters
             // TODO: work with ConditionAttributes, where we clear the IsSleeping.EffectValue (but leave the IsSleeping.Value)
             // => otherwise a creature can never sleep naturally
             IsSleeping = false;
+            IsParalyzed = false;
         }
     }
 }

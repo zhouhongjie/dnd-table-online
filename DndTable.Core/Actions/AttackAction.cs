@@ -151,6 +151,9 @@ namespace DndTable.Core.Actions
                     damage += currentDamage;
                 }
                 CharacterSheet.GetEditableSheet(_targetCharacter).ApplyDamage(damage);
+
+                // Special effect
+                (Executer.CharacterSheet.GetCurrentWeapon() as BaseWeapon).ApplyEffect(_targetCharacter, DiceRoller);
             }
         }
 

@@ -3,6 +3,7 @@ using DndTable.Core.Armors;
 using DndTable.Core.Characters;
 using DndTable.Core.Dice;
 using DndTable.Core.Entities;
+using DndTable.Core.Spells;
 using DndTable.Core.Weapons;
 
 namespace DndTable.Core.Factories
@@ -92,6 +93,8 @@ namespace DndTable.Core.Factories
                 return CreateMediumSkeleton();
             if (npcType == CharacterTypeEnum.MediumZombie)
                 return CreateMediumZombie();
+            if (npcType == CharacterTypeEnum.Ghoul)
+                return CreateGhoul();
 
             throw new NotImplementedException();
         }
@@ -262,9 +265,37 @@ namespace DndTable.Core.Factories
 
             sheet.EditableConditions.CanDoOnlyPartialActions = true;
 
-            // TODO: "Partial actions only"
-
             return new Character(sheet, CharacterTypeEnum.MediumZombie);
+        }
+
+        public static ICharacter CreateGhoul(string name = "Ghoul")
+        {
+            var sheet = CreateDefaultSheet();
+            var character = new Character(sheet, CharacterTypeEnum.Ghoul);
+
+            sheet.Name = name;
+            sheet.Race = CharacterRace.Undead;
+            sheet.FactionId = 2;
+
+            sheet.Strength = 13;
+            sheet.Dexterity = 15;
+            //sheet.Constitution = 10;
+            sheet.Intelligence = 13;
+            sheet.Wisdom = 14;
+            sheet.Charisma = 16;
+
+            sheet.HitPoints = 13;
+            sheet.MaxHitPoints = 13;
+            sheet.Speed = 30;
+
+            sheet.NaturalArmor = 2;
+            sheet.NaturalWeapons.Add(new NaturalWeapon("Bite", true, 3, 1, 6, 1, SpecialAbilityFactory.GhoulParalysis(character)));
+            sheet.NaturalWeapons.Add(new NaturalWeapon("Claw", true, 0, 1, 3, 0, SpecialAbilityFactory.GhoulParalysis(character)));
+            sheet.NaturalWeapons.Add(new NaturalWeapon("Claw", true, 0, 1, 3, 0, SpecialAbilityFactory.GhoulParalysis(character)));
+
+            ImmunityBuilder.AddUndeadImmunities(sheet.EditableImmunities);
+
+            return character;
         }
 
         public static IEntity CreateEntity(EntityTypeEnum entityType)

@@ -32,6 +32,6 @@ namespace DndTable.Core.Characters
 
     public enum CharacterTypeEnum
     {
-        Unknown, Hero, Orc, OrcChief, Kobolt, Wolf, MediumSkeleton, MediumZombie
+        Unknown, Hero, Orc, OrcChief, Kobolt, Wolf, MediumSkeleton, MediumZombie, Ghoul
     }
 }

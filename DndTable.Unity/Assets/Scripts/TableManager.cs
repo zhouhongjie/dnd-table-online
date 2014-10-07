@@ -318,6 +318,11 @@ public class TableManager : MonoBehaviour
                 StopCurrentAction();
                 _currentActionUI = new MapEditorUI(Game, CharacterTypeEnum.MediumZombie);
             }
+            if (GUILayout.Button("Ghoul"))
+            {
+                StopCurrentAction();
+                _currentActionUI = new MapEditorUI(Game, CharacterTypeEnum.Ghoul);
+            }
         }
         GUILayout.EndVertical();
     }
