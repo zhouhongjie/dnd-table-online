@@ -23,12 +23,15 @@ namespace DndTable.Core
 
         public ILogger Logger { get { return Log.Logger.Singleton; } }
 
+        public ClassBuilder ClassBuilder { get; private set; }
+
         private List<ICharacter> _characters = new List<ICharacter>();
 
         public Game(Board board, IDiceRoller diceRoller)
         {
             _gameBoard = board;
             _diceRoller = diceRoller;
+            ClassBuilder = new ClassBuilder(_diceRoller);
         }
 
         public bool AddCharacter(ICharacter character, Position position)

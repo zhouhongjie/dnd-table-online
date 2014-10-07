@@ -23,11 +23,9 @@ namespace DndTable.Core.Test.UnitTests
         [Test]
         public void CureLightWound()
         {
-            var sheet = new CharacterSheet()
-                            {
-                                HitPoints = 10,
-                                MaxHitPoints = 20,
-                            };
+            var sheet = new CharacterSheet();
+            sheet.HpProperty.BaseValue = 10;
+            sheet.MaxHpProperty.BaseValue = 20;
             var character = new Character(sheet);
 
             // Setup diceRoller

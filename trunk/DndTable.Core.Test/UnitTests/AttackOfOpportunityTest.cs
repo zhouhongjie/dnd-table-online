@@ -119,7 +119,7 @@ namespace DndTable.Core.Test.UnitTests
                 false);
 
             // Incapacitate AoO executer
-            (setup.AoOExecuter.CharacterSheet as CharacterSheet).HitPoints = 0;
+            (setup.AoOExecuter.CharacterSheet as CharacterSheet).HpProperty.BaseValue = 0;
 
             var attack = new AttackAction(setup.ActionExecuter);
             attack.Initialize(setup.ActionFactory);

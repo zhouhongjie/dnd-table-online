@@ -28,8 +28,8 @@ namespace DndTable.Core.Factories
             sheet.Wisdom = 10;
             sheet.Charisma = 10;
 
-            sheet.HitPoints = 10;
-            sheet.MaxHitPoints = 10;
+            sheet.HpProperty.BaseValue = 10;
+            sheet.MaxHpProperty.BaseValue = 10;
             sheet.Speed = 30;
 
             sheet.Size = SizeEnum.Medium;
@@ -117,8 +117,8 @@ namespace DndTable.Core.Factories
             sheet.Wisdom = 8;
             sheet.Charisma = 8;
 
-            sheet.HitPoints = 4;
-            sheet.MaxHitPoints = 4;
+            sheet.HpProperty.BaseValue = 4;
+            sheet.MaxHpProperty.BaseValue = 4;
             sheet.Speed = 30;
 
             sheet.EquipedWeapon = WeaponFactory.Club();
@@ -142,8 +142,8 @@ namespace DndTable.Core.Factories
             sheet.Wisdom = 8;
             sheet.Charisma = 8;
 
-            sheet.HitPoints = 9;
-            sheet.MaxHitPoints = 9;
+            sheet.HpProperty.BaseValue = 9;
+            sheet.MaxHpProperty.BaseValue = 9;
             sheet.Speed = 30;
 
             sheet.EquipedWeapon = WeaponFactory.BattleAxe();
@@ -167,8 +167,8 @@ namespace DndTable.Core.Factories
             sheet.Wisdom = 10;
             sheet.Charisma = 10;
 
-            sheet.HitPoints = 2;
-            sheet.MaxHitPoints = 2;
+            sheet.HpProperty.BaseValue = 2;
+            sheet.MaxHpProperty.BaseValue = 2;
             sheet.Speed = 30;
 
             sheet.Size = SizeEnum.Small;
@@ -197,8 +197,8 @@ namespace DndTable.Core.Factories
             sheet.Wisdom = 12;
             sheet.Charisma = 6;
 
-            sheet.HitPoints = 13;
-            sheet.MaxHitPoints = 13;
+            sheet.HpProperty.BaseValue = 13;
+            sheet.MaxHpProperty.BaseValue = 13;
             sheet.Speed = 50;
 
             sheet.NaturalArmor = 2;
@@ -224,8 +224,8 @@ namespace DndTable.Core.Factories
             sheet.Wisdom = 10;
             sheet.Charisma = 11;
 
-            sheet.HitPoints = 6;
-            sheet.MaxHitPoints = 6;
+            sheet.HpProperty.BaseValue = 6;
+            sheet.MaxHpProperty.BaseValue = 6;
             sheet.Speed = 30;
 
             sheet.ImprovedInitiative = true;
@@ -257,8 +257,8 @@ namespace DndTable.Core.Factories
             sheet.Wisdom = 10;
             sheet.Charisma = 1;
 
-            sheet.HitPoints = 16;
-            sheet.MaxHitPoints = 16;
+            sheet.HpProperty.BaseValue = 16;
+            sheet.MaxHpProperty.BaseValue = 16;
             sheet.Speed = 30;
 
             sheet.NaturalArmor = 2;
@@ -287,8 +287,8 @@ namespace DndTable.Core.Factories
             sheet.Wisdom = 14;
             sheet.Charisma = 16;
 
-            sheet.HitPoints = 13;
-            sheet.MaxHitPoints = 13;
+            sheet.HpProperty.BaseValue = 13;
+            sheet.MaxHpProperty.BaseValue = 13;
             sheet.Speed = 30;
 
             sheet.NaturalArmor = 2;

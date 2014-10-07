@@ -20,6 +20,8 @@ namespace DndTable.Core
         IDiceMonitor DiceMonitor { get; }
         ILogger Logger { get; }
 
+        ClassBuilder ClassBuilder { get; }
+
         bool AddCharacter(ICharacter character, Position position);
         List<ICharacter> GetCharacters();
         bool RemoveCharacter(ICharacter character);

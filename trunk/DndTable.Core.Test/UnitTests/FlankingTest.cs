@@ -199,7 +199,7 @@ namespace DndTable.Core.Test.UnitTests
             sheet.Wisdom = 10;
             sheet.Charisma = 10;
 
-            sheet.HitPoints = 10;
+            sheet.HpProperty.BaseValue = 10;
             sheet.Speed = 30;
 
             sheet.EquipedWeapon = weapon;

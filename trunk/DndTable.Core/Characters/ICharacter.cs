@@ -24,9 +24,6 @@ namespace DndTable.Core.Characters
         void Give(IItem item);
         bool RemoveItem(IItem item);
 
-        // Feats (TODO: create feats as classes)
-        void AddSneakAttackFeat();
-
         // Persistence
         bool SaveCharacterSheet(string name);
         bool LoadCharacterSheet(string name);

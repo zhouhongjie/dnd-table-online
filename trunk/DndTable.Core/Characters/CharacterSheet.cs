@@ -14,6 +14,16 @@ namespace DndTable.Core.Characters
         internal CharacterSheet()
         {
             _conditions = new CharacterConditions(this);
+            Level = new Dictionary<CharacterClass, int>();
+
+            Size = SizeEnum.Medium;
+
+            FortitudeProperty = new SaveProperty("Fortitude", ConstitutionAttribute);
+            ReflexProperty = new SaveProperty("Reflex", DexterityAttribute);
+            WillProperty = new SaveProperty("Will", WisdomAttribute);
+
+            HpProperty = new HitpointsProperty("Hitpoints", ConstitutionAttribute, Level);
+            MaxHpProperty = new HitpointsProperty("MaxHitpoints", ConstitutionAttribute, Level);
         }
 
         internal static CharacterSheet GetEditableSheet(ICharacter character)
@@ -29,6 +39,8 @@ namespace DndTable.Core.Characters
         public CharacterRace Race { get; internal set; }
         public int FactionId { get; internal set; }
 
+        public Dictionary<CharacterClass, int> Level { get; private set; }
+
         public int Strength { get { return StrengthAttribute.GetValue(); } set { StrengthAttribute.SetValue(value); } }
         public int Dexterity { get { return DexterityAttribute.GetValue(); } set { DexterityAttribute.SetValue(value); } }
         public int Constitution { get { return ConstitutionAttribute.GetValue(); } set { ConstitutionAttribute.SetValue(value); } }
@@ -36,12 +48,19 @@ namespace DndTable.Core.Characters
         public int Wisdom { get { return WisdomAttribute.GetValue(); } set { WisdomAttribute.SetValue(value); } }
         public int Charisma { get { return CharismaAttribute.GetValue(); } set { CharismaAttribute.SetValue(value); } }
 
-        public int Fortitude { get; internal set; }
-        public int Reflex { get; internal set; }
-        public int Will { get; internal set; }
+        public int Fortitude { get { return FortitudeProperty.GetValue(); } }
+        public int Reflex { get { return ReflexProperty.GetValue(); } }
+        public int Will { get { return WillProperty.GetValue(); } }
 
-        public int HitPoints { get; internal set; }
-        public int MaxHitPoints { get; internal set;  }
+        internal SaveProperty FortitudeProperty { get; private set; }
+        internal SaveProperty ReflexProperty { get; private set; }
+        internal SaveProperty WillProperty { get; private set; }
+
+        public int HitPoints { get { return HpProperty.GetValue(); } }
+        public int MaxHitPoints { get { return MaxHpProperty.GetValue(); } }
+
+        internal HitpointsProperty HpProperty { get; private set; }
+        internal HitpointsProperty MaxHpProperty { get; private set; }
 
         public int Speed { get; internal set; }
         public SizeEnum Size { get; internal set; }
@@ -236,7 +255,7 @@ namespace DndTable.Core.Characters
 
         public void ApplyDamage(int damage)
         {
-            HitPoints -= damage;
+            HpProperty.BaseValue -= damage;
 
             // Cancel effects responsive to damage
             CancelEffectsOnDamage();

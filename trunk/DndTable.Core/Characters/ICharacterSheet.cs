@@ -12,6 +12,8 @@ namespace DndTable.Core.Characters
         CharacterRace Race { get; }
         int FactionId { get; }
 
+        Dictionary<CharacterClass, int> Level { get; }
+
         int Strength { get; }
         int Dexterity { get; }
         int Constitution { get; }

@@ -127,9 +127,9 @@ public class TableManager : MonoBehaviour
 
             // Thogeon
             {
-                var thogeon = Factory.CreateCharacter("Thogeon", 12, 16, 10, 12, 10, 12, SizeEnum.Small);
+                var thogeon = Factory.CreateCharacter("Thogeon", 12, 16, 12, 12, 10, 12, SizeEnum.Small);
                 thogeon.SaveCharacterSheet("Thogeon");
-                thogeon.AddSneakAttackFeat();
+                Game.ClassBuilder.AddRogueLevel(thogeon);
                 thogeon.EquipArmor(ArmorFactory.Leather());
                 thogeon.EquipWeapon(WeaponFactory.Dagger());
                 thogeon.Give(WeaponFactory.CrossbowLight());

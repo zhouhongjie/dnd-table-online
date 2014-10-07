@@ -105,13 +105,13 @@ namespace DndTable.Core.Test.UnitTests
         private static void AssertActionPossible<T>(IEncounter encounter) where T : BaseAction
         {
             var possibleActions = encounter.GetPossibleActionsForCurrentCharacter();
-            Assert.NotNull(possibleActions.FirstOrDefault(a => a is T));
+            Assert.NotNull(possibleActions.FirstOrDefault(a => a.GetType() == typeof(T)));
         }
 
         private static void AssertActionNotPossible<T>(IEncounter encounter) where T : BaseAction
         {
             var possibleActions = encounter.GetPossibleActionsForCurrentCharacter();
-            Assert.Null(possibleActions.FirstOrDefault(a => a is T));
+            Assert.Null(possibleActions.FirstOrDefault(a => a.GetType() == typeof(T)));
         }
     }
 }

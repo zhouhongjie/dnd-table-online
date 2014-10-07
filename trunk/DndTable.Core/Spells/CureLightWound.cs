@@ -28,10 +28,10 @@ namespace DndTable.Core.Spells
         {
             var sheet = CharacterSheet.GetEditableSheet(target);
 
-            sheet.HitPoints += diceRoller.Roll(Caster, DiceRollEnum.MagicEffect, 8, 1);
+            sheet.HpProperty.BaseValue += diceRoller.Roll(Caster, DiceRollEnum.MagicEffect, 8, 1);
 
             if (sheet.HitPoints > sheet.MaxHitPoints)
-                sheet.HitPoints = sheet.MaxHitPoints;
+                sheet.HpProperty.BaseValue = sheet.MaxHpProperty.BaseValue;
 
             return true;
         }
