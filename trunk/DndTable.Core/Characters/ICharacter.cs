@@ -12,6 +12,8 @@ namespace DndTable.Core.Characters
         ICharacterSheet CharacterSheet { get; }
         CharacterTypeEnum CharacterType { get; }
 
+        bool IsHero { get; }
+
         // Actions
         void EquipWeapon(IWeapon weapon);
         void EquipArmor(IArmor armor);
@@ -32,6 +34,6 @@ namespace DndTable.Core.Characters
 
     public enum CharacterTypeEnum
     {
-        Unknown, Hero, Orc, OrcChief, Kobolt, Wolf, MediumSkeleton, MediumZombie, Ghoul
+        Unknown, Hero, Npc, Orc, OrcChief, Kobolt, Wolf, MediumSkeleton, MediumZombie, Ghoul
     }
 }

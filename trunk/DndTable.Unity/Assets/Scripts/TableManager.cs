@@ -76,7 +76,7 @@ public class TableManager : MonoBehaviour
 
             // Boris
             {
-                var boris = Factory.CreateCharacter("Boris", 14, 12);
+                var boris = Factory.CreateCharacter("Boris", 14, 12, 14, 10, 10, 10);
                 boris.SaveCharacterSheet("Boris");
                 boris.EquipWeapon(WeaponFactory.Longsword());
                 boris.EquipArmor(ArmorFactory.StuddedLeather());
@@ -109,7 +109,7 @@ public class TableManager : MonoBehaviour
 
             // Healer
             {
-                var healer = Factory.CreateCharacter("Jozan", 12, 12);
+                var healer = Factory.CreateCharacter("Jozan", 12, 12, 12, 10, 12, 10);
                 healer.SaveCharacterSheet("Jozan");
                 healer.EquipArmor(ArmorFactory.FullPlate());
                 healer.EquipWeapon(WeaponFactory.MaceHeavy());
@@ -142,7 +142,7 @@ public class TableManager : MonoBehaviour
 
             // Maria
             {
-                var maria = Factory.CreateCharacter("mheeria");
+                var maria = Factory.CreateNpcCharacter("mheeria", 6, 12, 8, 4, 4, 12);
                 Game.AddCharacter(maria, Position.Create(15, 11));
             }
 
@@ -453,6 +453,9 @@ public class TableManager : MonoBehaviour
         var label = String.Empty;
         foreach (var character in Game.GetCharacters())
         {
+            if (!character.IsHero)
+                continue;
+
             //GUI.Label(new Rect(0, start, Screen.width, Screen.height), character.CharacterSheet.Name + ": " + character.CharacterSheet.HitPoints + "hp");
             label += character.CharacterSheet.Name + ": " + character.CharacterSheet.HitPoints + "hp" + "\n";
 

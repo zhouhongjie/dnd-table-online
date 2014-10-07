@@ -37,35 +37,11 @@ namespace DndTable.Core.Factories
             return sheet;
         }
 
-        public static ICharacter CreateCharacter(string name)
+        private static CharacterSheet CreateSheet(string name, int str, int dex, int con, int intel, int wis, int cha, SizeEnum size)
         {
             var sheet = CreateDefaultSheet();
 
             sheet.Name = name;
-            sheet.FactionId = 1;
-
-            return new Character(sheet, CharacterTypeEnum.Hero);
-        }
-
-        public static ICharacter CreateCharacter(string name, int strength, int dexterity)
-        {
-            var sheet = CreateDefaultSheet();
-
-            sheet.Name = name;
-            sheet.FactionId = 1;
-
-            sheet.Strength = strength;
-            sheet.Dexterity = dexterity;
-
-            return new Character(sheet, CharacterTypeEnum.Hero);
-        }
-
-        public static ICharacter CreateCharacter(string name, int str, int dex, int con, int intel, int wis, int cha, SizeEnum size = SizeEnum.Medium)
-        {
-            var sheet = CreateDefaultSheet();
-
-            sheet.Name = name;
-            sheet.FactionId = 1;
 
             sheet.Strength = str;
             sheet.Dexterity = dex;
@@ -76,7 +52,34 @@ namespace DndTable.Core.Factories
 
             sheet.Size = size;
 
+            return sheet;
+        }
+
+        public static ICharacter CreateCharacter(string name)
+        {
+            var sheet = CreateDefaultSheet();
+
+            sheet.Name = name;
+            sheet.FactionId = 1;
+
             return new Character(sheet, CharacterTypeEnum.Hero);
+        }
+
+        public static ICharacter CreateCharacter(string name, int str, int dex, int con, int intel, int wis, int cha, SizeEnum size = SizeEnum.Medium)
+        {
+            var sheet = CreateSheet(name, str, dex, con, intel, wis, cha, size);
+            sheet.FactionId = 1;
+            return new Character(sheet, CharacterTypeEnum.Hero);
+        }
+
+        public static ICharacter CreateNpcCharacter(string name, int str, int dex, int con, int intel, int wis, int cha, SizeEnum size = SizeEnum.Medium)
+        {
+            var sheet = CreateSheet(name, str, dex, con, intel, wis, cha, size);
+
+            // TODO: better faction differences
+            sheet.FactionId = 3; 
+
+            return new Character(sheet, CharacterTypeEnum.Npc);
         }
 
         public static ICharacter CreateNpc(CharacterTypeEnum npcType)
