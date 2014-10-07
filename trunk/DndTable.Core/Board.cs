@@ -68,10 +68,16 @@ namespace DndTable.Core
 
         private bool CheckBoundaries(Position position)
         {
+            if (position.X < 0)
+                return false;
+            if (position.Y < 0)
+                return false;
+
             if (position.X >= MaxX)
                 return false;
             if (position.Y >= MaxY)
                 return false;
+
             return true;
         }
 
