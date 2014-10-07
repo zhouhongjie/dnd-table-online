@@ -74,6 +74,8 @@ public class TableManager : MonoBehaviour
 
             var allPcs = new List<ICharacter>();
 
+            int xPos = 6;
+
             // Boris
             {
                 var boris = Factory.CreateCharacter("Boris", 16, 12, 14, 10, 10, 10);
@@ -85,7 +87,7 @@ public class TableManager : MonoBehaviour
                 boris.EquipArmor(ArmorFactory.StuddedLeather());
                 boris.Give(WeaponFactory.Shortbow());
 
-                Game.AddCharacter(boris, Position.Create(3, 3));
+                Game.AddCharacter(boris, Position.Create(xPos, 3));
                 allPcs.Add(boris);
 
 
@@ -109,7 +111,7 @@ public class TableManager : MonoBehaviour
                 maiko.PrepareSpell(SpellFactory.SleepArrow());
                 maiko.PrepareSpell(SpellFactory.SleepArrow());
                 maiko.PrepareSpell(SpellFactory.SleepArrow());
-                Game.AddCharacter(maiko, Position.Create(3, 4));
+                Game.AddCharacter(maiko, Position.Create(xPos, 4));
                 allPcs.Add(maiko);
 
                 maiko.Give(PotionFactory.CreatePotionOfCureLightWound());
@@ -132,7 +134,7 @@ public class TableManager : MonoBehaviour
                 healer.PrepareSpell(SpellFactory.CureLightWound());
                 healer.PrepareSpell(SpellFactory.CureLightWound());
 
-                Game.AddCharacter(healer, Position.Create(3, 5));
+                Game.AddCharacter(healer, Position.Create(xPos, 5));
                 allPcs.Add(healer);
 
                 healer.Give(PotionFactory.CreatePotionOfCureLightWound());
@@ -149,7 +151,7 @@ public class TableManager : MonoBehaviour
                 thogeon.EquipWeapon(WeaponFactory.Dagger());
                 thogeon.Give(WeaponFactory.CrossbowLight());
 
-                Game.AddCharacter(thogeon, Position.Create(3, 6));
+                Game.AddCharacter(thogeon, Position.Create(xPos, 6));
                 allPcs.Add(thogeon);
 
                 thogeon.Give(PotionFactory.CreatePotionOfCureLightWound());
@@ -520,13 +522,16 @@ public class TableManager : MonoBehaviour
         for (var i=0; i < transform.childCount; i++)
         {
             var child = transform.GetChild(i);
+            bool isVisible;
 
             if (child.position.x < 0 || child.position.x > fieldOfView.GetLength(0))
-                throw new IndexOutOfRangeException("FieldOfView problem with child '" + child.name + "' @ position.x: " + child.position.x);
-            if (child.position.z < 0 || child.position.z > fieldOfView.GetLength(0))
-                throw new IndexOutOfRangeException("FieldOfView problem with child '" + child.name + "' @ position.z: " + child.position.z);
-
-            bool isVisible = fieldOfView[(int)child.position.x, (int)child.position.z];
+                //throw new IndexOutOfRangeException("FieldOfView problem with child '" + child.name + "' @ position.x: " + child.position.x);
+                isVisible = false;
+            else if (child.position.z < 0 || child.position.z > fieldOfView.GetLength(0))
+                //throw new IndexOutOfRangeException("FieldOfView problem with child '" + child.name + "' @ position.z: " + child.position.z);
+                isVisible = false;
+            else
+                isVisible = fieldOfView[(int)child.position.x, (int)child.position.z];
 
             if (_mode == ModeEnum.Player)
             {

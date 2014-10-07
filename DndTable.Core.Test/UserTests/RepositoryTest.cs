@@ -16,7 +16,7 @@ namespace DndTable.Core.Test.UserTests
         [Test]
         public void SaveAndLoad()
         {
-            var repository = new Repository(@"E:\Data\Projects\DndTableOnline\Data\", @"E:\Data\Projects\DndTableOnline\Data\Characters\");
+            var repository = new Repository(@"E:\Data\Projects\DndTableOnline\Data\Maps\", @"E:\Data\Projects\DndTableOnline\Data\Characters\");
 
             // Save
             {
