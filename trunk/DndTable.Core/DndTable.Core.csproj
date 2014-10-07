@@ -96,10 +96,13 @@
     <Compile Include="Spells\BullsStrength.cs" />
     <Compile Include="Spells\CatsGrace.cs" />
     <Compile Include="Spells\CureLightWound.cs" />
+    <Compile Include="Spells\GhoulParalysis.cs" />
     <Compile Include="Spells\SleepArrow.cs" />
+    <Compile Include="Spells\SpecialAbilityFactory.cs" />
     <Compile Include="Spells\SpellFactory.cs" />
     <Compile Include="Spells\ISpell.cs" />
     <Compile Include="Spells\MagicMissile.cs" />
+    <Compile Include="Weapons\BaseWeapon.cs" />
     <Compile Include="Weapons\NaturalWeapon.cs" />
     <Compile Include="Weapons\WeaponFactory.cs" />
     <Compile Include="Game.cs" />

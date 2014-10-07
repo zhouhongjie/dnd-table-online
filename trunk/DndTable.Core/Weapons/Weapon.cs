@@ -1,25 +1,13 @@
 ﻿using System.Collections.Generic;
 using DndTable.Core.Actions;
+using DndTable.Core.Characters;
+using DndTable.Core.Dice;
 
 namespace DndTable.Core.Weapons
 {
-    internal class Weapon : IWeapon
+    internal class Weapon : BaseWeapon
     {
-        public string Description { get; internal set; }
-        public int NrOfDamageDice { get; internal set; }
-        public int DamageD { get; internal set; }
-        public WeaponProficiencyEnum Proficiency { get; internal set; }
-        public bool IsRanged { get; internal set; }
-        public int CriticalMultiplier { get; internal set; }
-        public int CriticalRange { get; internal set; }
-        public int RangeIncrement { get; internal set; }
-        public int Weight { get; internal set; }
-        public List<WeaponDamageTypeEnum> DamageTypes { get; internal set; }
-
-        public bool ProvokesAoO { get { return IsRanged; } }
-
-
-        public bool NeedsReload { get { return this.ReloadInfo != null && !this.ReloadInfo.IsLoaded; } }
+        public override bool NeedsReload { get { return this.ReloadInfo != null && !this.ReloadInfo.IsLoaded; } }
         public ReloadInfo ReloadInfo { get; internal set; }
 
         internal Weapon()
@@ -30,13 +18,19 @@ namespace DndTable.Core.Weapons
             DamageTypes = new List<WeaponDamageTypeEnum>();
         }
 
-        public void Use()
+        public override void Use()
         {
             if (ReloadInfo != null)
             {
                 ReloadInfo.IsLoaded = false;
             }
         }
+
+        internal  override void ApplyEffect(ICharacter target, IDiceRoller diceRoller)
+        {
+            // TODO
+        }
+
     }
 
     internal class ReloadInfo
