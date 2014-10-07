@@ -184,8 +184,8 @@ namespace DndTable.Core
             }
 
             // CHECK ALL DONE
-            if (!CanDoMoveEquivalentAction())
-                return actions;
+            //if (!CanDoMoveEquivalentAction())
+            //    return actions;
 
             // Check attack actions
             if (CanDoStandardAction() || CanDoSecondaryAttack())

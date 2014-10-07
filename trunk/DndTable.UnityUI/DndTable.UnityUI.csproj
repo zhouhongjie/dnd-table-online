@@ -12,6 +12,7 @@
     <AssemblyName>DndTable.UnityUI</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -73,8 +74,10 @@
   -->
   <Target Name="AfterBuild">
     <ItemGroup>
-      <_CustomFiles Include="bin\debug\*.dll" />
+      <_dllFiles Include="bin\debug\*.dll" />
+      <_pdbFiles Include="bin\debug\*.pdb" />
     </ItemGroup>
-    <Copy SourceFiles="@(_CustomFiles)" DestinationFiles="@(_CustomFiles->'..\DndTable.Unity\Assets\Libs\%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(_dllFiles)" DestinationFiles="@(_dllFiles->'..\DndTable.Unity\Assets\Libs\%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(_pdbFiles)" DestinationFiles="@(_pdbFiles->'..\DndTable.Unity\Assets\Libs\%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
   </Target>
 </Project>
