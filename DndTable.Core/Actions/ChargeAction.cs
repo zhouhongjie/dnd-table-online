@@ -11,25 +11,17 @@ namespace DndTable.Core.Actions
     /// </summary>
     class ChargeAction : BaseAction, IAttackAction
     {
-        private readonly ICharacter _attacker;
-        private bool _isPartial;
+        protected readonly ICharacter _attacker;
 
-        internal ChargeAction(ICharacter attacker, bool isPartial)
+        internal ChargeAction(ICharacter attacker)
             : base(attacker)
         {
             _attacker = attacker;
-            _isPartial = isPartial;
         }
 
-        public int MaxRange
+        public virtual int MaxRange
         {
-            get
-            {
-                if (_isPartial)
-                    return _attacker.CharacterSheet.GetCurrentSpeed()/5 + 1; // speed + 1 for attack (/5 for ft)
-
-                return _attacker.CharacterSheet.GetCurrentSpeed()*2/5 + 1; // Double speed + 1 for attack (/5 for ft)
-            }
+            get { return _attacker.CharacterSheet.GetCurrentSpeed() * 2 / 5 + 1; } // Double speed + 1 for attack (/5 for ft) 
         }
 
         public int MinRange
@@ -39,7 +31,6 @@ namespace DndTable.Core.Actions
 
         public override ActionTypeEnum Type
         {
-            // TO VERIFY: OK FOR PARTIAL CHARGE
             // As a follow-up, this action triggers an attack = Move + Attack = FullRound
             get { return ActionTypeEnum.MoveEquivalent; }
         }
@@ -51,7 +42,7 @@ namespace DndTable.Core.Actions
 
         public override string Description
         {
-            get { return _isPartial ? "Partial charge" : "Charge"; }
+            get { return "Charge"; }
         }
 
         public override void Do()

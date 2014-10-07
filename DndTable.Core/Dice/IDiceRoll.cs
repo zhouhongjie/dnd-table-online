@@ -5,7 +5,7 @@ namespace DndTable.Core.Dice
     public enum DiceRollEnum
     {
         Attack, CriticalAttack, Damage, InitiativeCheck, Loot, MagicEffect, ResistEffect, Duration,
-        Concentration, SneakAttack
+        Concentration, SneakAttack, Hitpoints
     }
 
     public interface IDiceRoll

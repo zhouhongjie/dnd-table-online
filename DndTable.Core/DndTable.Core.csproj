@@ -33,10 +33,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -56,6 +54,7 @@
     <Compile Include="Actions\MathHelper.cs" />
     <Compile Include="Actions\MoveAction.cs" />
     <Compile Include="Actions\OpenChestAction.cs" />
+    <Compile Include="Actions\PartialChargeAction.cs" />
     <Compile Include="Actions\ReloadAction.cs" />
     <Compile Include="Actions\SwitchWeaponAction.cs" />
     <Compile Include="Actions\UseDoorAction.cs" />
@@ -63,7 +62,10 @@
     <Compile Include="Armors\Armor.cs" />
     <Compile Include="Characters\Attribute.cs" />
     <Compile Include="Characters\Calculator.cs" />
+    <Compile Include="Characters\CharacterClass.cs" />
     <Compile Include="Characters\CharacterImmunities.cs" />
+    <Compile Include="Characters\HitpointsProperty.cs" />
+    <Compile Include="Characters\SaveProperty.cs" />
     <Compile Include="Characters\CharacterRace.cs" />
     <Compile Include="Characters\CharacterConditions.cs" />
     <Compile Include="Characters\ICharacterConditions.cs" />

@@ -58,14 +58,14 @@ namespace DndTable.Core.Factories
 
         internal IAttackAction Charge(ICharacter character)
         {
-            var action = new ChargeAction(character, false);
+            var action = new ChargeAction(character);
             action.Initialize(this);
             return action;
         }
 
         internal IAttackAction PartialCharge(ICharacter character)
         {
-            var action = new ChargeAction(character, true);
+            var action = new PartialChargeAction(character);
             action.Initialize(this);
             return action;
         }

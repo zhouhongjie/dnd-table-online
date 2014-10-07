@@ -40,8 +40,8 @@ namespace DndTable.Core.Test.UserTests
                                     Intelligence = 8,
                                     Wisdom = 9,
                                     Charisma = 10,
-                                    MaxHitPoints = 20
                                 };
+                sheet.MaxHpProperty.BaseValue = 20;
                 repository.SaveCharacterSheet("test char", sheet);
             }
 

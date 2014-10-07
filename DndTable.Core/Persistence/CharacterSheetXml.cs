@@ -38,16 +38,16 @@ namespace DndTable.Core.Persistence
             Race = sheet.Race;
             FactionId = sheet.FactionId;
 
-            Strength = sheet.StrengthAttribute.GetValue();
-            Dexterity = sheet.DexterityAttribute.GetValue();
-            Constitution = sheet.ConstitutionAttribute.GetValue();
-            Intelligence = sheet.IntelligenceAttribute.GetValue();
-            Wisdom = sheet.WisdomAttribute.GetValue();
-            Charisma = sheet.CharismaAttribute.GetValue();
+            Strength = sheet.StrengthAttribute.BaseStat;
+            Dexterity = sheet.DexterityAttribute.BaseStat;
+            Constitution = sheet.ConstitutionAttribute.BaseStat;
+            Intelligence = sheet.IntelligenceAttribute.BaseStat;
+            Wisdom = sheet.WisdomAttribute.BaseStat;
+            Charisma = sheet.CharismaAttribute.BaseStat;
 
-            Fortitude = sheet.Fortitude;
-            Reflex = sheet.Reflex;
-            Will = sheet.Will;
+            Fortitude = sheet.FortitudeProperty.BaseValue;
+            Reflex = sheet.ReflexProperty.BaseValue;
+            Will = sheet.WillProperty.BaseValue;
 
             MaxHitPoints = sheet.MaxHitPoints;
 
@@ -70,12 +70,12 @@ namespace DndTable.Core.Persistence
             sheet.WisdomAttribute.SetValue(Wisdom);
             sheet.CharismaAttribute.SetValue(Charisma);
 
-            sheet.Fortitude = Fortitude;
-            sheet.Reflex = Reflex;
-            sheet.Will = Will;
+            sheet.FortitudeProperty.BaseValue = Fortitude;
+            sheet.ReflexProperty.BaseValue = Reflex;
+            sheet.WillProperty.BaseValue = Will;
 
-            sheet.MaxHitPoints = MaxHitPoints;
-            sheet.HitPoints = MaxHitPoints;         // Set to MaxHitPoints
+            sheet.MaxHpProperty.BaseValue = MaxHitPoints;
+            sheet.HpProperty.BaseValue = MaxHitPoints;         // Set to MaxHitPoints
 
             sheet.Speed = Speed;
             sheet.Size = Size;
