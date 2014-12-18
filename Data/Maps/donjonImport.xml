@@ -1180,12 +1180,6 @@
       <PositionY>14</PositionY>
     </EntityXml>
     <EntityXml>
-      <EntityType>Door</EntityType>
-      <CharacterType>Unknown</CharacterType>
-      <PositionX>9</PositionX>
-      <PositionY>14</PositionY>
-    </EntityXml>
-    <EntityXml>
       <EntityType>Wall</EntityType>
       <CharacterType>Unknown</CharacterType>
       <PositionX>10</PositionX>
@@ -1516,12 +1510,6 @@
       <PositionY>18</PositionY>
     </EntityXml>
     <EntityXml>
-      <EntityType>Door</EntityType>
-      <CharacterType>Unknown</CharacterType>
-      <PositionX>23</PositionX>
-      <PositionY>18</PositionY>
-    </EntityXml>
-    <EntityXml>
       <EntityType>Wall</EntityType>
       <CharacterType>Unknown</CharacterType>
       <PositionX>24</PositionX>
@@ -1618,12 +1606,6 @@
       <PositionY>20</PositionY>
     </EntityXml>
     <EntityXml>
-      <EntityType>Door</EntityType>
-      <CharacterType>Unknown</CharacterType>
-      <PositionX>7</PositionX>
-      <PositionY>20</PositionY>
-    </EntityXml>
-    <EntityXml>
       <EntityType>Wall</EntityType>
       <CharacterType>Unknown</CharacterType>
       <PositionX>8</PositionX>
@@ -1681,12 +1663,6 @@
       <EntityType>Door</EntityType>
       <CharacterType>Unknown</CharacterType>
       <PositionX>16</PositionX>
-      <PositionY>21</PositionY>
-    </EntityXml>
-    <EntityXml>
-      <EntityType>Wall</EntityType>
-      <CharacterType>Unknown</CharacterType>
-      <PositionX>20</PositionX>
       <PositionY>21</PositionY>
     </EntityXml>
     <EntityXml>
@@ -1974,12 +1950,6 @@
     <EntityXml>
       <EntityType>Wall</EntityType>
       <CharacterType>Unknown</CharacterType>
-      <PositionX>20</PositionX>
-      <PositionY>26</PositionY>
-    </EntityXml>
-    <EntityXml>
-      <EntityType>Wall</EntityType>
-      <CharacterType>Unknown</CharacterType>
       <PositionX>26</PositionX>
       <PositionY>26</PositionY>
     </EntityXml>
@@ -2005,12 +1975,6 @@
       <EntityType>Wall</EntityType>
       <CharacterType>Unknown</CharacterType>
       <PositionX>8</PositionX>
-      <PositionY>27</PositionY>
-    </EntityXml>
-    <EntityXml>
-      <EntityType>Door</EntityType>
-      <CharacterType>Unknown</CharacterType>
-      <PositionX>20</PositionX>
       <PositionY>27</PositionY>
     </EntityXml>
     <EntityXml>
@@ -2052,36 +2016,6 @@
     <EntityXml>
       <EntityType>Wall</EntityType>
       <CharacterType>Unknown</CharacterType>
-      <PositionX>21</PositionX>
-      <PositionY>28</PositionY>
-    </EntityXml>
-    <EntityXml>
-      <EntityType>Wall</EntityType>
-      <CharacterType>Unknown</CharacterType>
-      <PositionX>22</PositionX>
-      <PositionY>28</PositionY>
-    </EntityXml>
-    <EntityXml>
-      <EntityType>Wall</EntityType>
-      <CharacterType>Unknown</CharacterType>
-      <PositionX>23</PositionX>
-      <PositionY>28</PositionY>
-    </EntityXml>
-    <EntityXml>
-      <EntityType>Wall</EntityType>
-      <CharacterType>Unknown</CharacterType>
-      <PositionX>24</PositionX>
-      <PositionY>28</PositionY>
-    </EntityXml>
-    <EntityXml>
-      <EntityType>Wall</EntityType>
-      <CharacterType>Unknown</CharacterType>
-      <PositionX>25</PositionX>
-      <PositionY>28</PositionY>
-    </EntityXml>
-    <EntityXml>
-      <EntityType>Wall</EntityType>
-      <CharacterType>Unknown</CharacterType>
       <PositionX>26</PositionX>
       <PositionY>28</PositionY>
     </EntityXml>
@@ -2107,12 +2041,6 @@
       <EntityType>Door</EntityType>
       <CharacterType>Unknown</CharacterType>
       <PositionX>8</PositionX>
-      <PositionY>29</PositionY>
-    </EntityXml>
-    <EntityXml>
-      <EntityType>Door</EntityType>
-      <CharacterType>Unknown</CharacterType>
-      <PositionX>20</PositionX>
       <PositionY>29</PositionY>
     </EntityXml>
     <EntityXml>
@@ -2858,6 +2786,258 @@
       <CharacterType>Unknown</CharacterType>
       <PositionX>28</PositionX>
       <PositionY>36</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Chest</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>13</PositionX>
+      <PositionY>9</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>MediumZombie</CharacterType>
+      <PositionX>12</PositionX>
+      <PositionY>9</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>MediumZombie</CharacterType>
+      <PositionX>13</PositionX>
+      <PositionY>12</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>MediumZombie</CharacterType>
+      <PositionX>12</PositionX>
+      <PositionY>13</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Chest</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>11</PositionX>
+      <PositionY>7</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>Ghoul</CharacterType>
+      <PositionX>4</PositionX>
+      <PositionY>21</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>MediumSkeleton</CharacterType>
+      <PositionX>13</PositionX>
+      <PositionY>27</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>MediumSkeleton</CharacterType>
+      <PositionX>11</PositionX>
+      <PositionY>28</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>MediumSkeleton</CharacterType>
+      <PositionX>10</PositionX>
+      <PositionY>26</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>MediumSkeleton</CharacterType>
+      <PositionX>17</PositionX>
+      <PositionY>28</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>MediumSkeleton</CharacterType>
+      <PositionX>11</PositionX>
+      <PositionY>22</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>MediumSkeleton</CharacterType>
+      <PositionX>12</PositionX>
+      <PositionY>20</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>MediumSkeleton</CharacterType>
+      <PositionX>13</PositionX>
+      <PositionY>21</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Chest</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>5</PositionX>
+      <PositionY>32</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Chest</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>17</PositionX>
+      <PositionY>33</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>MediumZombie</CharacterType>
+      <PositionX>10</PositionX>
+      <PositionY>33</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>MediumZombie</CharacterType>
+      <PositionX>10</PositionX>
+      <PositionY>32</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>MediumZombie</CharacterType>
+      <PositionX>8</PositionX>
+      <PositionY>33</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Chest</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>21</PositionX>
+      <PositionY>13</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Chest</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>25</PositionX>
+      <PositionY>3</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Chest</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>25</PositionX>
+      <PositionY>9</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>Ghoul</CharacterType>
+      <PositionX>25</PositionX>
+      <PositionY>12</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Character</EntityType>
+      <CharacterType>Ghoul</CharacterType>
+      <PositionX>24</PositionX>
+      <PositionY>13</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Door</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>7</PositionX>
+      <PositionY>14</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Door</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>20</PositionX>
+      <PositionY>21</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Wall</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>20</PositionX>
+      <PositionY>29</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Wall</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>23</PositionX>
+      <PositionY>18</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Wall</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>21</PositionX>
+      <PositionY>32</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Wall</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>22</PositionX>
+      <PositionY>32</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Pit</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>21</PositionX>
+      <PositionY>28</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Pit</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>22</PositionX>
+      <PositionY>28</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Pit</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>23</PositionX>
+      <PositionY>28</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Pit</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>24</PositionX>
+      <PositionY>28</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Pit</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>25</PositionX>
+      <PositionY>28</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Pit</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>21</PositionX>
+      <PositionY>29</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Pit</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>22</PositionX>
+      <PositionY>29</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Pit</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>23</PositionX>
+      <PositionY>29</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Pit</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>24</PositionX>
+      <PositionY>29</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Pit</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>25</PositionX>
+      <PositionY>29</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Wall</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>23</PositionX>
+      <PositionY>32</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Door</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>20</PositionX>
+      <PositionY>26</PositionY>
+    </EntityXml>
+    <EntityXml>
+      <EntityType>Wall</EntityType>
+      <CharacterType>Unknown</CharacterType>
+      <PositionX>20</PositionX>
+      <PositionY>27</PositionY>
     </EntityXml>
   </Entities>
 </BoardXml>
